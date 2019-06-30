@@ -1,0 +1,41 @@
+.display-pic {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    margin: auto;
+    height: 42px;
+}
+
+.display-name { 
+    grid-column-start: 3;
+    grid-column-end: 32;
+    display: flex;
+    align-self: flex-end;
+    padding-bottom: 2px;
+}
+
+.display-bio { 
+    grid-column-start: 3;
+    grid-column-end: 32;
+    display: flex;
+    align-self: flex-start;
+}
+
+.logout {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 32;
+    grid-column-end: 34;
+    margin: auto;
+    border: 0px;
+}
+
+.logout button {
+    background: #2e2e2e;
+    border: #3a3a3a;
+    font-size: 26px;
+    color: white;
+    width: 42px;
+    height: 42px;
+}
