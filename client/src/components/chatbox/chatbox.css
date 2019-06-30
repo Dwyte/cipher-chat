@@ -1,0 +1,74 @@
+.chatbox-container {
+  min-height: 425px;
+}
+
+.chatbox {
+  grid-column-start: 1;
+  grid-column-end: 10;
+  grid-row-start: 1;
+  grid-row-end: 11;
+  background: white;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.message-form {
+  margin-top: 5px;
+  grid-column-start: 1;
+  grid-column-end: 9;
+  grid-row-start: 11;
+  grid-row-end: 12;
+}
+
+.message-form form {
+  height: 100%;
+}
+
+.message-form input {
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  resize: none;
+}
+
+.message-submit {
+  margin: 5px 0px 0px 5px;
+  grid-column-start: 9;
+  grid-column-end: 10;
+  grid-row-start: 11;
+  grid-row-end: 12;
+}
+
+.message-submit button {
+  width: 100%;
+  height: 100%;
+  background: #2e2e2e;
+  border: #3e3e3e;
+  color:white;
+  font-size: 16px;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+  width: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2e2e2e;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #2e2e2e;
+}

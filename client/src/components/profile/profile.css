@@ -8,25 +8,22 @@
 }
 
 .display-name { 
-    grid-column-start: 3;
-    grid-column-end: 32;
-    display: flex;
-    align-self: flex-end;
-    padding-bottom: 2px;
+    grid-column-start: 2;
+    grid-column-end: 11;
+    padding: 3px 0px 0px 5px;
 }
 
 .display-bio { 
-    grid-column-start: 3;
-    grid-column-end: 32;
-    display: flex;
-    align-self: flex-start;
+    grid-column-start: 2;
+    grid-column-end: 11;
+    padding: 0px 0px 0px 5px;
 }
 
 .logout {
     grid-row-start: 1;
     grid-row-end: 3;
-    grid-column-start: 32;
-    grid-column-end: 34;
+    grid-column-start: 11;
+    grid-column-end: 12;
     margin: auto;
     border: 0px;
 }

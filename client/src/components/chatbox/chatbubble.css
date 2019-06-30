@@ -1,0 +1,30 @@
+#bubble-container {
+  padding: 0px 5px;
+  display: table;
+}
+
+#bubble-container b {
+  font-size: 11px;
+}
+
+#message-bubble {
+  min-width: 25px;
+  max-width: 325px;
+  display: inline-block;
+  color: white;
+  font-size: 14px;
+  padding: 5px 5px;
+  margin-bottom: 5px;
+  background: #2e2e2e;
+}
+
+.float-right {
+  float: right;
+}
+
+.text-align-right {
+  text-align: right;
+}
+.max-width {
+  width: 100%;
+}
