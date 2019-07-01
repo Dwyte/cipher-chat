@@ -23,7 +23,7 @@
 .container-item {
   background: #fff;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-  padding: 3px 10px;
+  padding: 3px 3px;
   font-size: 12px;
   border-radius: 3px;
   display: flex;
@@ -41,6 +41,12 @@ input {
   height: 2.25em;
 }
 
+.btn-dark {
+  background-color: #2e2e2e;
+  color: white;
+  padding: 5px;
+}
+
 .grid-container {
   display: grid;
   grid-auto-rows: 1fr;
@@ -49,6 +55,10 @@ input {
 
 .mt {
   margin-top: 5px;
+}
+
+.mb {
+  margin-bottom: 5px;
 }
 
 

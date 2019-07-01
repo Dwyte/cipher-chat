@@ -2,8 +2,8 @@ import React from "react";
 
 const ChatProfile = ({ data }) => {
   return (
-    <div className="container-item mt">
-      {data.username} <button>Chat</button>
+    <div className="container-item mb">
+      <b>{data.username}</b> <button> <i className="fas fa-comment" /></button>
     </div>
   );
 };

@@ -1,18 +1,22 @@
-import React from 'react';
-import './App.css';
-import Profile from './components/profile/profile';
-// import ChatList from './components/chatlist/chatList';
-import Footer from './components/footer';
-import ChatBox from './components/chatbox/chatbox';
+import React from "react";
+import "./App.css";
+import Footer from "./components/footer";
+import Login from "./components/login";
+import Register from "./components/register";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Chat from "./components/chat/chat";
 
 function App() {
   return (
     <div className="app">
-        <Profile/>
+      <Switch>
+        <Route path="/chat" component={Chat} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <Redirect from="/" to="/chat" />
+      </Switch>
 
-        <ChatBox/>
-
-        <Footer />
+      <Footer />
     </div>
   );
 }

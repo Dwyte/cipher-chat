@@ -41,10 +41,10 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="grid-container container chatbox-container">
+    <div className="grid-container chatbox-container">
       <div className="chatbox">
         {chat.map(m => (
-          <ChatBubble {...m} />
+          <ChatBubble key={chat.indexOf(m)} {...m} />
         ))}
       </div>
 
@@ -60,7 +60,7 @@ const ChatBox = () => {
       </div>
 
       <div className="message-submit">
-        <button><i class="fas fa-paper-plane"></i></button>
+        <button><i className="fas fa-paper-plane"></i></button>
       </div>
     </div>
   );
