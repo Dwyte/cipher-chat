@@ -17,7 +17,7 @@ const NavBar = ({ history }) => {
     <div className="container-item nav mb">
       <div className="nav-grid">
         {navs.map(nav => (
-          <NavBtn {...nav} navigate={navigate}/>
+          <NavBtn key={navs.indexOf(nav)} {...nav} navigate={navigate}/>
         ))}
       </div>
     </div>

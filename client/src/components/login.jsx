@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { authUser, getUser } from "../services/userService";
+import { authUser, checkUsername } from "../services/userService";
 import CryptoJS from "crypto-js";
 const { SHA256 } = CryptoJS;
 
@@ -10,13 +10,14 @@ const Login = ({ history }) => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const isExisting = await getUser(username);
+    const isExisting = await checkUsername(username);
     if (!isExisting) return alert("User with the username not found.");
 
     const auth = SHA256(username + password).toString();
 
     try {
-      await authUser({ auth });
+      const {data: userToken} = await authUser({ auth });
+      localStorage.setItem('userToken', userToken);
       alert("Account authenticated!");
       history.push("/chat");
     } catch (err) {

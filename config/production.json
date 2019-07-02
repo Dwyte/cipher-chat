@@ -1,0 +1,5 @@
+{
+    "name": "CipherChat - Production",
+    "jwtKey": "yQueyqw3qaSehr21ksWQEWQS421s",
+    "MONGODB_URI": "mongodb+srv://Dwyte:rjw2N6pRXkFvbZsC@cs21-2evw6.mongodb.net/CipherChat?retryWrites=true&w=majority"
+}

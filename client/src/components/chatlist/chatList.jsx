@@ -22,7 +22,7 @@ const ChatList = () => {
     <React.Fragment>
       <div className="list mb">
         {chatList.map(user => (
-          <ChatProfile data={user} />
+          <ChatProfile key={chatList.indexOf(user)} data={user} />
         ))}
       </div>
 

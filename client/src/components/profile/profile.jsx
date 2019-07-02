@@ -2,7 +2,7 @@ import React from "react";
 import displayPic from "./profile.jpg";
 import "./profile.css";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   return (
     <div className="container grid-container">
       <div className="display-pic">
@@ -10,11 +10,11 @@ const Profile = () => {
       </div>
 
       <div className="display-name">
-        <b>Satoshi_Nakamoto</b>
+        <b>{user.username || "Loading..."}</b>
       </div>
 
       <div className="display-bio">
-        <small>The Inventor/Creator of Bitcoin</small>
+        <small>{user.bio || "The Inventor/Creator of Bitcoin"}</small>
       </div>
 
       <div className="logout">

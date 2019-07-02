@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postUser, getUser } from "../services/userService";
+import { postUser, checkUsername } from "../services/userService";
 import CryptoJS from "crypto-js";
 const { SHA256 } = CryptoJS;
 
@@ -10,7 +10,7 @@ const Register = ({ history }) => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const isExisting = await getUser(username);
+    const isExisting = await checkUsername(username);
     if (isExisting) return alert("User with the username already exists");
 
     const auth = SHA256(username + password).toString();
