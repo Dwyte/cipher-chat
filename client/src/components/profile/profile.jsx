@@ -1,23 +1,25 @@
 import React from "react";
-import displayPic from "./profile.jpg";
 import "./profile.css";
+import DisplayPic from "./displayPic";
+import DisplayName from "./displayName";
+import DisplayBio from "./displayBio";
 
-const Profile = ({ user }) => {
+const Profile = ({ user, onUpdateBio }) => {
+  const handleLogout = () => {
+    localStorage.clear();
+
+    window.location = "/"
+  };
+
   return (
     <div className="container grid-container">
-      <div className="display-pic">
-        <img alt="anon" src={displayPic} width="42" />
-      </div>
+      <DisplayPic />
 
-      <div className="display-name">
-        <b>{user.username || "Loading..."}</b>
-      </div>
+      <DisplayName username={user.username} />
 
-      <div className="display-bio">
-        <small>{user.bio || "The Inventor/Creator of Bitcoin"}</small>
-      </div>
+      <DisplayBio onSave={onUpdateBio} bio={user.bio} />
 
-      <div className="logout">
+      <div onClick={handleLogout} id="logout">
         <button>
           <i className="fas fa-sign-out-alt" />
         </button>

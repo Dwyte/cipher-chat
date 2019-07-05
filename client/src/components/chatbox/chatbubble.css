@@ -1,10 +1,10 @@
 #bubble-container {
-  padding: 0px 5px;
+  padding: 0px 0px;
   display: table;
 }
 
 #bubble-container b {
-  font-size: 11px;
+  font-size: 10px;
 }
 
 #message-bubble {
@@ -13,7 +13,6 @@
   color: white;
   font-size: 14px;
   padding: 5px 5px;
-  margin-bottom: 5px;
   background: #2e2e2e;
 }
 

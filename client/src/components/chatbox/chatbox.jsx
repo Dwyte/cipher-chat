@@ -5,23 +5,30 @@ import ChatBubble from "./chatbubble";
 import openSocket from "socket.io-client";
 const socket = openSocket("http://localhost:4000");
 
-const ChatBox = ({ user }) => {
+const ChatBox = ({ user, channel }) => {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    socket.emit("get-chats");
+    socket.connect();
+
+    socket.emit("get-chats", channel);
+
+    return () => socket.disconnect();    
   }, []);
 
   socket.on("return-chats", chats => {
-    setChats(chats);
-    updateScroll();
+    updateChats(chats);
   });
 
   socket.on("new-message", chat => {
-    setChats([...chats, chat]);
-    updateScroll();
+    updateChats([...chats, chat]);
   });
+
+  const updateChats = chats => {
+    setChats(chats);
+    updateScroll();
+  };
 
   const handleMessageChange = ({ target }) => {
     setMessage(target.value);
@@ -32,6 +39,7 @@ const ChatBox = ({ user }) => {
 
     const chatMessage = {
       name: user.username,
+      channel,
       message
     };
 
@@ -43,15 +51,21 @@ const ChatBox = ({ user }) => {
   const updateScroll = () => {
     const chatbox = document.getElementById("chatbox");
     chatbox.scrollTop = chatbox.scrollHeight;
-  }
+  };
+
+  const populateChatBox = () => {
+    return chats.length === 0 ? (
+      <div className="chat-notif">No messages yet. Say hello!</div>
+    ) : (
+      chats.map(m => (
+        <ChatBubble key={chats.indexOf(m)} username={user.username} {...m} />
+      ))
+    );
+  };
 
   return (
     <div className="grid-container chatbox-container">
-      <div id="chatbox">
-        {chats.map(m => (
-          <ChatBubble key={chats.indexOf(m)} username={user.username} {...m} />
-        ))}
-      </div>
+      <div id="chatbox">{populateChatBox()}</div>
 
       <div className="message-form">
         <form onSubmit={sendMessage}>

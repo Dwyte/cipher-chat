@@ -5,20 +5,20 @@ const socket = socket => {
     console.log("New User: ", user);
   });
 
-  socket.on("get-chats", async () => {
-    const globalChats = await Chat.find()
-    .limit(100)
-    .sort({ _id: 1 });
+  socket.on("get-chats", async channel => {
+    const globalChats = await Chat.find({ channel })
+      .limit(100)
+      .sort({ _id: 1 });
     socket.emit("return-chats", globalChats);
   });
 
-  socket.on("send-message", async (chatData) => {
-      let chat = new Chat(chatData);
-      chat = await chat.save();
+  socket.on("send-message", async chatData => {
+    let chat = new Chat(chatData);
+    chat = await chat.save();
 
-      socket.emit("new-message", chat);
-      socket.broadcast.emit("new-message", chat);
-  })
+    socket.emit("new-message", chat);
+    socket.broadcast.emit("new-message", chat);
+  });
 };
 
 module.exports = socket;

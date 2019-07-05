@@ -9,6 +9,10 @@ const chatSchema = mongoose.Schema({
   message: {
     type: String,
     require: true
+  },
+  channel: {
+    type: String,
+    require: true
   }
 });
 

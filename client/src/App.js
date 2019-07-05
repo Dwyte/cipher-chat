@@ -13,9 +13,8 @@ function App() {
         <Route path="/chat" component={Chat} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Redirect from="/" to="/chat" />
+        <Redirect from="/" to="/login" />
       </Switch>
-
       <Footer />
     </div>
   );

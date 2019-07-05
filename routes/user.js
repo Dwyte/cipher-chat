@@ -43,12 +43,21 @@ router.post("/", async (req, res) => {
 router.post("/auth", async (req, res) => {
   const { auth } = req.body;
 
-  const user = await User.findOne({auth});
+  const user = await User.findOne({ auth });
   if (!user) return res.status(404).send("Wrong credentials");
 
   const userToken = generateToken(auth);
 
   res.send(userToken);
+});
+
+// Update Bio
+router.put("/:_id", async (req, res) => {
+  let user = await User.findByIdAndUpdate(req.params._id, req.body);
+  if (!user) return res.status(404).send("User was not found.");
+
+  user = await user.save();
+  res.send(user);
 });
 
 // Account Deletion

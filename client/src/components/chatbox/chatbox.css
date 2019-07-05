@@ -10,6 +10,7 @@
   background: white;
   max-height: 400px;
   overflow-y: scroll;
+  padding: 5px;
 }
 
 .message-form {
@@ -47,8 +48,18 @@
   height: 100%;
   background: #2e2e2e;
   border: #3e3e3e;
-  color:white;
+  color: white;
   font-size: 16px;
+}
+
+.chat-notif {
+  text-align: center;
+  padding: 3px;
+  font-size: 10px;
+  color: white;
+  background: #4e4e4e;
+  width: 125px;
+  margin: auto;
 }
 
 ::-webkit-scrollbar {

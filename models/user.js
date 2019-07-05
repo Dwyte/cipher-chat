@@ -8,6 +8,12 @@ const userSchema = mongoose.Schema({
     type: String,
     require: true
   },
+  bio: {
+    type: String,
+    require: true,
+    maxLength: 50,
+    default: "Write something, bio/motto/desc, anything!"
+  },
   auth: {
     type: String,
     require: true
@@ -23,6 +29,7 @@ const generateToken = auth => {
 const validate = user => {
   const schema = {
     username: Joi.string().required(),
+    bio: Joi.string().default("Write something, bio/motto/desc, anything!").max(50).required(),
     auth: Joi.string().required()
   };
 
