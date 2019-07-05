@@ -8,7 +8,6 @@
 }
 
 #message-bubble {
-  min-width: 25px;
   max-width: 325px;
   display: inline-block;
   color: white;

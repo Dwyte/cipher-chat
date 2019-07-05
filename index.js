@@ -4,9 +4,10 @@ const app = express();
 const cors = require("cors");
 const config = require("config");
 const morgan = require("morgan");
+const socket = require("socket.io").listen(4000).sockets;
 
 // Middlewares
-app.use(morgan('tiny'));
+app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cors());
 
@@ -14,9 +15,14 @@ app.use(cors());
 const user = require("./routes/user");
 app.use("/api/users", user);
 
+const socketConnection = require('./socket');
+
 mongoose
-  .connect(config.get("MONGODB_URI"), { useNewUrlParser: true })
-  .then(() => console.log(`Connected to MongoDB...`))
+  .connect(config.get("MONGODB_URI"), { useNewUrlParser: true }, (err, db) => {
+    console.log(`Connected to MongoDB...`);
+
+    socket.on("connection", socketConnection);
+  })
   .catch(er => console.error(er));
 
 const port = process.env.PORT || 4200;

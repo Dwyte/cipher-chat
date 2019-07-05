@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { authUser, checkUsername } from "../services/userService";
 import CryptoJS from "crypto-js";
+import openSocket from "socket.io-client";
+const socket = openSocket("http://localhost:4000");
 const { SHA256 } = CryptoJS;
 
 const Login = ({ history }) => {
@@ -18,6 +20,9 @@ const Login = ({ history }) => {
     try {
       const {data: userToken} = await authUser({ auth });
       localStorage.setItem('userToken', userToken);
+      
+      socket.emit('new-user', username);
+      
       alert("Account authenticated!");
       history.push("/chat");
     } catch (err) {

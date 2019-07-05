@@ -1,50 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./chatbox.css";
 import ChatBubble from "./chatbubble";
 
-const ChatBox = () => {
-  const [message, setMessage] = useState("");
+import openSocket from "socket.io-client";
+const socket = openSocket("http://localhost:4000");
 
-  const [chat, setChat] = useState([
-    { name: "Alice", message: "Hello!" },
-    { name: "Bob", message: "Hello! Wassup!" },
-    {
-      name: "You",
-      message:
-        "Libero repellendus inventore aliquam officiis quas. Quia tempore iste accusamus excepturi itaque dicta. Et quis laboriosam corporis voluptatem soluta. Labore consectetur magnam et rem voluptas. Maxime consequatur molestias possimus distinctio vel."
-    },
-    { name: "Alice", message: "How are you guys doin?" },
-    { name: "Bob", message: "Pretty Cool" },
-    { name: "Alice", message: "How are you guys doin?" },
-    { name: "You", message: "Pretty Cool" },
-    { name: "Alice", message: "How are you guys doin?" },
-    { name: "Bob", message: "Pretty Cool" }
-  ]);
+const ChatBox = ({ user }) => {
+  const [message, setMessage] = useState("");
+  const [chats, setChats] = useState([]);
+
+  useEffect(() => {
+    socket.emit("get-chats");
+  }, []);
+
+  socket.on("return-chats", chats => {
+    setChats(chats);
+    updateScroll();
+  });
+
+  socket.on("new-message", chat => {
+    setChats([...chats, chat]);
+    updateScroll();
+  });
 
   const handleMessageChange = ({ target }) => {
     setMessage(target.value);
   };
 
-  const sendMessage = (e) => {
+  const sendMessage = e => {
     e.preventDefault();
 
-    const newChat = [...chat];
-
-    newChat.push({
-      name: "You",
+    const chatMessage = {
+      name: user.username,
       message
-    });
+    };
 
-    setChat(newChat);
+    socket.emit("send-message", chatMessage);
 
     setMessage("");
   };
 
+  const updateScroll = () => {
+    const chatbox = document.getElementById("chatbox");
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
   return (
     <div className="grid-container chatbox-container">
-      <div className="chatbox">
-        {chat.map(m => (
-          <ChatBubble key={chat.indexOf(m)} {...m} />
+      <div id="chatbox">
+        {chats.map(m => (
+          <ChatBubble key={chats.indexOf(m)} username={user.username} {...m} />
         ))}
       </div>
 
@@ -60,7 +65,9 @@ const ChatBox = () => {
       </div>
 
       <div className="message-submit">
-        <button><i className="fas fa-paper-plane"></i></button>
+        <button>
+          <i className="fas fa-paper-plane" />
+        </button>
       </div>
     </div>
   );

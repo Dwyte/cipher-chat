@@ -2,7 +2,7 @@
   height: 400px;
 }
 
-.chatbox {
+#chatbox {
   grid-column-start: 1;
   grid-column-end: 10;
   grid-row-start: 1;
