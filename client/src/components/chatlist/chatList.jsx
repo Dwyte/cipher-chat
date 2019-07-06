@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ChatProfile from "./chatProfile";
 import "./chatlist.css";
 import { getAllUsers } from "../../services/userService";
-import _ from "lodash";
 
 const UserLists = () => {
   const [users, setUsers] = useState([]);
