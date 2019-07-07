@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ChatProfile from "./chatProfile";
-import "./chatlist.css";
+import UserItem from "./userItem";
+import "./userList.css";
 import { getAllUsers } from "../../services/userService";
 
-const UserLists = () => {
+const UserLists = ({ user, history }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -20,8 +20,13 @@ const UserLists = () => {
   return (
     <React.Fragment>
       <div className="list mb">
-        {users.map(user => (
-          <ChatProfile key={users.indexOf(user)} data={user} />
+        {users.map(u => (
+          <UserItem
+            key={users.indexOf(u)}
+            user={u}
+            currUser={user}
+            history={history}
+          />
         ))}
       </div>
 

@@ -5,9 +5,11 @@ import ChatBubble from "./chatbubble";
 import openSocket from "socket.io-client";
 const socket = openSocket("http://localhost:4000");
 
-const ChatBox = ({ user, channel }) => {
+const ChatBox = ({ user, match }) => {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([]);
+
+  const channel = match.params.channel;
 
   useEffect(() => {
     socket.connect();

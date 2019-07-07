@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ChatBox from "../chatbox/chatbox";
-import UserLists from "../chatlist/chatList";
+import UserLists from "../chatlist/userLists";
 import Profile from "../profile/profile";
 import NavBar from "../navBar/navbar";
 import { getUserProfile, updateUser } from "../../services/userService";
@@ -50,10 +50,13 @@ const Chat = ({ history }) => {
 
         <Switch>
           <Route
-            path="/chat/global"
-            render={() => <ChatBox user={user} channel="global" />}
+            path="/chat/ch/:channel"
+            render={props => <ChatBox {...props} user={user} />}
           />
-          <Route path="/chat/list" component={UserLists} />
+          <Route
+            path="/chat/list"
+            render={props => <UserLists {...props} user={user} />}
+          />
           <Redirect from="/chat" to="/chat/list" />
         </Switch>
       </div>
