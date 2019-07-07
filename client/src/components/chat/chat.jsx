@@ -8,7 +8,7 @@ import { getUserProfile, updateUser } from "../../services/userService";
 import "./chat.css";
 
 import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:4000");
+const socket = openSocket();
 
 const Chat = ({ history }) => {
   const [user, setUser] = useState({});
