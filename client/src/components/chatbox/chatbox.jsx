@@ -81,7 +81,7 @@ const ChatBox = ({ user, match }) => {
       </div>
 
       <div className="message-submit">
-        <button>
+        <button onClick={sendMessage}>
           <i className="fas fa-paper-plane" />
         </button>
       </div>
