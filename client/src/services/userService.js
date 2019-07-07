@@ -1,6 +1,6 @@
 import http from "./httpService";
 
-const endpoint = "http://localhost:4200/api/users";
+const endpoint = "/api/users";
 
 export const getAllUsers = async () => {
   return await http.get(endpoint);
