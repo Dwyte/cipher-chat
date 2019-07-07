@@ -5,7 +5,7 @@ const cors = require("cors");
 const config = require("config");
 const morgan = require("morgan");
 const server = require('http').Server(app);
-const socket = require("socket.io").listen(server);
+const socket = require("socket.io")(server);
 const path = require("path");
 
 // Middlewares
@@ -33,4 +33,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = process.env.PORT || 4200;
-app.listen(port, () => console.log(`Listening to port ${port}...`));
+server.listen(port, () => console.log(`Listening to port ${port}...`));
