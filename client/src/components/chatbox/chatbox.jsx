@@ -3,7 +3,7 @@ import "./chatbox.css";
 import ChatBubble from "./chatbubble";
 
 import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:4000");
+const socket = openSocket("/");
 
 const ChatBox = ({ user, match }) => {
   const [message, setMessage] = useState("");

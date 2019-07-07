@@ -4,7 +4,8 @@ const app = express();
 const cors = require("cors");
 const config = require("config");
 const morgan = require("morgan");
-const socket = require("socket.io").listen(4000).sockets;
+const server = require('http').Server(app);
+const socket = require("socket.io").listen(server).sockets;
 const path = require("path");
 
 // Middlewares

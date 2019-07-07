@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { authUser, checkUsername } from "../services/userService";
 import CryptoJS from "crypto-js";
 import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:4000");
+const socket = openSocket("/");
 const { SHA256 } = CryptoJS;
 
 const Login = ({ history }) => {

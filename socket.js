@@ -19,6 +19,8 @@ const socket = socket => {
     socket.emit("new-message", chat);
     socket.broadcast.emit("new-message", chat);
   });
+
+  console.log("socket");
 };
 
 module.exports = socket;
