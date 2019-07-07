@@ -3,7 +3,7 @@ import "./chatbox.css";
 import ChatBubble from "./chatbubble";
 
 import openSocket from "socket.io-client";
-const socket = openSocket("/");
+const socket = openSocket("https://cipherchat.herokuapp.com/");
 
 const ChatBox = ({ user, match }) => {
   const [message, setMessage] = useState("");
