@@ -16,6 +16,10 @@ const userSchema = mongoose.Schema({
   auth: {
     type: String,
     require: true
+  },
+  publicKey: {
+    type: String,
+    require: true
   }
 });
 
@@ -28,8 +32,11 @@ const generateToken = auth => {
 const validate = user => {
   const schema = {
     username: Joi.string().required(),
-    bio: Joi.string().default("Write something, bio/motto/desc, anything!").max(50),
-    auth: Joi.string().required()
+    bio: Joi.string()
+      .default("Write something, bio/motto/desc, anything!")
+      .max(50),
+    auth: Joi.string().required(),
+    publicKey: Joi.string().required()
   };
 
   return Joi.validate(user, schema);

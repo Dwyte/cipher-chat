@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { postUser, checkUsername } from "../services/userService";
 import CryptoJS from "crypto-js";
+import cryptico from "cryptico";
 const { SHA256 } = CryptoJS;
 
 const Register = ({ history }) => {
@@ -14,9 +15,12 @@ const Register = ({ history }) => {
     if (isExisting) return alert("User with the username already exists");
 
     const auth = SHA256(username + password).toString();
+    const passPhrase = SHA256(auth + password);
+    const privateKey = cryptico.generateRSAKey(passPhrase, 1024);
+    const publicKey = cryptico.publicKeyString(privateKey);
 
     try {
-      await postUser({ username, auth });
+      await postUser({ username, auth, publicKey });
       alert("Account has been created.")
       history.push("/login");
     } catch (err) {

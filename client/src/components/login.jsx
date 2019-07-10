@@ -14,6 +14,7 @@ const Login = ({ history }) => {
     if (!isExisting) return alert("User with the username not found.");
 
     const auth = SHA256(username + password).toString();
+    localStorage.setItem("pvk_phrase", SHA256(auth + password));
 
     try {
       const { data: userToken } = await authUser({ auth });
@@ -23,6 +24,7 @@ const Login = ({ history }) => {
       history.push("/chat");
     } catch (err) {
       console.log(err);
+      localStorage.clear();
     }
   };
 
