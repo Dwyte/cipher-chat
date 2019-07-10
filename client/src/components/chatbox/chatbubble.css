@@ -4,14 +4,14 @@
 }
 
 #bubble-container b {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 #message-bubble {
   max-width: 325px;
   display: inline-block;
   color: white;
-  font-size: 14px;
+  font-size: 15px;
   padding: 5px 5px;
   background: #2e2e2e;
 }
@@ -25,4 +25,9 @@
 }
 .max-width {
   width: 100%;
+}
+
+#timestamp {
+  vertical-align: top;
+  font-size: 8px;
 }

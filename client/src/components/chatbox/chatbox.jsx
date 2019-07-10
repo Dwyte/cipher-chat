@@ -42,7 +42,8 @@ const ChatBox = ({ user, match }) => {
     const chatMessage = {
       name: user.username,
       channel,
-      message
+      message,
+      timestamp: new Date()
     };
 
     socket.emit("send-message", chatMessage);
