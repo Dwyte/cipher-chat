@@ -3,7 +3,7 @@ import UserItem from "./userItem";
 import "./userList.css";
 import { getAllUsers } from "../../services/userService";
 
-const UserLists = ({ user, history, setChatMatePbk }) => {
+const UserLists = ({ user, history, setChannel }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -26,7 +26,7 @@ const UserLists = ({ user, history, setChatMatePbk }) => {
             user={u}
             currUser={user}
             history={history}
-            setChatMatePbk={setChatMatePbk}
+            setChannel={setChannel}
           />
         ))}
       </div>

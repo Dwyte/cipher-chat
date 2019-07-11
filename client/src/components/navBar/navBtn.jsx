@@ -1,12 +1,10 @@
 import React from "react";
 
-const NavBtn = ({link, fa, label, navigate}) => {
+const NavBtn = ({ fa, label, handleClick }) => {
   return (
     <div>
       <button
-        onClick={() => {
-            navigate(link);
-        }}
+        onClick={handleClick}
       >
         <i className={fa} /> {label}
       </button>

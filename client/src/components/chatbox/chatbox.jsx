@@ -7,23 +7,21 @@ import openSocket from "socket.io-client";
 import ChatForm from "./chatForm";
 const socket = openSocket();
 
-const ChatBox = ({ user, userKeys, chatMatePbk, match }) => {
+const ChatBox = ({ user, match, channel }) => {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([]);
 
-  const channel = match.params.channel;
-  const isSecret = channel !== "global";
-  const filter = { channel };
-  if (isSecret)
-    filter.pbkHash = SHA256(userKeys.pbk).toString();
-
   useEffect(() => {
+    setChats([]);
+
     socket.connect();
 
     socket.emit("get-chats", filter);
 
-    return () => socket.disconnect();
-  }, []);
+    return () => {
+      socket.disconnect();
+    };
+  }, [channel]);
 
   socket.on("return-chats", chats => {
     updateChats(chats);
@@ -32,6 +30,22 @@ const ChatBox = ({ user, userKeys, chatMatePbk, match }) => {
   socket.on("new-message", chat => {
     updateChats([...chats, chat]);
   });
+
+  const getKeys = () => {
+    const pvk_phrase = localStorage.getItem("pvk_phrase");
+
+    const pvk = cryptico.generateRSAKey(pvk_phrase, 1024);
+
+    const pbk = cryptico.publicKeyString(pvk);
+
+    return { pvk, pbk };
+  };
+
+  const isSecret = channel !== "global";
+  const userKeys = getKeys();
+  const filter = isSecret
+    ? { channel, pbkHash: SHA256(userKeys.pbk).toString() }
+    : { channel };
 
   const updateChats = chats => {
     setChats(chats);
@@ -55,33 +69,41 @@ const ChatBox = ({ user, userKeys, chatMatePbk, match }) => {
     const name = user.username;
     const timestamp = new Date().toString();
 
-    const userMsg = encryptMsg({
-      name,
-      message,
-      timestamp
-    }, userKeys.pbk)
+    const chatMatePbk = localStorage.getItem("chatmate_pbk");
+
+    const userMsg = encryptMsg(
+      {
+        name,
+        message,
+        timestamp
+      },
+      userKeys.pbk
+    );
 
     socket.emit("send-secret-msg-self", userMsg);
 
-    const chatMateMsg = encryptMsg({
-      name,
-      message,
-      timestamp
-    }, chatMatePbk)
+    const chatMateMsg = encryptMsg(
+      {
+        name,
+        message,
+        timestamp
+      },
+      chatMatePbk
+    );
 
     socket.emit("send-secret-msg", chatMateMsg);
   };
 
   const encryptMsg = (msgObj, pbk) => {
-    for(let k in msgObj){
+    for (let k in msgObj) {
       msgObj[k] = cryptico.encrypt(msgObj[k], pbk).cipher;
     }
 
-    msgObj['pbkHash'] = SHA256(pbk).toString();
-    msgObj['channel'] = channel;
+    msgObj["pbkHash"] = SHA256(pbk).toString();
+    msgObj["channel"] = channel;
 
     return msgObj;
-  }
+  };
 
   const sendPlain = () => {
     const userMsg = {

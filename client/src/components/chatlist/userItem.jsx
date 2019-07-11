@@ -2,14 +2,15 @@ import React from "react";
 import CryptoJS from "crypto-js";
 const MD5 = CryptoJS.MD5;
 
-const UserItem = ({ user, currUser, history, setChatMatePbk }) => {
+const UserItem = ({ user, currUser, history, setChannel }) => {
   const handleChannelOpen = () => {
     const { publicKey: userPbk } = user;
     const { publicKey: cUserPnk } = currUser;
     const sorted = [userPbk, cUserPnk].sort();
-    const channelId = MD5(sorted.join());
+    const channelId = MD5(sorted.join()).toString();
 
-    setChatMatePbk(user.publicKey);
+    localStorage.setItem("chatmate_pbk", user.publicKey);
+    setChannel(channelId);
 
     history.push("/chat/ch/" + channelId);
   };

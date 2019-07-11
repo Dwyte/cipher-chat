@@ -10,17 +10,11 @@ const ChatBubble = ({
   message,
   timestamp
 }) => {
-  const getSenderName = () => {
-    if (isSecret) name = cryptico.decrypt(name, userKeys.pvk).plaintext;
+  name = isSecret ? cryptico.decrypt(name, userKeys.pvk).plaintext : name;
 
-    return name;
-  };
-
-  const parentBubContStyle =
-    getSenderName() === username ? "float-right max-width" : "";
-  const bubContStyle =
-    getSenderName() === username ? "float-right text-align-right" : "";
-  const displayName = getSenderName() === username ? "You" : name;
+  const parentBubContStyle = name === username ? "float-right max-width" : "";
+  const bubContStyle = name === username ? "float-right text-align-right" : "";
+  const displayName = name === username ? "You" : name;
 
   const displayTimestamp = () => {
     if (isSecret)
