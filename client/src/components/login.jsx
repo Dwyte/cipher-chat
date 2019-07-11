@@ -14,7 +14,8 @@ const Login = ({ history }) => {
     if (!isExisting) return alert("User with the username not found.");
 
     const auth = SHA256(username + password).toString();
-    localStorage.setItem("pvk_phrase", SHA256(auth + password));
+    const passPhrase = SHA256(auth + password).toString();
+    localStorage.setItem("pvk_phrase", passPhrase);
 
     try {
       const { data: userToken } = await authUser({ auth });

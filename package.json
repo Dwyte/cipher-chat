@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "heroku-postbuild": "cd client && npm install && npm run build",
-    "run-build-start": "cd client && npm install && npm run build && cd .. && export NODE_ENV=production && nodemon"
+    "build-start": "cd client && npm install && npm run build && cd .. && export NODE_ENV=production && nodemon"
   },
   "author": "",
   "license": "ISC",

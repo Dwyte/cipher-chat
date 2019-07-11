@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "./chatbox.css";
 import ChatBubble from "./chatbubble";
-
+import cryptico from "cryptico";
+import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
+import ChatForm from "./chatForm";
 const socket = openSocket();
 
-const ChatBox = ({ user, match }) => {
+const ChatBox = ({ user, userKeys, chatMatePbk, match }) => {
   const [message, setMessage] = useState("");
   const [chats, setChats] = useState([]);
 
   const channel = match.params.channel;
+  const isSecret = channel !== "global";
+  const filter = { channel };
+  if (isSecret) {
+    filter.pbkHash = SHA256(userKeys.pbk).toString();
+    console.log(filter);
+  }
 
   useEffect(() => {
     socket.connect();
 
-    socket.emit("get-chats", channel);
+    socket.emit("get-chats", filter);
 
-    return () => socket.disconnect();    
+    return () => socket.disconnect();
   }, []);
 
   socket.on("return-chats", chats => {
@@ -39,16 +47,43 @@ const ChatBox = ({ user, match }) => {
   const sendMessage = e => {
     e.preventDefault();
 
-    const chatMessage = {
+    if (isSecret) sendSecret();
+    else sendPlain();
+
+    setMessage("");
+  };
+
+  const sendSecret = () => {
+    const userMsg = {
+      name: user.username,
+      channel,
+      message: cryptico.encrypt(message, userKeys.pbk).cipher,
+      timestamp: new Date(),
+      pbkHash: SHA256(userKeys.pbk).toString()
+    };
+
+    socket.emit("send-secret-msg-self", userMsg);
+
+    const chatMateMsg = {
+      name: user.username,
+      channel,
+      message: cryptico.encrypt(message, chatMatePbk).cipher,
+      timestamp: new Date(),
+      pbkHash: SHA256(chatMatePbk).toString()
+    };
+
+    socket.emit("send-secret-msg", chatMateMsg);
+  };
+
+  const sendPlain = () => {
+    const userMsg = {
       name: user.username,
       channel,
       message,
       timestamp: new Date()
     };
 
-    socket.emit("send-message", chatMessage);
-
-    setMessage("");
+    socket.emit("send-message", userMsg);
   };
 
   const updateScroll = () => {
@@ -61,7 +96,13 @@ const ChatBox = ({ user, match }) => {
       <div className="chat-notif">No messages yet. Say hello!</div>
     ) : (
       chats.map(m => (
-        <ChatBubble key={chats.indexOf(m)} username={user.username} {...m} />
+        <ChatBubble
+          key={chats.indexOf(m)}
+          username={user.username}
+          userKeys={userKeys}
+          isSecret={isSecret}
+          {...m}
+        />
       ))
     );
   };
@@ -70,22 +111,11 @@ const ChatBox = ({ user, match }) => {
     <div className="grid-container chatbox-container">
       <div id="chatbox">{populateChatBox()}</div>
 
-      <div className="message-form">
-        <form onSubmit={sendMessage}>
-          <input
-            value={message}
-            onChange={handleMessageChange}
-            placeholder="Type a message..."
-            type="text"
-          />
-        </form>
-      </div>
-
-      <div className="message-submit">
-        <button onClick={sendMessage}>
-          <i className="fas fa-paper-plane" />
-        </button>
-      </div>
+      <ChatForm
+        message={message}
+        sendMessage={sendMessage}
+        handleMessageChange={handleMessageChange}
+      />
     </div>
   );
 };
