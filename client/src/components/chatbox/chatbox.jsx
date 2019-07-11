@@ -14,10 +14,8 @@ const ChatBox = ({ user, userKeys, chatMatePbk, match }) => {
   const channel = match.params.channel;
   const isSecret = channel !== "global";
   const filter = { channel };
-  if (isSecret) {
+  if (isSecret)
     filter.pbkHash = SHA256(userKeys.pbk).toString();
-    console.log(filter);
-  }
 
   useEffect(() => {
     socket.connect();
@@ -54,26 +52,36 @@ const ChatBox = ({ user, userKeys, chatMatePbk, match }) => {
   };
 
   const sendSecret = () => {
-    const userMsg = {
-      name: user.username,
-      channel,
-      message: cryptico.encrypt(message, userKeys.pbk).cipher,
-      timestamp: new Date(),
-      pbkHash: SHA256(userKeys.pbk).toString()
-    };
+    const name = user.username;
+    const timestamp = new Date().toString();
+
+    const userMsg = encryptMsg({
+      name,
+      message,
+      timestamp
+    }, userKeys.pbk)
 
     socket.emit("send-secret-msg-self", userMsg);
 
-    const chatMateMsg = {
-      name: user.username,
-      channel,
-      message: cryptico.encrypt(message, chatMatePbk).cipher,
-      timestamp: new Date(),
-      pbkHash: SHA256(chatMatePbk).toString()
-    };
+    const chatMateMsg = encryptMsg({
+      name,
+      message,
+      timestamp
+    }, chatMatePbk)
 
     socket.emit("send-secret-msg", chatMateMsg);
   };
+
+  const encryptMsg = (msgObj, pbk) => {
+    for(let k in msgObj){
+      msgObj[k] = cryptico.encrypt(msgObj[k], pbk).cipher;
+    }
+
+    msgObj['pbkHash'] = SHA256(pbk).toString();
+    msgObj['channel'] = channel;
+
+    return msgObj;
+  }
 
   const sendPlain = () => {
     const userMsg = {
