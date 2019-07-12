@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import cryptico from "cryptico";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ChatBox from "../chatbox/chatbox";
 import UserLists from "../chatlist/userLists";
@@ -20,6 +21,21 @@ const Chat = ({ history }) => {
 
     getUser();
   }, []);
+
+  let userKeys = {};
+  const getKeys = () => {
+    console.log("get keys");
+
+    const pvk_phrase = localStorage.getItem("pvk_phrase");
+
+    const pvk = cryptico.generateRSAKey(pvk_phrase, 1024);
+
+    const pbk = cryptico.publicKeyString(pvk);
+
+    userKeys = { pvk, pbk };
+  };
+
+  getKeys();
 
   const handleUpdateUserBio = async bio => {
     const _user = { ...user };
@@ -47,7 +63,12 @@ const Chat = ({ history }) => {
           <Route
             path="/chat/ch/:channel"
             render={props => (
-              <ChatBox {...props} user={user} channel={channel} />
+              <ChatBox
+                {...props}
+                user={user}
+                channel={channel}
+                userKeys={userKeys}
+              />
             )}
           />
           <Route

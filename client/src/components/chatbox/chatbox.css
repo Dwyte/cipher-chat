@@ -9,6 +9,7 @@
   grid-row-end: 11;
   background: white;
   max-height: 400px;
+  overflow-x: hidden;
   overflow-y: scroll;
   padding: 5px;
 }

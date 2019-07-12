@@ -10,6 +10,7 @@
 #message-bubble {
   max-width: 325px;
   display: inline-block;
+  overflow-wrap: break-word;
   color: white;
   font-size: 15px;
   padding: 5px 5px;

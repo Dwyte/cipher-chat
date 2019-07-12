@@ -7,9 +7,14 @@ import openSocket from "socket.io-client";
 import ChatForm from "./chatForm";
 const socket = openSocket();
 
-const ChatBox = ({ user, match, channel }) => {
-  const [message, setMessage] = useState("");
+const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
+
+  const channel = match.params.channel;
+  const isSecret = channel !== "global";
+  const filter = isSecret
+  ? { channel, pbkHash: SHA256(userKeys.pbk).toString() }
+  : { channel };
 
   useEffect(() => {
     setChats([]);
@@ -31,41 +36,17 @@ const ChatBox = ({ user, match, channel }) => {
     updateChats([...chats, chat]);
   });
 
-  const getKeys = () => {
-    const pvk_phrase = localStorage.getItem("pvk_phrase");
-
-    const pvk = cryptico.generateRSAKey(pvk_phrase, 1024);
-
-    const pbk = cryptico.publicKeyString(pvk);
-
-    return { pvk, pbk };
-  };
-
-  const isSecret = channel !== "global";
-  const userKeys = getKeys();
-  const filter = isSecret
-    ? { channel, pbkHash: SHA256(userKeys.pbk).toString() }
-    : { channel };
-
   const updateChats = chats => {
     setChats(chats);
     updateScroll();
   };
 
-  const handleMessageChange = ({ target }) => {
-    setMessage(target.value);
+  const sendMessage = message => {
+    if (isSecret) sendSecret(message);
+    else sendPlain(message);
   };
 
-  const sendMessage = e => {
-    e.preventDefault();
-
-    if (isSecret) sendSecret();
-    else sendPlain();
-
-    setMessage("");
-  };
-
-  const sendSecret = () => {
+  const sendSecret = message => {
     const name = user.username;
     const timestamp = new Date().toString();
 
@@ -105,7 +86,7 @@ const ChatBox = ({ user, match, channel }) => {
     return msgObj;
   };
 
-  const sendPlain = () => {
+  const sendPlain = message => {
     const userMsg = {
       name: user.username,
       channel,
@@ -122,6 +103,7 @@ const ChatBox = ({ user, match, channel }) => {
   };
 
   const populateChatBox = () => {
+
     return chats.length === 0 ? (
       <div className="chat-notif">No messages yet. Say hello!</div>
     ) : (
@@ -141,11 +123,7 @@ const ChatBox = ({ user, match, channel }) => {
     <div className="grid-container chatbox-container">
       <div id="chatbox">{populateChatBox()}</div>
 
-      <ChatForm
-        message={message}
-        sendMessage={sendMessage}
-        handleMessageChange={handleMessageChange}
-      />
+      <ChatForm sendMessage={sendMessage} />
     </div>
   );
 };
