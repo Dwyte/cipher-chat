@@ -11,6 +11,7 @@ import "./chat.css";
 const Chat = ({ history }) => {
   const [user, setUser] = useState({});
   const [channel, setChannel] = useState("global");
+  const [userKeys, setUserKeys] = useState({});
 
   useEffect(() => {
     const getUser = async () => {
@@ -19,10 +20,11 @@ const Chat = ({ history }) => {
       setUser(user);
     };
 
+    setUserKeys(getKeys());
+
     getUser();
   }, []);
 
-  let userKeys = {};
   const getKeys = () => {
     console.log("get keys");
 
@@ -32,10 +34,8 @@ const Chat = ({ history }) => {
 
     const pbk = cryptico.publicKeyString(pvk);
 
-    userKeys = { pvk, pbk };
+    return { pvk, pbk };
   };
-
-  getKeys();
 
   const handleUpdateUserBio = async bio => {
     const _user = { ...user };

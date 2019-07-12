@@ -26,7 +26,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     return () => {
       socket.disconnect();
     };
-  }, [channel]);
+  }, [channel, userKeys]);
 
   socket.on("return-chats", chats => {
     updateChats(chats);
