@@ -5,7 +5,7 @@ const DisplayBio = ({ bio, onSave }) => {
   const [_bio, setBio] = useState("");
 
   const flipEdit = () => setOnEdit(!onEdit);
-  const handleSave = () => {
+  const handleSave = e => {
     if (bio === _bio) return flipEdit();
     onSave(_bio);
     flipEdit();
@@ -23,6 +23,7 @@ const DisplayBio = ({ bio, onSave }) => {
             maxLength="50"
             value={_bio}
             onChange={({ target }) => setBio(target.value)}
+            onKeyPress={handleSave}
           />
           <i onClick={handleSave} className="fas fa-save" />
         </React.Fragment>

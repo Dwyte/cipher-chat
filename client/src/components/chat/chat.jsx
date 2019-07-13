@@ -8,7 +8,7 @@ import NavBar from "../navBar/navbar";
 import { getUserProfile, updateUser } from "../../services/userService";
 import "./chat.css";
 
-const Chat = ({ history }) => {
+const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
   const [channel, setChannel] = useState("global");
   const [userKeys, setUserKeys] = useState({});
@@ -57,7 +57,7 @@ const Chat = ({ history }) => {
         user={user}
       />
       <div className="container chat">
-        <NavBar history={history} setChannel={setChannel} />
+        <NavBar history={history} location={location} setChannel={setChannel} />
 
         <Switch>
           <Route

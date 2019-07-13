@@ -2,29 +2,26 @@ import React, { useState } from "react";
 import "./navBar.css";
 import NavBtn from "./navBtn";
 
-const NavBar = ({ history, setChannel }) => {
-  const [navs, setNavs] = useState([
-    {
-      fa: "fas fa-search",
-      label: "",
-      handleClick: () => history.push("/chat/search")
-    },
-    {
-      fa: "fas fa-globe",
-      label: "Global",
-      handleClick: () => {
-        history.push("/chat/ch/global");
-        setChannel("global");
-      }
-    }
-  ]);
-
+const NavBar = ({ history, location, setChannel }) => {
   return (
     <div className="container-item nav mb">
       <div className="nav-grid">
-        {navs.map(nav => (
-          <NavBtn key={navs.indexOf(nav)} {...nav}/>
-        ))}
+        <NavBtn
+          fa="fas fa-search"
+          label=""
+          className={location.pathname !== "/chat/ch/global" ? "active" : ""}
+          handleClick={() => history.push("/chat/search")}
+        />
+
+        <NavBtn
+          fa="fas fa-globe"
+          label="Global"
+          className={location.pathname === "/chat/ch/global" ? "active" : ""}
+          handleClick={() => {
+            history.push("/chat/ch/global");
+            setChannel("global");
+          }}
+        />
       </div>
     </div>
   );

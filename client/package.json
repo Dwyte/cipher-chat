@@ -7,7 +7,7 @@
     "axios": "^0.19.0",
     "cryptico": "^1.0.2",
     "crypto-js": "^3.1.9-1",
-    "lodash": "^4.17.11",
+    "lodash": ">=4.17.13",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
