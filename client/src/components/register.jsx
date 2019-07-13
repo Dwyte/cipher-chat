@@ -37,6 +37,9 @@ const Register = ({ history }) => {
           placeholder="Pseudoname"
           value={username}
           onChange={({ target }) => setUsername(target.value)}
+          pattern=".{2,}"
+          required
+          title="2 characters or more"
         />
         <input
           className="mb"
@@ -44,6 +47,9 @@ const Register = ({ history }) => {
           placeholder="Secret Password"
           value={password}
           onChange={({ target }) => setPassword(target.value)}
+          pattern=".{8,}"
+          required
+          title="must be atleast 8 characters"
         />
 
         <input className="btn-dark" type="submit" value="Register" />

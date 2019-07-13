@@ -17,10 +17,14 @@ const UserLists = ({ user, history, setChannel }) => {
     getUsers();
   }, []);
 
+  const filteredUsers = users.filter(
+    u => u.username.match(new RegExp(search + ".*", "i"))
+  );
+
   return (
     <React.Fragment>
       <div className="list mb">
-        {users.map(u => (
+        {filteredUsers.map(u => (
           <UserItem
             key={users.indexOf(u)}
             user={u}

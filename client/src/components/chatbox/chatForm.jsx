@@ -10,6 +10,8 @@ const ChatForm = ({ sendMessage }) => {
   const handleSendEvent = e => {
     e.preventDefault();
 
+    if(message === "") return;
+
     sendMessage(message);
 
     setMessage("");
@@ -24,6 +26,7 @@ const ChatForm = ({ sendMessage }) => {
             onChange={handleMessageChange}
             placeholder="Type a message..."
             type="text"
+            required
           />
         </form>
       </div>
