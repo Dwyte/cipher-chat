@@ -14,6 +14,7 @@ const ChatBubble = ({
 
   const parentBubContStyle = name === username ? "float-right max-width" : "";
   const bubContStyle = name === username ? "float-right text-align-right" : "";
+  const messageBubStyle = name === username ? "text-align-left" : "";
   const displayName = name === username ? "You" : name;
 
   const displayTimestamp = () => {

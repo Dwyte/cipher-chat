@@ -23,7 +23,6 @@ const DisplayBio = ({ bio, onSave }) => {
             maxLength="50"
             value={_bio}
             onChange={({ target }) => setBio(target.value)}
-            onKeyPress={handleSave}
           />
           <i onClick={handleSave} className="fas fa-save" />
         </React.Fragment>
