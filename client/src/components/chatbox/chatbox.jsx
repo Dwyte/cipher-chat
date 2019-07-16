@@ -1,43 +1,66 @@
 import React, { useState, useEffect } from "react";
 import "./chatbox.css";
 import ChatBubble from "./chatbubble";
+import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
-import ChatForm from "./chatForm";
-const socket = openSocket();
+const socket = openSocket(); //http://localhost:4200/
 
 const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
 
   const channel = match.params.channel;
   const isSecret = channel !== "global";
-  const filter = isSecret
-  ? { channel, pbkHash: SHA256(userKeys.pbk).toString() }
-  : { channel };
+  const limit = isSecret ? 8 : 10;
+  const pbkHash = isSecret ? SHA256(userKeys.pbk).toString() : undefined;
 
   useEffect(() => {
     setChats([]);
 
     socket.connect();
 
-    socket.emit("get-chats", filter);
+    socket.emit("get-chats", channel, limit, pbkHash);
 
     return () => {
       socket.disconnect();
     };
   }, [channel, userKeys]);
 
-  socket.on("return-chats", chats => {
-    updateChats(chats);
+  socket.on("return-chats", returnChats => {
+    updateChats(returnChats);
   });
 
   socket.on("new-message", chat => {
-    updateChats([...chats, chat]);
+    if(isSecret) return;
+
+    const chatsToDelete = [...chats, chat];
+    const chatLimit = chatsToDelete.splice(-limit);
+    updateChats(chatLimit);
   });
 
-  const updateChats = chats => {
-    setChats(chats);
+  socket.on("new-secret-message", chat => {
+    if(!isSecret) return;
+    
+    const chatsToDelete = [...chats, chat];
+    const chatLimit = chatsToDelete.splice(-limit);
+    updateChats(chatLimit);
+  });
+
+  const decryptMsg = msg => {
+    const _chats = [...chats];
+    const _msg = _chats.find(m => m === msg);
+
+    _msg.name = cryptico.decrypt(msg.name, userKeys.pvk).plaintext;
+    _msg.timestamp = cryptico.decrypt(msg.timestamp, userKeys.pvk).plaintext;
+    _msg.message = cryptico.decrypt(msg.message, userKeys.pvk).plaintext;
+
+    setChats(_chats);
+  };
+
+  const updateChats = newChats => {
+    setChats(newChats);
+
     updateScroll();
   };
 
@@ -103,7 +126,6 @@ const ChatBox = ({ user, match, userKeys }) => {
   };
 
   const populateChatBox = () => {
-
     return chats.length === 0 ? (
       <div className="chat-notif">No messages yet. Say hello!</div>
     ) : (
@@ -113,7 +135,8 @@ const ChatBox = ({ user, match, userKeys }) => {
           username={user.username}
           userKeys={userKeys}
           isSecret={isSecret}
-          {...m}
+          msgObj={m}
+          decryptMsg={decryptMsg}
         />
       ))
     );

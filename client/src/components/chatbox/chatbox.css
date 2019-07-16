@@ -63,6 +63,10 @@
   margin: auto;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 ::-webkit-scrollbar {
   width: 2px;
 }

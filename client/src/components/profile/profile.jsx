@@ -20,7 +20,7 @@ const Profile = ({ user, onUpdateBio }) => {
       <DisplayBio onSave={onUpdateBio} bio={user.bio} />
 
       <div onClick={handleLogout} id="logout">
-        <button>
+        <button className="pointer">
           <i className="fas fa-sign-out-alt" />
         </button>
       </div>
