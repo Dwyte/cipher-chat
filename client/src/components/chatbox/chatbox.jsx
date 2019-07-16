@@ -5,7 +5,7 @@ import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
-const socket = openSocket("http://localhost:4200/"); //http://localhost:4200/
+const socket = openSocket(); //http://localhost:4200/
 
 const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
