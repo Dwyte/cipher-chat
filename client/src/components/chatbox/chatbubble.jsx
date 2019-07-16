@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import cryptico from "cryptico";
 import "./chatbubble.css";
 
 const ChatBubble = ({ username, msgObj, isSecret, userKeys, decryptMsg }) => {
-  const [decrypted, setDecrypted] = useState(false);
-
-  let { name, message, timestamp } = msgObj;
+  let { name, message, timestamp, decrypted } = msgObj;
+  
   if (isSecret)
     if (!decrypted) name = cryptico.decrypt(name, userKeys.pvk).plaintext;
 
@@ -36,8 +35,6 @@ const ChatBubble = ({ username, msgObj, isSecret, userKeys, decryptMsg }) => {
   };
 
   const handleDecryptMessage = () => {
-    setDecrypted(true);
-
     decryptMsg(msgObj);
   };
 

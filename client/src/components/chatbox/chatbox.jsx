@@ -5,7 +5,7 @@ import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
-const socket = openSocket(); //http://localhost:4200/
+const socket = openSocket("http://localhost:4200/"); //http://localhost:4200/
 
 const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
@@ -44,6 +44,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
+    console.log(chatLimit);
     updateChats(chatLimit);
   });
 
@@ -54,7 +55,9 @@ const ChatBox = ({ user, match, userKeys }) => {
     _msg.name = cryptico.decrypt(msg.name, userKeys.pvk).plaintext;
     _msg.timestamp = cryptico.decrypt(msg.timestamp, userKeys.pvk).plaintext;
     _msg.message = cryptico.decrypt(msg.message, userKeys.pvk).plaintext;
+    _msg.decrypted = true;
 
+    console.log(_chats);
     setChats(_chats);
   };
 
