@@ -3,7 +3,7 @@ import UserItem from "./userItem";
 import "./userList.css";
 import { getAllUsers } from "../../services/userService";
 
-const UserLists = ({ user, history, setChannel }) => {
+const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -31,6 +31,7 @@ const UserLists = ({ user, history, setChannel }) => {
             currUser={user}
             history={history}
             setChannel={setChannel}
+            setPrivChannel={setPrivChannel}
           />
         ))}
       </div>

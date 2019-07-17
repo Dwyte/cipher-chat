@@ -5,7 +5,7 @@ import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
-const socket = openSocket(); //http://localhost:4200/
+const socket = openSocket(process.env.REACT_APP_SOCKET_ENDPOINT); //http://localhost:4200/
 
 const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
@@ -32,7 +32,7 @@ const ChatBox = ({ user, match, userKeys }) => {
   });
 
   socket.on("new-message", chat => {
-    if(isSecret) return;
+    if (isSecret) return;
 
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
@@ -40,11 +40,11 @@ const ChatBox = ({ user, match, userKeys }) => {
   });
 
   socket.on("new-secret-message", chat => {
-    if(!isSecret) return;
-    
+    if (!isSecret) return;
+
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
-    console.log(chatLimit);
+
     updateChats(chatLimit);
   });
 
@@ -57,7 +57,6 @@ const ChatBox = ({ user, match, userKeys }) => {
     _msg.message = cryptico.decrypt(msg.message, userKeys.pvk).plaintext;
     _msg.decrypted = true;
 
-    console.log(_chats);
     setChats(_chats);
   };
 
@@ -129,19 +128,28 @@ const ChatBox = ({ user, match, userKeys }) => {
   };
 
   const populateChatBox = () => {
+    let prevMsg = null;
+
     return chats.length === 0 ? (
       <div className="chat-notif">No messages yet. Say hello!</div>
     ) : (
-      chats.map(m => (
-        <ChatBubble
-          key={chats.indexOf(m)}
-          username={user.username}
-          userKeys={userKeys}
-          isSecret={isSecret}
-          msgObj={m}
-          decryptMsg={decryptMsg}
-        />
-      ))
+      chats.map(m => {
+        const chatBubble = (
+          <ChatBubble
+            key={chats.indexOf(m)}
+            username={user.username}
+            userKeys={userKeys}
+            isSecret={isSecret}
+            msgObj={m}
+            prevMsg={prevMsg}
+            decryptMsg={decryptMsg}
+          />
+        );
+
+        prevMsg = m;
+
+        return chatBubble;
+      })
     );
   };
 

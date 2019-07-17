@@ -2,15 +2,24 @@ import React from "react";
 import "./navBar.css";
 import NavBtn from "./navBtn";
 
-const NavBar = ({ history, location, setChannel }) => {
+const NavBar = ({
+  history,
+  location,
+  setChannel,
+  privChannel,
+  setPrivChannel
+}) => {
   return (
     <div className="container-item nav mb">
       <div className="nav-grid">
         <NavBtn
-          fa="fas fa-search"
-          label=""
+          fa="fas fa-envelope"
+          label={privChannel}
           className={location.pathname !== "/chat/ch/global" ? "active" : ""}
-          handleClick={() => history.push("/chat/search")}
+          handleClick={() => {
+            setPrivChannel("");
+            history.push("/chat/search");
+          }}
         />
 
         <NavBtn

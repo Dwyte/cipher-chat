@@ -12,6 +12,7 @@ const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
   const [channel, setChannel] = useState("global");
   const [userKeys, setUserKeys] = useState({});
+  const [privChannel, setPrivChannel] = useState("");
 
   useEffect(() => {
     const getUser = async () => {
@@ -57,7 +58,13 @@ const Chat = ({ history, location }) => {
         user={user}
       />
       <div className="container chat">
-        <NavBar history={history} location={location} setChannel={setChannel} />
+        <NavBar
+          history={history}
+          location={location}
+          setChannel={setChannel}
+          privChannel={privChannel}
+          setPrivChannel={setPrivChannel}
+        />
 
         <Switch>
           <Route
@@ -74,7 +81,12 @@ const Chat = ({ history, location }) => {
           <Route
             path="/chat/list"
             render={props => (
-              <UserLists {...props} user={user} setChannel={setChannel} />
+              <UserLists
+                {...props}
+                user={user}
+                setChannel={setChannel}
+                setPrivChannel={setPrivChannel}
+              />
             )}
           />
           <Redirect from="/chat" to="/chat/list" />

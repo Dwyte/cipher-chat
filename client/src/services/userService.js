@@ -1,6 +1,6 @@
 import http from "./httpService";
 
-const endpoint = "/api/users"; //http://localhost:4200
+const endpoint = process.env.REACT_APP_SERVICE_API;
 
 export const getAllUsers = async () => {
   return await http.get(endpoint);
