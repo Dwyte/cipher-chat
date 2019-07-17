@@ -11,7 +11,7 @@ const ChatBubble = ({
   decryptMsg
 }) => {
   const [showTimestamp, setShowTimestamp] = useState(false);
-  
+
   let { name, message, timestamp, decrypted } = msgObj;
 
   if (isSecret)
@@ -27,10 +27,14 @@ const ChatBubble = ({
   const isPrevMsgSenderTheUser = () => {
     if (!prevMsg) return false;
 
-    const { name: prevName } = prevMsg;
-
-    return prevName === name
-  }
+    const { name: prevName, decrypted: prevDecrypted } = prevMsg;
+    const prevNamePlain = isSecret
+      ? prevDecrypted
+        ? prevName
+        : cryptico.decrypt(prevName, userKeys.pvk).plaintext
+      : prevName;
+    return prevNamePlain === name;
+  };
 
   const displayDisplayName = () => {
     const displayNameJsx = (
@@ -39,14 +43,14 @@ const ChatBubble = ({
       </React.Fragment>
     );
 
-    if(isPrevMsgSenderTheUser()) return
+    if (isPrevMsgSenderTheUser()) return;
     else return displayNameJsx;
   };
 
   const displayTimestamp = () => {
-    if (isSecret) if (!decrypted) return "Decrypt the Message";
+    if (isSecret) if (!decrypted) return <div id="timestamp">Decrypt</div>;
 
-    var monthNames = [
+    const monthNames = [
       "January",
       "February",
       "March",
@@ -61,21 +65,37 @@ const ChatBubble = ({
       "December"
     ];
 
+    const dayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
+
     const dateTimestamp = new Date(timestamp);
 
     const month = dateTimestamp.getMonth();
+    const day = dateTimestamp.getDay();
     const date = dateTimestamp.getDate();
     const hours = dateTimestamp.getHours();
     const hoursPadded = hours < 10 ? `0${hours}` : hours;
     const minutes = dateTimestamp.getMinutes();
     const minutesPadded = minutes < 10 ? `0${minutes}` : minutes;
 
-    const timestampJsx = `${monthNames[month].slice(
-      0,
-      3
-    )} ${date} - ${hoursPadded}:${minutesPadded}`;
+    const monthStr = monthNames[month].slice(0, 3);
+    const dayStr = dayNames[day].slice(0, 3);
 
-    return <div id="timestamp">{timestampJsx}</div>;
+    const timestampJsx = `${monthStr} ${date}, ${dayStr} - ${hoursPadded}:${minutesPadded}`;
+
+    return (
+      <div id="timestamp">
+        <i class="fas fa-caret-right" />
+        {timestampJsx}
+      </div>
+    );
   };
 
   const displayMessage = () => {
@@ -85,6 +105,8 @@ const ChatBubble = ({
   };
 
   const handleDecryptMessage = () => {
+    if (!isSecret) return;
+
     decryptMsg(msgObj);
   };
 
@@ -94,14 +116,15 @@ const ChatBubble = ({
         {displayDisplayName()}
         <div
           id="message-bubble"
-          className={`pointer ${isPrevMsgSenderTheUser() ? "mt" : ""}`}
+          className={`pointer ${isPrevMsgSenderTheUser() ? "mt-sm" : ""}`}
           onClick={
             isSecret
               ? decrypted
-                ? () => setShowTimestamp(!showTimestamp)
+                ? () => setShowTimestamp(true)
                 : handleDecryptMessage
-              :  () => setShowTimestamp(!showTimestamp)
+              : () => setShowTimestamp(true)
           }
+          onMouseLeave={() => setTimeout(() => setShowTimestamp(false), 1250)}
         >
           {displayMessage()}
         </div>

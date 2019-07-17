@@ -12,7 +12,7 @@ const ChatBox = ({ user, match, userKeys }) => {
 
   const channel = match.params.channel;
   const isSecret = channel !== "global";
-  const limit = isSecret ? 8 : 10;
+  const limit = isSecret ? 10 : 100;
   const pbkHash = isSecret ? SHA256(userKeys.pbk).toString() : undefined;
 
   useEffect(() => {

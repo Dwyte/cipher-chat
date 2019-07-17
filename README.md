@@ -47,11 +47,12 @@ An end-to-end ecrypted instant messaging application built on MERN Stack.
      order based on their timestamp. \* This will only fetch msgObjects encrypted using the `userPublicKey` which can then be decrypted  
       using `userPrivateKey`
 
-### Simple Exmplanation
+### Simple Explanation
 
 Alice and Bob exchanges public keys with each other, when Alice sends a message to Bob she encrypts it with Bob's  
-Public Key and another copy with her publicKey. Bob does the opposite. Alice then fetches all messages on their channel  
-that was encrypted using her public key and decrypts the conversation with her private key then displayed on the client.
+Public Key and another copy with her publicKey. Bob does the same when he sends his messages. Alice then fetches   
+all messages on their channel that was encrypted using her public key and decrypts the conversation with her private  
+key then displayed on the client.
 
 #### Tags/Topics Related
 

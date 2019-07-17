@@ -62,6 +62,10 @@ a {
   margin-top: 5px;
 }
 
+.mt-sm {
+  margin-top: 3px;
+}
+
 .mb {
   margin-bottom: 5px;
 }

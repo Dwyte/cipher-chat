@@ -5,7 +5,7 @@
 }
 
 #message-bubble {
-  max-width: 325px;
+  max-width: 250px;
   display: inline-block;
   overflow-wrap: break-word;
   color: white;
@@ -13,6 +13,7 @@
   padding: 5px 5px;
   background: #2e2e2e;
   text-align: left !important;
+  margin-bottom: 1px;
 }
 
 .float-right {
@@ -31,7 +32,7 @@
   margin: 0px;
   vertical-align: top;
   font-size: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 5px; 
 }
 
 #displayName {

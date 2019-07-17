@@ -6,7 +6,7 @@ const Footer = () => {
       <small>
         CipherChat | <a href="https://github.com/Dwyte/CipherChat">Source Code</a> <br />
         <small>Global Channel (Not Encrypted, 100 messages max)</small> <br />
-        <small>Private Channel (Encrypted, 8 messages max)</small> <br />
+        <small>Private Channel (Encrypted, 10 messages max)</small> <br />
       </small>
     </footer>
   );

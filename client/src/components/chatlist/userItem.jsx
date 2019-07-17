@@ -19,10 +19,12 @@ const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
   return (
     <div className="container-item mb">
       <b>{user.username}</b>
-      <button onClick={handleChannelOpen}>
-        {" "}
-        <i className="fas fa-comment" />
-      </button>
+      <div>
+        {/* <span className="badge">1</span> */}
+        <button onClick={handleChannelOpen}>
+          <i className="fas fa-comment" />
+        </button>
+      </div>
     </div>
   );
 };
