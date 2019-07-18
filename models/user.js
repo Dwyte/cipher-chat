@@ -6,12 +6,14 @@ const config = require("config");
 const userSchema = mongoose.Schema({
   username: {
     type: String,
-    require: true
+    require: true,
+    minLength: 2,
+    maxLength: 12
   },
   bio: {
     type: String,
-    maxLength: 50,
-    default: "Write something, bio/motto/desc, anything!"
+    maxLength: 25,
+    default: "A new CipherChat user..."
   },
   auth: {
     type: String,
@@ -31,10 +33,10 @@ const generateToken = auth => {
 
 const validate = user => {
   const schema = {
-    username: Joi.string().required(),
+    username: Joi.string().required().min(2).max(12),
     bio: Joi.string()
-      .default("Write something, bio/motto/desc, anything!")
-      .max(50),
+      .default("A new CipherChat user...")
+      .max(25),
     auth: Joi.string().required(),
     publicKey: Joi.string().required()
   };

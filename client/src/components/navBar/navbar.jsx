@@ -28,6 +28,7 @@ const NavBar = ({
           className={location.pathname === "/chat/ch/global" ? "active" : ""}
           handleClick={() => {
             history.push("/chat/ch/global");
+            setPrivChannel("");
             setChannel("global");
           }}
         />

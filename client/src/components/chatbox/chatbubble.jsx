@@ -92,7 +92,7 @@ const ChatBubble = ({
 
     return (
       <div id="timestamp">
-        <i class="fas fa-caret-right" />
+        <i className="fas fa-caret-right" />
         {timestampJsx}
       </div>
     );
@@ -120,9 +120,9 @@ const ChatBubble = ({
           onClick={
             isSecret
               ? decrypted
-                ? () => setShowTimestamp(true)
+                ? () => setShowTimestamp(!showTimestamp)
                 : handleDecryptMessage
-              : () => setShowTimestamp(true)
+              : () => setShowTimestamp(!showTimestamp)
           }
           onMouseLeave={() => setTimeout(() => setShowTimestamp(false), 1250)}
         >

@@ -24,7 +24,8 @@ const Login = ({ history }) => {
       alert("Account authenticated!");
       history.push("/chat");
     } catch (err) {
-      console.log(err);
+      alert("Authentication Failed: Wrong Credentials");
+
       localStorage.clear();
     }
   };
@@ -38,7 +39,8 @@ const Login = ({ history }) => {
           placeholder="Pseudoname"
           value={username}
           onChange={({ target }) => setUsername(target.value)}
-          pattern=".{2,}"
+          pattern=".{2,12}"
+          maxLength="12"
           required
           title="2 characters or more"
         />

@@ -5,7 +5,9 @@ import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
-const socket = openSocket(process.env.REACT_APP_SOCKET_ENDPOINT); //http://localhost:4200/
+const socket = openSocket(
+  process.env.REACT_APP_SOCKET_ENDPOINT || "http://localhost:4200"
+);
 
 const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
@@ -25,6 +27,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     return () => {
       socket.disconnect();
     };
+     // eslint-disable-next-line
   }, [channel, userKeys]);
 
   socket.on("return-chats", returnChats => {
@@ -87,6 +90,8 @@ const ChatBox = ({ user, match, userKeys }) => {
     );
 
     socket.emit("send-secret-msg-self", userMsg);
+
+    if (userKeys.pbk === chatMatePbk) return;
 
     const chatMateMsg = encryptMsg(
       {
@@ -157,7 +162,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     <div className="grid-container chatbox-container">
       <div id="chatbox">{populateChatBox()}</div>
 
-      <ChatForm sendMessage={sendMessage} />
+      <ChatForm sendMessage={sendMessage} isSecret={isSecret} />
     </div>
   );
 };

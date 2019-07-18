@@ -20,7 +20,7 @@ const DisplayBio = ({ bio, onSave }) => {
       {onEdit ? (
         <React.Fragment>
           <input
-            maxLength="50"
+            maxLength="25"
             value={_bio}
             onChange={({ target }) => setBio(target.value)}
           />

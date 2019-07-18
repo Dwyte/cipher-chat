@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import ReactTooltip from "react-tooltip";
 
-const ChatForm = ({ sendMessage }) => {
+
+const ChatForm = ({ sendMessage, isSecret }) => {
   const [message, setMessage] = useState("");
 
   const handleMessageChange = ({ target }) => {
@@ -10,21 +12,28 @@ const ChatForm = ({ sendMessage }) => {
   const handleSendEvent = e => {
     e.preventDefault();
 
-    if(message === "") return;
+    if (message === "") return;
 
     sendMessage(message);
 
     setMessage("");
   };
 
+  const inputPlaceholder = isSecret
+    ? "Private Channel - Encrypted - 10msgs max"
+    : "Global Channel - Plain Text - 100msgs max";
+
   return (
     <React.Fragment>
+      <ReactTooltip place="top" effect="solid"/>
+
       <div className="message-form">
         <form onSubmit={handleSendEvent}>
           <input
             value={message}
             onChange={handleMessageChange}
-            placeholder="Type a message..."
+            data-tip={inputPlaceholder}
+            placeholder="Start Chatting..."
             type="text"
             required
           />

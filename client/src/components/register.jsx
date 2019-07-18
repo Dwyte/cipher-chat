@@ -21,10 +21,10 @@ const Register = ({ history }) => {
 
     try {
       await postUser({ username, auth, publicKey });
-      alert("Account has been created.")
+      alert("Account has been created.");
       history.push("/login");
     } catch (err) {
-      console.log(err);
+      alert("Error: ", err);
     }
   };
 
@@ -37,7 +37,8 @@ const Register = ({ history }) => {
           placeholder="Pseudoname"
           value={username}
           onChange={({ target }) => setUsername(target.value)}
-          pattern=".{2,}"
+          pattern=".{2,12}"
+          maxLength="12"
           required
           title="2 characters or more"
         />

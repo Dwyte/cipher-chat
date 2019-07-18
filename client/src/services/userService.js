@@ -1,27 +1,29 @@
 import http from "./httpService";
 
-const endpoint = process.env.REACT_APP_SERVICE_API;
+const apiEndpoint =
+  process.env.REACT_APP_SERVICE_API || "http://localhost:4200/api";
+const serviceEndpoint = apiEndpoint + "/users";
 
 export const getAllUsers = async () => {
-  return await http.get(endpoint);
-}
+  return await http.get(serviceEndpoint);
+};
 
 export const postUser = async data => {
-  return await http.post(endpoint, data);
+  return await http.post(serviceEndpoint, data);
 };
 
 export const updateUser = async (_id, data) => {
-  return await http.put(`${endpoint}/${_id}`, data);
-}
+  return await http.put(`${serviceEndpoint}/${_id}`, data);
+};
 
 export const checkUsername = async username => {
-  const { data: res } = await http.get(`${endpoint}/${username}`);
+  const { data: res } = await http.get(`${serviceEndpoint}/${username}`);
 
   return Boolean(res);
 };
 
 export const authUser = async auth => {
-  return http.post(`${endpoint}/auth/`, auth);
+  return http.post(`${serviceEndpoint}/auth/`, auth);
 };
 
 export const getUserProfile = async () => {
@@ -32,5 +34,5 @@ export const getUserProfile = async () => {
     }
   };
 
-  return http.get(`${endpoint}/auth`, config);
+  return http.get(`${serviceEndpoint}/auth`, config);
 };
