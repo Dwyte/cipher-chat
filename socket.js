@@ -50,5 +50,3 @@ const socket = socket => {
 
   console.log('socket');
 };
-
-module.exports = socket;
