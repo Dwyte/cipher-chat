@@ -17,7 +17,7 @@ const chatSchema = mongoose.Schema({
     require: true
   },
   timestamp: {
-    type: Object,
+    type: String,
     require: true
   },
   pbkHash: {
@@ -30,9 +30,9 @@ const Chat = mongoose.model("Chat", chatSchema);
 const validate = chat => {
   const schema = {
     name: Joi.string().required(),
-    message: Joi.string().required().min(1).max(500),
+    message: Joi.string().required().min(1).max(500).regex(/^(?!\s*$).+/),
     channel: Joi.string().required(),
-    timestamp: Joi.object().required(),
+    timestamp: Joi.string().required(),
     pbkHash: Joi.string()
   };
 

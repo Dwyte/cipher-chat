@@ -5,7 +5,6 @@ import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
 import openSocket from "socket.io-client";
-console.log(process.env.REACT_APP_SOCKET_ENDPOINT);
 const socket = openSocket(
   process.env.REACT_APP_SOCKET_ENDPOINT || "http://localhost:4200"
 );
@@ -56,9 +55,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     updateChats(chatLimit);
   });
 
-  socket.on("error", error => {
-    console.log(error);
-
+  socket.on("message-invalid", error => {
     alert(error);
   });
 

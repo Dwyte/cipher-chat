@@ -22,7 +22,8 @@ const socket = socket => {
   });
 
   socket.on("send-message", async chatData => {
-    if(chatData.message.length >= 500) return;
+    const { error } = validate(chatData);
+    if (error) return socket.emit("message-invalid", error.details[0].message);
 
     let chat = new Chat(chatData);
     chat = await chat.save();

@@ -12,7 +12,7 @@ const ChatForm = ({ sendMessage, isSecret }) => {
   const handleSendEvent = e => {
     e.preventDefault();
 
-    if (message === "") return;
+    // if (message.trim() === "") return;
 
     sendMessage(message);
 
