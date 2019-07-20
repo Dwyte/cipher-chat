@@ -1,8 +1,10 @@
-import http from "./httpService";
+/*jshint esversion: 8 */
+
+import http from './httpService';
 
 const apiEndpoint =
-  process.env.REACT_APP_SERVICE_API || "http://localhost:4200/api";
-const serviceEndpoint = apiEndpoint + "/users";
+  process.env.REACT_APP_SERVICE_API || 'http://localhost:4200/api';
+const serviceEndpoint = apiEndpoint + '/users';
 
 export const getAllUsers = async () => {
   return await http.get(serviceEndpoint);
@@ -27,11 +29,11 @@ export const authUser = async auth => {
 };
 
 export const getUserProfile = async () => {
-  const token = localStorage.getItem("userToken");
+  const token = localStorage.getItem('userToken');
   const config = {
     headers: {
-      "x-auth-token": token
-    }
+      'x-auth-token': token,
+    },
   };
 
   return http.get(`${serviceEndpoint}/auth`, config);

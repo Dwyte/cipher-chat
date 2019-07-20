@@ -1,15 +1,15 @@
 .nav {
-    display: inline-block;
+  display: inline-block;
 }
 
 .nav-grid {
-    display: grid;
-    grid-column-gap: 3px;
-    grid-template-columns: auto auto auto;
+  display: grid;
+  grid-column-gap: 3px;
+  grid-template-columns: auto auto auto;
 }
 
 .active {
-    background: #2e2e2e;
-    color: white;
-    border-color: #3e3e3e;
+  background: #2e2e2e;
+  color: white;
+  border-color: #3e3e3e;
 }

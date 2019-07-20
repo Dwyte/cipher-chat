@@ -1,30 +1,32 @@
-import React, { useState } from "react";
-import { authUser, checkUsername } from "../services/userService";
-import CryptoJS from "crypto-js";
+/*jshint esversion: 8 */
+
+import React, { useState } from 'react';
+import { authUser, checkUsername } from '../services/userService';
+import CryptoJS from 'crypto-js';
 const { SHA256 } = CryptoJS;
 
 const Login = ({ history }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
 
     const isExisting = await checkUsername(username);
-    if (!isExisting) return alert("User with the username not found.");
+    if (!isExisting) return alert('User with the username not found.');
 
     const auth = SHA256(username + password).toString();
     const passPhrase = SHA256(auth + password).toString();
-    localStorage.setItem("pvk_phrase", passPhrase);
+    localStorage.setItem('pvk_phrase', passPhrase);
 
     try {
       const { data: userToken } = await authUser({ auth });
-      localStorage.setItem("userToken", userToken);
+      localStorage.setItem('userToken', userToken);
 
-      alert("Account authenticated!");
-      history.push("/chat");
+      alert('Account authenticated!');
+      history.push('/chat');
     } catch (err) {
-      alert("Authentication Failed: Wrong Credentials");
+      alert('Authentication Failed: Wrong Credentials');
 
       localStorage.clear();
     }

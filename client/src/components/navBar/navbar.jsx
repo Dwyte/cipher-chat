@@ -1,13 +1,15 @@
-import React from "react";
-import "./navBar.css";
-import NavBtn from "./navBtn";
+/*jshint esversion: 8 */
+
+import React from 'react';
+import './navBar.css';
+import NavBtn from './navBtn';
 
 const NavBar = ({
   history,
   location,
   setChannel,
   privChannel,
-  setPrivChannel
+  setPrivChannel,
 }) => {
   return (
     <div className="container-item nav mb">
@@ -15,26 +17,27 @@ const NavBar = ({
         <NavBtn
           fa="fas fa-envelope"
           label={privChannel}
-          className={location.pathname !== "/chat/ch/global" ? "active" : ""}
+          className={location.pathname !== '/chat/ch/global' ? 'active' : ''}
           handleClick={() => {
-            setPrivChannel("");
-            history.push("/chat/search");
-          }}
-        />
+            setPrivChannel('');
+            history.push('/chat/search');
+          }
+        }
+      />
 
         <NavBtn
           fa="fas fa-globe"
           label="Global"
-          className={location.pathname === "/chat/ch/global" ? "active" : ""}
+          className={location.pathname === '/chat/ch/global' ? 'active' : ''}
           handleClick={() => {
-            history.push("/chat/ch/global");
-            setPrivChannel("");
-            setChannel("global");
-          }}
-        />
-      </div>
+            history.push('/chat/ch/global');
+            setPrivChannel('');
+            setChannel('global');
+          }
+        }
+      />
     </div>
-  );
-};
+  </div>
+);};
 
 export default NavBar;

@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import { postUser, checkUsername } from "../services/userService";
-import CryptoJS from "crypto-js";
-import cryptico from "cryptico";
+/*jshint esversion: 8 */
+
+import React, { useState } from 'react';
+import { postUser, checkUsername } from '../services/userService';
+import CryptoJS from 'crypto-js';
+import cryptico from 'cryptico';
 const { SHA256 } = CryptoJS;
 
 const Register = ({ history }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
 
     const isExisting = await checkUsername(username);
-    if (isExisting) return alert("User with the username already exists");
+    if (isExisting) return alert('User with the username already exists');
 
     const auth = SHA256(username + password).toString();
     const passPhrase = SHA256(auth + password).toString();
@@ -21,10 +23,10 @@ const Register = ({ history }) => {
 
     try {
       await postUser({ username, auth, publicKey });
-      alert("Account has been created.");
-      history.push("/login");
+      alert('Account has been created.');
+      history.push('/login');
     } catch (err) {
-      alert("Error: ", err);
+      alert('Error: ', err);
     }
   };
 

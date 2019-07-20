@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import UserItem from "./userItem";
-import "./userList.css";
-import { getAllUsers } from "../../services/userService";
+/*jshint esversion: 8 */
+
+import React, { useState, useEffect } from 'react';
+import UserItem from './userItem';
+import './userList.css';
+import { getAllUsers } from '../../services/userService';
 
 const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
   const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const getUsers = async () => {
@@ -18,7 +20,7 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
   }, []);
 
   const filteredUsers = users.filter(
-    u => u.username.match(new RegExp(search + ".*", "i"))
+    u => u.username.match(new RegExp(search + '.*', 'i'))
   );
 
   return (

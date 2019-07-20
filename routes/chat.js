@@ -1,12 +1,14 @@
-const express = require("express");
+/*jshint esversion: 8 */
+
+const express = require('express');
 const router = express.Router();
 
-const auth = require("../middleware/auth");
+const auth = require('../middleware/auth');
 
-const { Chat } = require("../models/chat");
+const { Chat } = require('../models/chat');
 
 // Get Active User
-router.put("/", [auth], async (req, res) => {
+router.put('/', [auth], async (req, res) => {
   const chats = await Chat.find(req.body);
 
   res.send(chats);

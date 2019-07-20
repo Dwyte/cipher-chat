@@ -1,37 +1,41 @@
-const mongoose = require("mongoose");
-const Joi = require("joi");
+/*jshint esversion: 8 */
+
+const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const chatSchema = mongoose.Schema({
   name: {
     type: String,
-    require: true
+    require: true,
   },
   message: {
     type: String,
-    require: true
+    require: true,
+    minLength: 1,
+    maxLength: 500,
   },
   channel: {
     type: String,
-    require: true
+    require: true,
   },
   timestamp: {
-    type: Object,
-    require: true
+    type: String,
+    require: true,
   },
   pbkHash: {
-    type: String
-  }
+    type: String,
+  },
 });
 
-const Chat = mongoose.model("Chat", chatSchema);
+const Chat = mongoose.model('Chat', chatSchema);
 
 const validate = chat => {
   const schema = {
     name: Joi.string().required(),
-    message: Joi.string().required(),
+    message: Joi.string().required().min(1).max(500).regex(/^(?!\s*$).+/),
     channel: Joi.string().required(),
-    timestamp: Joi.object().required(),
-    pbkHash: Joi.string()
+    timestamp: Joi.string().required(),
+    pbkHash: Joi.string(),
   };
 
   return Joi.validate(chat, schema);
@@ -39,5 +43,5 @@ const validate = chat => {
 
 module.exports = {
   Chat,
-  validate
+  validate,
 };

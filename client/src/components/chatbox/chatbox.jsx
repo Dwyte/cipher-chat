@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
-import "./chatbox.css";
-import ChatBubble from "./chatbubble";
-import ChatForm from "./chatForm";
-import cryptico from "cryptico";
-import { SHA256 } from "crypto-js";
-import openSocket from "socket.io-client";
-console.log(process.env.REACT_APP_SOCKET_ENDPOINT);
+/*jshint esversion: 8 */
+
+import React, { useState, useEffect } from 'react';
+import './chatbox.css';
+import ChatBubble from './chatbubble';
+import ChatForm from './chatForm';
+import cryptico from 'cryptico';
+import { SHA256 } from 'crypto-js';
+import openSocket from 'socket.io-client';
 const socket = openSocket(
-  process.env.REACT_APP_SOCKET_ENDPOINT || "http://localhost:4200"
+  process.env.REACT_APP_SOCKET_ENDPOINT || 'http://localhost:4200'
 );
 
 const ChatBox = ({ user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
 
   const channel = match.params.channel;
-  const isSecret = channel !== "global";
+  const isSecret = channel !== 'global';
   const limit = isSecret ? 10 : 100;
   const pbkHash = isSecret ? SHA256(userKeys.pbk).toString() : undefined;
 
@@ -23,19 +24,20 @@ const ChatBox = ({ user, match, userKeys }) => {
 
     socket.connect();
 
-    socket.emit("get-chats", channel, limit, pbkHash);
+    socket.emit('get-chats', channel, limit, pbkHash);
 
     return () => {
       socket.disconnect();
     };
+
     // eslint-disable-next-line
   }, [channel, userKeys]);
 
-  socket.on("return-chats", returnChats => {
+  socket.on('return-chats', returnChats => {
     updateChats(returnChats);
   });
 
-  socket.on("new-message", chat => {
+  socket.on('new-message', chat => {
     if (isSecret) return;
 
     if (chat.channel !== channel) return;
@@ -45,7 +47,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     updateChats(chatLimit);
   });
 
-  socket.on("new-secret-message", chat => {
+  socket.on('new-secret-message', chat => {
     if (!isSecret) return;
 
     if (chat.channel !== channel) return;
@@ -54,6 +56,10 @@ const ChatBox = ({ user, match, userKeys }) => {
     const chatLimit = chatsToDelete.splice(-limit);
 
     updateChats(chatLimit);
+  });
+
+  socket.on('message-invalid', error => {
+    alert(error);
   });
 
   const decryptMsg = msg => {
@@ -83,18 +89,18 @@ const ChatBox = ({ user, match, userKeys }) => {
     const name = user.username;
     const timestamp = new Date().toString();
 
-    const chatMatePbk = localStorage.getItem("chatmate_pbk");
+    const chatMatePbk = localStorage.getItem('chatmate_pbk');
 
     const userMsg = encryptMsg(
       {
         name,
         message,
-        timestamp
+        timestamp,
       },
       userKeys.pbk
     );
 
-    socket.emit("send-secret-msg-self", userMsg);
+    socket.emit('send-secret-msg-self', userMsg);
 
     if (userKeys.pbk === chatMatePbk) return;
 
@@ -102,12 +108,12 @@ const ChatBox = ({ user, match, userKeys }) => {
       {
         name,
         message,
-        timestamp
+        timestamp,
       },
       chatMatePbk
     );
 
-    socket.emit("send-secret-msg", chatMateMsg);
+    socket.emit('send-secret-msg', chatMateMsg);
   };
 
   const encryptMsg = (msgObj, pbk) => {
@@ -115,8 +121,8 @@ const ChatBox = ({ user, match, userKeys }) => {
       msgObj[k] = cryptico.encrypt(msgObj[k], pbk).cipher;
     }
 
-    msgObj["pbkHash"] = SHA256(pbk).toString();
-    msgObj["channel"] = channel;
+    msgObj['pbkHash'] = SHA256(pbk).toString();
+    msgObj['channel'] = channel;
 
     return msgObj;
   };
@@ -126,14 +132,14 @@ const ChatBox = ({ user, match, userKeys }) => {
       name: user.username,
       channel,
       message,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    socket.emit("send-message", userMsg);
+    socket.emit('send-message', userMsg);
   };
 
   const updateScroll = () => {
-    const chatbox = document.getElementById("chatbox");
+    const chatbox = document.getElementById('chatbox');
     chatbox.scrollTop = chatbox.scrollHeight;
   };
 
