@@ -33,15 +33,15 @@ An end-to-end ecrypted instant messaging application built on MERN Stack.
 5. Private Channels **(Encrypted e2e)**
    - The User chooses someone to chat on a private channel
      - `userPublicKey` and `otherUserPublicKey` hashed with md5 will be their converstation's  
-       private `channelId`.  
-        \* `channelId = "0eRdpe5e7718b338fy12g130f6cb3f24"`
+       private `channelId`.
+       - `channelId = "0eRdpe5e7718b338fy12g130f6cb3f24"`
    - When The User sends a message, it creates 2 encrypted copies before it's sent to server.
-     1. msgObj is encrypted with the `userPublicKey`. `name`, `message`, and `timestamp` fields are all  
-        encrypted. Adds a `pbkHash` field which is a `SHA256` hash of the public key used to encrypt the msgObj.
-        _ `pbkHash = 5ccd628243718daagr5a2a10444c2a30b5f51016dd12382f8af6f2dffa721`
-        _ otherUser will be the only one who can decrypt and read this message.
-     2. msgObj is encrypted with The `otherUserPublicKey`. Same fields encrypted, same field added.
+     1. msgObj is encrypted with the `userPublicKey`. `name`, `message`, and `timestamp` fields are all encrypted.  
+        Adds a `pbkHash` field which is a `SHA256` hash of the public key used to encrypt the msgObj.
+        \_ `pbkHash = 5ccd628243718daagr5a2a10444c2a30b5f51016dd12382f8af6f2dffa721`
         - The User will be the only one who can decrypt and read this message.
+     2. msgObj is encrypted with The `otherUserPublicKey`. Same fields encrypted, same field added.
+        - otherUser will be the only one who can decrypt and read this message.
      - Two encrypted copies: One encrypted with the **sender's public key** and one with the **recipient's public key**
    - Client fetches all msgObj with `channel === "0eRdpe5e7718b338fy12g130f6cb3f24"` and `pbkHash === 5ccd628243718daagr5a2a10444c2a30b5f51016dd12382f8af6f2dffa721` as filter, and displaying them in asc  
      order based on their timestamp. \* This will only fetch msgObjects encrypted using the `userPublicKey` which can then be decrypted  
@@ -50,10 +50,10 @@ An end-to-end ecrypted instant messaging application built on MERN Stack.
 ### Simple Explanation
 
 Alice and Bob exchanges public keys with each other, when Alice sends a message to Bob she encrypts it with Bob's  
-Public Key and another copy with her publicKey. Bob does the same when he sends his messages. Alice then fetches   
+Public Key and another copy with her publicKey. Bob does the same when he sends his messages. Alice then fetches  
 all messages on their channel that was encrypted using her public key and decrypts the conversation with her private  
 key then displayed on the client.
 
-#### Tags/Topics Related
+#### Topics Related & Technologies Used
 
 Cryptography, Assymetric Encryption, RSA, Hash Functions, WebDev, Javascript, NodeJs, ReactJs, ExpressJS, MongoDB, WebSockets
