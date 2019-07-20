@@ -22,6 +22,9 @@ const socket = socket => {
   });
 
   socket.on("send-message", async chatData => {
+    const { error } = validate(chatData);
+    if (error) return;
+
     let chat = new Chat(chatData);
     chat = await chat.save();
 

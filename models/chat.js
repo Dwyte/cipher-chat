@@ -8,7 +8,9 @@ const chatSchema = mongoose.Schema({
   },
   message: {
     type: String,
-    require: true
+    require: true,
+    minLength: 1,
+    maxLength: 500
   },
   channel: {
     type: String,
@@ -28,7 +30,7 @@ const Chat = mongoose.model("Chat", chatSchema);
 const validate = chat => {
   const schema = {
     name: Joi.string().required(),
-    message: Joi.string().required(),
+    message: Joi.string().required().min(1).max(500),
     channel: Joi.string().required(),
     timestamp: Joi.object().required(),
     pbkHash: Joi.string()

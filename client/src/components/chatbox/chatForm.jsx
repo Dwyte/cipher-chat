@@ -32,6 +32,8 @@ const ChatForm = ({ sendMessage, isSecret }) => {
           <input
             value={message}
             onChange={handleMessageChange}
+            minLength="1"
+            maxLength="1000"
             data-tip={inputPlaceholder}
             placeholder="Start Chatting..."
             type="text"

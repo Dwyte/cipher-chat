@@ -56,6 +56,12 @@ const ChatBox = ({ user, match, userKeys }) => {
     updateChats(chatLimit);
   });
 
+  socket.on("error", error => {
+    console.log(error);
+
+    alert(error);
+  });
+
   const decryptMsg = msg => {
     const _chats = [...chats];
     const _msg = _chats.find(m => m === msg);
