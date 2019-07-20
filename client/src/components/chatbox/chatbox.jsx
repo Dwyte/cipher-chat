@@ -28,7 +28,7 @@ const ChatBox = ({ user, match, userKeys }) => {
     return () => {
       socket.disconnect();
     };
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [channel, userKeys]);
 
   socket.on("return-chats", returnChats => {
@@ -38,6 +38,8 @@ const ChatBox = ({ user, match, userKeys }) => {
   socket.on("new-message", chat => {
     if (isSecret) return;
 
+    if (chat.channel !== channel) return;
+
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
     updateChats(chatLimit);
@@ -45,6 +47,8 @@ const ChatBox = ({ user, match, userKeys }) => {
 
   socket.on("new-secret-message", chat => {
     if (!isSecret) return;
+
+    if (chat.channel !== channel) return;
 
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
