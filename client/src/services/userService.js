@@ -6,13 +6,13 @@ const apiEndpoint =
   process.env.REACT_APP_SERVICE_API || "http://localhost:4200/api";
 const serviceEndpoint = apiEndpoint + "/users";
 
-export const getAllUsers = async config => {
-  return await http.get(serviceEndpoint, config);
+export const searchUsers = async (searchData, config) => {
+  return await http.put(serviceEndpoint + "/searchUser", searchData, config);
 };
 
 export const postUser = async data => {
   return await http.post(serviceEndpoint, data);
-};
+};  
 
 export const updateUser = async (_id, data) => {
   return await http.put(`${serviceEndpoint}/${_id}`, data);
