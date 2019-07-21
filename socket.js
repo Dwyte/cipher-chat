@@ -1,5 +1,3 @@
-/*jshint esversion: 8 */
-
 const { Chat, validate } = require('./models/chat');
 
 const socket = socket => {
@@ -50,3 +48,5 @@ const socket = socket => {
 
   console.log('socket');
 };
+
+module.exports = socket;
