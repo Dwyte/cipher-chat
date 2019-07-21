@@ -1,5 +1,7 @@
-import React from "react";
-import displayPic from "./profile.jpg";
+/*jshint esversion: 8 */
+
+import React from 'react';
+import displayPic from './profile.jpg';
 
 const DisplayPic = () => {
   return (

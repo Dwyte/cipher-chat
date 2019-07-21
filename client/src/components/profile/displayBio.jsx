@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+/*jshint esversion: 8 */
+
+import React, { useState, useEffect } from 'react';
 
 const DisplayBio = ({ bio, onSave }) => {
   const [onEdit, setOnEdit] = useState(false);
-  const [_bio, setBio] = useState("");
+  const [_bio, setBio] = useState('');
 
   const flipEdit = () => setOnEdit(!onEdit);
   const handleSave = e => {
@@ -28,7 +30,7 @@ const DisplayBio = ({ bio, onSave }) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <small>{bio || "bio"}</small>
+          <small>{bio || 'bio'}</small>
           <i onClick={flipEdit} className="fas fa-edit" />
         </React.Fragment>
       )}

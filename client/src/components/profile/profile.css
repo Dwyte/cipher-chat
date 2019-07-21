@@ -1,52 +1,52 @@
 #display-pic {
-    grid-row-start: 1;
-    grid-row-end: 3;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    margin: auto;
-    height: 42px;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  margin: auto;
+  height: 40px;
 }
 
-#display-name { 
-    grid-column-start: 2;
-    grid-column-end: 11;
-    padding: 3px 0px 0px 5px;
+#display-name {
+  grid-column-start: 2;
+  grid-column-end: 11;
+  padding: 3px 0px 0px 5px;
 }
 
-#display-bio { 
-    grid-column-start: 2;
-    grid-column-end: 11;
-    padding: 0px 0px 0px 5px;
+#display-bio {
+  grid-column-start: 2;
+  grid-column-end: 11;
+  padding: 0px 0px 0px 5px;
 }
 
-#display-bio i { 
-    color: #3a3a3a;
-    font-size: 10px;
-    margin-left: 3px;
-    cursor: pointer;
+#display-bio i {
+  color: #3a3a3a;
+  font-size: 10px;
+  margin-left: 3px;
+  cursor: pointer;
 }
 
 #display-bio input {
-    display: inline-block;
-    width: 75%;
-    padding: 5px;
-    height: 18px;
+  display: inline-block;
+  width: 75%;
+  padding: 5px;
+  height: 18px;
 }
 
 #logout {
-    grid-row-start: 1;
-    grid-row-end: 3;
-    grid-column-start: 11;
-    grid-column-end: 12;
-    margin: auto;
-    border: 0px;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 11;
+  grid-column-end: 12;
+  margin: auto;
+  border: 0px;
 }
 
 #logout button {
-    background: #2e2e2e;
-    border: #3a3a3a;
-    font-size: 26px;
-    color: white;
-    width: 42px;
-    height: 42px;
+  background: #2e2e2e;
+  border: #3a3a3a;
+  font-size: 26px;
+  color: white;
+  width: 42px;
+  height: 42px;
 }

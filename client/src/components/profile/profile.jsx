@@ -1,14 +1,16 @@
-import React from "react";
-import "./profile.css";
-import DisplayPic from "./displayPic";
-import DisplayName from "./displayName";
-import DisplayBio from "./displayBio";
+/*jshint esversion: 8 */
+
+import React from 'react';
+import './profile.css';
+import DisplayPic from './displayPic';
+import DisplayName from './displayName';
+import DisplayBio from './displayBio';
 
 const Profile = ({ user, onUpdateBio }) => {
   const handleLogout = () => {
     localStorage.clear();
 
-    window.location = "/"
+    window.location = '/';
   };
 
   return (

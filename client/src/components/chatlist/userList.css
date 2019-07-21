@@ -1,20 +1,20 @@
 .list {
-    height: 362px;
-    overflow-y: scroll;
+  height: 362px;
+  overflow-y: scroll;
 }
 
 .badge {
-    color: white;
-    padding: 2px 3px;
-    font-size: 10px;
-    background: #2e2e2e;
-    font-weight: bold;
+  color: white;
+  padding: 2px 3px;
+  font-size: 10px;
+  background: #2e2e2e;
+  font-weight: bold;
 }
 
 i {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .p-5 {
-    padding: 5px!important;
+  padding: 5px !important;
 }

@@ -7,6 +7,31 @@
   background: #303030;
   padding: 30px;
   height: 100vh;
+  padding-top: 7%;
+}
+
+@media (min-width:550px) {
+  .app {
+    padding-left: 16%;
+  }
+}
+
+@media (min-width:850px) {
+  .app {
+    padding-left: 28%;
+  }
+}
+
+@media (min-width:1280px) {
+  .app {
+    padding-left: 34%;
+  }
+}
+
+@media (min-width:1920px) {
+  .app {
+    padding-left: 38%;
+  }
 }
 
 .app * {

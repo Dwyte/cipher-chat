@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import ReactTooltip from "react-tooltip";
+/*jshint esversion: 8 */
 
+import React, { useState } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 const ChatForm = ({ sendMessage, isSecret }) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const handleMessageChange = ({ target }) => {
     setMessage(target.value);
@@ -16,12 +17,11 @@ const ChatForm = ({ sendMessage, isSecret }) => {
 
     sendMessage(message);
 
-    setMessage("");
+    setMessage('');
   };
 
-  const inputPlaceholder = isSecret
-    ? "Private Channel - Encrypted - 10msgs max"
-    : "Global Channel - Plain Text - 100msgs max";
+  const inputPlaceholder = isSecret ? 'Private Channel - Encrypted - 10msgs max'
+    : 'Global Channel - Plain Text - 100msgs max';
 
   return (
     <React.Fragment>

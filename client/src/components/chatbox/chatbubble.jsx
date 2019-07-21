@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import cryptico from "cryptico";
-import "./chatbubble.css";
+/*jshint esversion: 8 */
+
+import React, { useState } from 'react';
+import cryptico from 'cryptico';
+import './chatbubble.css';
 
 const ChatBubble = ({
   username,
@@ -8,7 +10,7 @@ const ChatBubble = ({
   isSecret,
   userKeys,
   prevMsg,
-  decryptMsg
+  decryptMsg,
 }) => {
   const [showTimestamp, setShowTimestamp] = useState(false);
 
@@ -20,17 +22,15 @@ const ChatBubble = ({
       if (name === username) decryptMsg(msgObj);
     }
 
-  const parentBubContStyle = name === username ? "float-right max-width" : "";
-  const bubContStyle = name === username ? "float-right text-align-right" : "";
-  const displayName = name === username ? "You" : name;
+  const parentBubContStyle = name === username ? 'float-right max-width' : '';
+  const bubContStyle = name === username ? 'float-right text-align-right' : '';
+  const displayName = name === username ? 'You' : name;
 
   const isPrevMsgSenderTheUser = () => {
     if (!prevMsg) return false;
 
     const { name: prevName, decrypted: prevDecrypted } = prevMsg;
-    const prevNamePlain = isSecret
-      ? prevDecrypted
-        ? prevName
+    const prevNamePlain = isSecret ? prevDecrypted ? prevName
         : cryptico.decrypt(prevName, userKeys.pvk).plaintext
       : prevName;
     return prevNamePlain === name;
@@ -51,28 +51,28 @@ const ChatBubble = ({
     if (isSecret) if (!decrypted) return <div id="timestamp">Decrypt</div>;
 
     const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     const dayNames = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
     ];
 
     const dateTimestamp = new Date(timestamp);
@@ -116,7 +116,7 @@ const ChatBubble = ({
         {displayDisplayName()}
         <div
           id="message-bubble"
-          className={`pointer ${isPrevMsgSenderTheUser() ? "mt-sm" : ""}`}
+          className={`pointer ${isPrevMsgSenderTheUser() ? 'mt-sm' : ''}`}
           onClick={
             isSecret
               ? decrypted

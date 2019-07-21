@@ -1,11 +1,13 @@
-const { Chat, validate } = require("./models/chat");
+/*jshint esversion: 8 */
+
+const { Chat, validate } = require('./models/chat');
 
 const socket = socket => {
-  socket.on("new-user", user => {
-    console.log("New User: ", user);
+  socket.on('new-user', user => {
+    console.log('New User: ', user);
   });
 
-  socket.on("get-chats", async (channel, limit, pbkHash) => {
+  socket.on('get-chats', async (channel, limit, pbkHash) => {
     const chatsToDelete = await Chat.find({ channel }).sort({ _id: 1 });
 
     if (pbkHash) limit *= 2;
@@ -18,35 +20,33 @@ const socket = socket => {
 
     if (pbkHash) chats = chats.filter(msg => msg.pbkHash === pbkHash);
 
-    socket.emit("return-chats", chats);
+    socket.emit('return-chats', chats);
   });
 
-  socket.on("send-message", async chatData => {
+  socket.on('send-message', async chatData => {
     const { error } = validate(chatData);
-    if (error) return socket.emit("message-invalid", error.details[0].message);
+    if (error) return socket.emit('message-invalid', error.details[0].message);
 
     let chat = new Chat(chatData);
     chat = await chat.save();
 
-    socket.emit("new-message", chat);
-    socket.broadcast.emit("new-message", chat);
+    socket.emit('new-message', chat);
+    socket.broadcast.emit('new-message', chat);
   });
 
-  socket.on("send-secret-msg-self", async chatData => {
+  socket.on('send-secret-msg-self', async chatData => {
     let chat = new Chat(chatData);
     chat = await chat.save();
 
-    socket.emit("new-secret-message", chat);
+    socket.emit('new-secret-message', chat);
   });
 
-  socket.on("send-secret-msg", async chatData => {
+  socket.on('send-secret-msg', async chatData => {
     let chat = new Chat(chatData);
     chat = await chat.save();
 
-    socket.broadcast.emit("new-secret-message", chat);
+    socket.broadcast.emit('new-secret-message', chat);
   });
 
-  console.log("socket");
+  console.log('socket');
 };
-
-module.exports = socket;

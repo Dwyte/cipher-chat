@@ -1,4 +1,6 @@
-import React from "react";
+/*jshint esversion: 8 */
+
+import React from 'react';
 
 const Footer = () => {
   return (

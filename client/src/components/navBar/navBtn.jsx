@@ -1,5 +1,7 @@
-import React from "react";
-import "./navBar.css";
+/*jshint esversion: 8 */
+
+import React from 'react';
+import './navBar.css';
 
 const NavBtn = ({ fa, label, className, handleClick }) => {
 

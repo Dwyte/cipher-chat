@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
-import cryptico from "cryptico";
-import { Route, Switch, Redirect } from "react-router-dom";
-import ChatBox from "../chatbox/chatbox";
-import UserLists from "../chatlist/userLists";
-import Profile from "../profile/profile";
-import NavBar from "../navBar/navbar";
-import { getUserProfile, updateUser } from "../../services/userService";
-import "./chat.css";
+/*jshint esversion: 8 */
+
+import React, { useState, useEffect } from 'react';
+import cryptico from 'cryptico';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import ChatBox from '../chatbox/chatbox';
+import UserLists from '../chatlist/userLists';
+import Profile from '../profile/profile';
+import NavBar from '../navBar/navbar';
+import { getUserProfile, updateUser } from '../../services/userService';
+import './chat.css';
 
 const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
-  const [channel, setChannel] = useState("global");
+  const [channel, setChannel] = useState('global');
   const [userKeys, setUserKeys] = useState({});
-  const [privChannel, setPrivChannel] = useState("");
+  const [privChannel, setPrivChannel] = useState('');
 
   useEffect(() => {
     const getUser = async () => {
@@ -27,9 +29,9 @@ const Chat = ({ history, location }) => {
   }, []);
 
   const getKeys = () => {
-    console.log("get keys");
+    console.log('get keys');
 
-    const pvk_phrase = localStorage.getItem("pvk_phrase");
+    const pvk_phrase = localStorage.getItem('pvk_phrase');
 
     const pvk = cryptico.generateRSAKey(pvk_phrase, 1024);
 
