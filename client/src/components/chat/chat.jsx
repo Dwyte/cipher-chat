@@ -1,26 +1,39 @@
-/*jshint esversion: 8 */
-
-import React, { useState, useEffect } from 'react';
-import cryptico from 'cryptico';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import ChatBox from '../chatbox/chatbox';
-import UserLists from '../chatlist/userLists';
-import Profile from '../profile/profile';
-import NavBar from '../navBar/navbar';
-import { getUserProfile, updateUser } from '../../services/userService';
-import './chat.css';
+import React, { useState, useEffect } from "react";
+import cryptico from "cryptico";
+import { Route, Switch, Redirect } from "react-router-dom";
+import ChatBox from "../chatbox/chatbox";
+import UserLists from "../chatlist/userLists";
+import Profile from "../profile/profile";
+import NavBar from "../navBar/navbar";
+import { getUserProfile, updateUser } from "../../services/userService";
+import "./chat.css";
+import Axios from "axios";
+import openSocket from 'socket.io-client';
+const socket = openSocket(
+  process.env.REACT_APP_SOCKET_ENDPOINT || 'http://localhost:4200'
+);
 
 const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
-  const [channel, setChannel] = useState('global');
+  const [channel, setChannel] = useState("global");
   const [userKeys, setUserKeys] = useState({});
-  const [privChannel, setPrivChannel] = useState('');
+  const [privChannel, setPrivChannel] = useState("");
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: user } = await getUserProfile();
+    socket.connect();
 
-      setUser(user);
+    const source = Axios.CancelToken.source();
+
+    const getUser = async () => {
+      try {
+        const { data: user } = await getUserProfile({
+          cancelToken: source.token
+        });
+        setUser(user);
+      } catch (error) {
+        if (Axios.isCancel(error)) console.log("Caught Cancel");
+        else throw error;
+      }
     };
 
     setUserKeys(getKeys());
@@ -29,9 +42,7 @@ const Chat = ({ history, location }) => {
   }, []);
 
   const getKeys = () => {
-    console.log('get keys');
-
-    const pvk_phrase = localStorage.getItem('pvk_phrase');
+    const pvk_phrase = localStorage.getItem("pvk_phrase");
 
     const pvk = cryptico.generateRSAKey(pvk_phrase, 1024);
 
@@ -74,6 +85,7 @@ const Chat = ({ history, location }) => {
             render={props => (
               <ChatBox
                 {...props}
+                socket={socket}
                 user={user}
                 channel={channel}
                 userKeys={userKeys}
