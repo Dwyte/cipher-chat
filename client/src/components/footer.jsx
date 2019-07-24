@@ -1,14 +1,21 @@
-/*jshint esversion: 8 */
+import React from "react";
+import Card from "./card";
+import styled from "styled-components";
 
-import React from 'react';
+const FooterText = styled.div`
+  font-size: 12px;
+  text-align: center;
+  padding: 3px;
+`;
 
 const Footer = () => {
   return (
-    <footer className="container">
-      <small>
-        CipherChat | <a href="https://github.com/Dwyte/CipherChat">Source Code</a> <br />
-      </small>
-    </footer>
+    <Card>
+      <FooterText>
+        CipherChat |{" "}
+        <a href="https://github.com/Dwyte/CipherChat">Source Code</a> <br />
+      </FooterText>
+    </Card>
   );
 };
 

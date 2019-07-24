@@ -1,18 +1,17 @@
-/*jshint esversion: 8 */
+import React from "react";
+import styled from "styled-components";
 
-import React from 'react';
-import './navBar.css';
-
-const NavBtn = ({ fa, label, className, handleClick }) => {
+const NavBtn = ({ children, isActive, handleClick }) => {
+  const NavButton = styled.button`
+    ${isActive &&
+      `background: #2e2e2e;
+    color: white;
+    border-color: #3e3e3e;`}
+  `;
 
   return (
-    <div >
-      <button
-        onClick={handleClick}
-        className={className}
-      >
-        <i className={fa} /> {label}
-      </button>
+    <div>
+      <NavButton onClick={handleClick}>{children}</NavButton>
     </div>
   );
 };

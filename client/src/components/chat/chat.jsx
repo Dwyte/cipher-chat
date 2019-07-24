@@ -6,7 +6,6 @@ import UserLists from "../chatlist/userLists";
 import Profile from "../profile/profile";
 import NavBar from "../navBar/navbar";
 import { getUserProfile, updateUser } from "../../services/userService";
-import "./chat.css";
 import Axios from "axios";
 import openSocket from 'socket.io-client';
 const socket = openSocket(
@@ -70,7 +69,7 @@ const Chat = ({ history, location }) => {
         history={history}
         user={user}
       />
-      <div className="container chat">
+      <div className="container">
         <NavBar
           history={history}
           location={location}

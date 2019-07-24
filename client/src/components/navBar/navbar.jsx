@@ -1,43 +1,55 @@
-/*jshint esversion: 8 */
+import React from "react";
+import NavBtn from "./navBtn";
+import styled from "styled-components";
 
-import React from 'react';
-import './navBar.css';
-import NavBtn from './navBtn';
+const Nav = styled.div`
+  display: inline-block;
+  background: #fff;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+  padding: 5px;
+  border-radius: 3px;
+  margin-bottom: 5px;
+`;
+
+const NavGrid = styled.div`
+  display: grid;
+  grid-column-gap: 3px;
+  grid-template-columns: auto auto auto;
+`;
 
 const NavBar = ({
   history,
   location,
   setChannel,
   privChannel,
-  setPrivChannel,
+  setPrivChannel
 }) => {
   return (
-    <div className="container-item nav mb">
-      <div className="nav-grid">
+    <Nav>
+      <NavGrid>
         <NavBtn
-          fa="fas fa-envelope"
-          label={privChannel}
-          className={location.pathname !== '/chat/ch/global' ? 'active' : ''}
+          isActive={location.pathname === "/chat/list"}
           handleClick={() => {
-            setPrivChannel('');
-            history.push('/chat/search');
-          }
-        }
-      />
+            setPrivChannel("");
+            history.push("/chat/list");
+          }}
+        >
+          <i className="fas fa-envelope" /> {privChannel}
+        </NavBtn>
 
         <NavBtn
-          fa="fas fa-globe"
-          label="Global"
-          className={location.pathname === '/chat/ch/global' ? 'active' : ''}
+          isActive={location.pathname === "/chat/ch/global"}
           handleClick={() => {
-            history.push('/chat/ch/global');
-            setPrivChannel('');
-            setChannel('global');
-          }
-        }
-      />
-    </div>
-  </div>
-);};
+            setPrivChannel("");
+            setChannel("global");
+            history.push("/chat/ch/global");
+          }}
+        >
+          <i className="fas fa-globe" /> Global
+        </NavBtn>
+      </NavGrid>
+    </Nav>
+  );
+};
 
 export default NavBar;
