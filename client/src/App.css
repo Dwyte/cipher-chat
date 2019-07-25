@@ -10,25 +10,25 @@
   padding-top: 7%;
 }
 
-@media (min-width:550px) {
+@media (min-width: 550px) {
   .app {
     padding-left: 16%;
   }
 }
 
-@media (min-width:850px) {
+@media (min-width: 850px) {
   .app {
     padding-left: 28%;
   }
 }
 
-@media (min-width:1280px) {
+@media (min-width: 1280px) {
   .app {
     padding-left: 34%;
   }
 }
 
-@media (min-width:1920px) {
+@media (min-width: 1920px) {
   .app {
     padding-left: 38%;
   }
@@ -65,7 +65,7 @@
 .grid-container {
   display: grid;
   grid-auto-rows: 1fr;
-  grid-auto-columns: 1fr
+  grid-auto-columns: 1fr;
 }
 
 a {
@@ -85,8 +85,17 @@ a {
   margin-bottom: 5px;
 }
 
-
 footer {
   text-align: center;
   padding: 0px;
 }
+
+
+/* const MsgSubmitBtn = styled.button`
+  margin-left: -40px;
+  font-size: 24px;
+  vertical-align: bottom;
+  margin-bottom: 2px;
+  border: 0px;
+  background: transparent;
+`; */

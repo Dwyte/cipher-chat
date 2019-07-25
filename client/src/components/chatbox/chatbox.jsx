@@ -1,11 +1,41 @@
-/*jshint esversion: 8 */
-
 import React, { useState, useEffect } from "react";
-import "./chatbox.css";
-import ChatBubble from "./chatbubble";
+import ChatBubble from "./chatbubble/chatbubble";
 import ChatForm from "./chatForm";
 import cryptico from "cryptico";
 import { SHA256 } from "crypto-js";
+import styled from "styled-components";
+
+const Container = styled.div`
+  height: 400px;
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-auto-columns: 1fr;
+`;
+
+const ChatBoxDiv = styled.div`
+  grid-column-start: 1;
+  grid-column-end: 10;
+  grid-row-start: 1;
+  grid-row-end: 11;
+  background: white;
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 5px;
+
+  scrollbar-color: #2e2e2e #aeaeae;
+  scrollbar-width: thin;
+`;
+
+const ChatNotif = styled.div`
+  text-align: center;
+  padding: 3px;
+  font-size: 10px;
+  color: white;
+  background: #4e4e4e;
+  width: 125px;
+  margin: auto;
+`;
 
 const ChatBox = ({ socket, user, match, userKeys }) => {
   const [chats, setChats] = useState([]);
@@ -18,8 +48,7 @@ const ChatBox = ({ socket, user, match, userKeys }) => {
   useEffect(() => {
     setChats([]);
 
-    if (socket.connected)
-      socket.emit("get-chats", channel, limit, pbkHash);
+    if (socket.connected) socket.emit("get-chats", channel, limit, pbkHash);
 
     // eslint-disable-next-line
   }, [channel, userKeys]);
@@ -138,7 +167,7 @@ const ChatBox = ({ socket, user, match, userKeys }) => {
     let prevMsg = null;
 
     return chats.length === 0 ? (
-      <div className="chat-notif">No messages yet. Say hello!</div>
+      <ChatNotif>No messages yet. Say hello!</ChatNotif>
     ) : (
       chats.map(m => {
         const chatBubble = (
@@ -161,11 +190,11 @@ const ChatBox = ({ socket, user, match, userKeys }) => {
   };
 
   return (
-    <div className="grid-container chatbox-container">
-      <div id="chatbox">{populateChatBox()}</div>
+    <Container>
+      <ChatBoxDiv id="chatbox">{populateChatBox()}</ChatBoxDiv>
 
       <ChatForm sendMessage={sendMessage} isSecret={isSecret} />
-    </div>
+    </Container>
   );
 };
 

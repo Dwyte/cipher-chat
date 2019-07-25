@@ -1,17 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 
-const NavBtn = ({ children, isActive, handleClick }) => {
-  const NavButton = styled.button`
-    ${isActive &&
-      `background: #2e2e2e;
-    color: white;
-    border-color: #3e3e3e;`}
-  `;
+const NavButton = styled.button`
+  ${props =>
+    props.isActive &&
+    `
+      background: #2e2e2e;
+      color: white;
+      border-color: #3e3e3e;
+    `}
+`;
 
+const NavBtn = ({ children, isActive, handleClick }) => {
   return (
     <div>
-      <NavButton onClick={handleClick}>{children}</NavButton>
+      <NavButton onClick={handleClick} isActive={isActive}>
+        {children}
+      </NavButton>
     </div>
   );
 };

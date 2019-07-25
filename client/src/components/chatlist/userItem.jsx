@@ -3,8 +3,33 @@ import CryptoJS from "crypto-js";
 import ReactTooltip from "react-tooltip";
 import { getChats } from "../../services/chatService";
 import Axios from "axios";
+import styled from "styled-components";
 const MD5 = CryptoJS.MD5;
 const SHA256 = CryptoJS.SHA256;
+
+const Container = styled.div`
+  background: #fff;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+  padding: 5px;
+  font-size: 12px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`;
+
+const Badge = styled.b`
+  color: white;
+  padding: 2px 3px;
+  font-size: 10px;
+  background: #2e2e2e;
+  font-weight: bold;
+`;
+
+const I = styled.i`
+  cursor: pointer;
+`;
 
 const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
   const [messages, setMessages] = useState(0);
@@ -58,20 +83,21 @@ const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
   };
 
   return (
-    <div className="container-item mb">
+    <Container>
       <ReactTooltip place="left" effect="solid" />
       <div>
-        <b className="badge">{messages}</b> <b>{user.username} </b>
+        <Badge className="badge">{messages}</Badge>
+        <b>{user.username} </b>
       </div>
 
       <div>
-        <i
+        <I
           className="fas fa-info-circle"
           data-tip={user.username === currUser.username ? "You" : user.bio}
-        />{" "}
-        <i className="fas fa-comment" onClick={handleChannelOpen} />
+        />
+        <I className="fas fa-comment" onClick={handleChannelOpen} />
       </div>
-    </div>
+    </Container>
   );
 };
 

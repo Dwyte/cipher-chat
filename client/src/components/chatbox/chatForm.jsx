@@ -1,7 +1,19 @@
-/*jshint esversion: 8 */
-
 import React, { useState } from "react";
 import ReactTooltip from "react-tooltip";
+import Input from "../input";
+import styled from "styled-components";
+
+const Container = styled.div`
+  margin-top: 5px;
+  grid-column-start: 1;
+  grid-column-end: 10;
+  grid-row-start: 11;
+  grid-row-end: 12;
+`;
+
+const MsgInput = styled(Input)`
+  width: 100%;
+`;
 
 const ChatForm = ({ sendMessage, isSecret }) => {
   const [message, setMessage] = useState("");
@@ -28,26 +40,21 @@ const ChatForm = ({ sendMessage, isSecret }) => {
     <React.Fragment>
       <ReactTooltip place="top" effect="solid" />
 
-      <div className="message-form">
+      <Container>
         <form onSubmit={handleSendEvent}>
-          <input
+          <MsgInput
             value={message}
             onChange={handleMessageChange}
             minLength="1"
             maxLength="500"
             data-tip={inputPlaceholder}
-            placeholder="Start Chatting..."
+            placeholder="Type Something..."
             type="Text"
+            autoFocus
             required
           />
         </form>
-      </div>
-
-      <div className="message-submit">
-        <button onClick={handleSendEvent}>
-          <i className="fas fa-paper-plane" />
-        </button>
-      </div>
+      </Container>
     </React.Fragment>
   );
 };

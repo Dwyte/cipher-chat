@@ -1,10 +1,18 @@
-/*jshint esversion: 8 */
-
 import React, { useState, useEffect } from "react";
 import UserItem from "./userItem";
-import "./userList.css";
 import { searchUsers } from "../../services/userService";
 import Axios from "axios";
+import styled from "styled-components";
+import Input from "../input";
+
+const List = styled.div`
+  height: 362px;
+  overflow-y: scroll;
+
+  scrollbar-width: thin;
+  scrollbar-color: #2e2e2e #aeaeae;  
+  margin-bottom: 5px;
+`;
 
 const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
   const [users, setUsers] = useState([]);
@@ -37,17 +45,13 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
     };
   }, [search]);
 
-  // const filteredUsers = users.filter(u =>
-  //   u.username.match(new RegExp(search + ".*", "i"))
-  // );
-
   const handleSearchChange = ({ target }) => {
     setSearch(target.value);
   };
 
   return (
     <React.Fragment>
-      <div className="list mb">
+      <List>
         {users.map(u => (
           <UserItem
             key={users.indexOf(u)}
@@ -58,9 +62,9 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
             setPrivChannel={setPrivChannel}
           />
         ))}
-      </div>
+      </List>
 
-      <input
+      <Input
         value={search}
         onChange={handleSearchChange}
         placeholder="Search for someone to chat..."
