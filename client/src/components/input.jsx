@@ -9,6 +9,12 @@ const InputField = styled.input`
   box-shadow: 0;
   padding: 1rem;
   height: 2.25em;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #2e2e2e;
+  }
 `;
 
 const Input = props => {

@@ -4,6 +4,7 @@ import CryptoJS from "crypto-js";
 import validate from "./validateLoginForm";
 import UserForm from "../userForm";
 import Card from "../../card";
+import Title from "../title";
 const { SHA256 } = CryptoJS;
 
 const LoginForm = ({ history }) => {
@@ -30,10 +31,14 @@ const LoginForm = ({ history }) => {
   }
 
   return (
-    <Card>
-      <UserForm label="Login" onSubmit={handleSubmit} validate={validate} />
-      <a href="/register">Don't have an account yet?</a>
-    </Card>
+    <React.Fragment>
+      <Title />
+
+      <Card>
+        <UserForm label="Sign-in" onSubmit={handleSubmit} validate={validate} />
+        <a href="/register">Don't have an account yet?</a>
+      </Card>
+    </React.Fragment>
   );
 };
 

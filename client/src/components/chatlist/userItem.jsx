@@ -95,6 +95,7 @@ const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
           className="fas fa-info-circle"
           data-tip={user.username === currUser.username ? "You" : user.bio}
         />
+        {" "}
         <I className="fas fa-comment" onClick={handleChannelOpen} />
       </div>
     </Container>

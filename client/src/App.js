@@ -4,11 +4,25 @@ import Footer from "./components/footer";
 import Chat from "./components/chat/chat";
 import LoginForm from "./components/forms/login/loginForm";
 import RegisterForm from "./components/forms/register/registerForm";
-import "./App.css";
+import styled from "styled-components";
+
+const AppDiv = styled.div`
+  padding: 30px 15px;
+  display: inline-block;
+
+  * {
+    border-radius: 5px;
+  }
+
+  a {
+    font-size: 12px;
+    color: #2e2e2e;
+  }
+`;
 
 function App() {
   return (
-    <div className="app">
+    <AppDiv>
       <Switch>
         <Route path="/chat" component={Chat} />
         <Route path="/login" component={LoginForm} />
@@ -16,7 +30,7 @@ function App() {
         <Redirect from="/" to="/login" />
       </Switch>
       <Footer />
-    </div>
+    </AppDiv>
   );
 }
 

@@ -6,6 +6,8 @@ const CardDiv = styled.div`
   padding: 5px;
   max-width: 425px;
   margin-bottom: 5px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.75);
+  text-align: left!important;
 `;
 
 const Card = ({ children }) => {

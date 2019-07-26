@@ -10,6 +10,8 @@ const Message = styled.div`
   padding: 5px 5px;
   background: #2e2e2e;
   text-align: left !important;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+  
   cursor: pointer;
 `;
 

@@ -9,6 +9,11 @@ const AvatarDiv = styled.div`
   grid-column-end: 2;
   margin: auto;
   height: 40px;
+
+  img{
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 1px)!important;
+  }
+
 `;
 
 const Avatar = () => {

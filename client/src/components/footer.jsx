@@ -1,21 +1,36 @@
 import React from "react";
-import Card from "./card";
 import styled from "styled-components";
 
 const FooterText = styled.div`
-  font-size: 12px;
+  margin-top: 10px;
+  font-size: 16px;
   text-align: center;
   padding: 3px;
+  color: #fff;
+
+  i {
+    cursor: pointer;
+  }
 `;
 
 const Footer = () => {
+  function goto(url) {
+    window.location = url;
+  }
+
   return (
-    <Card>
+    <div>
       <FooterText>
-        CipherChat |{" "}
-        <a href="https://github.com/Dwyte/CipherChat">Source Code</a> <br />
+        <i
+          onClick={() => goto("https://github.com/Dwyte/CipherChat")}
+          class="fab fa-github"
+        />{" "}
+        <i
+          onClick={() => goto("https://twitter.com/DwyteMartin")}
+          class="fab fa-twitter"
+        />
       </FooterText>
-    </Card>
+    </div>
   );
 };
 

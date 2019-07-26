@@ -5,6 +5,7 @@ import cryptico from "cryptico";
 import validate from "./validateRegisterForm";
 import UserForm from "../userForm";
 import Card from "../../card";
+import Title from "../title";
 const { SHA256 } = CryptoJS;
 
 const RegisterForm = ({ history }) => {
@@ -33,10 +34,18 @@ const RegisterForm = ({ history }) => {
   }
 
   return (
-    <Card>
-      <UserForm label="Register" onSubmit={handleSubmit} validate={validate} />
-      <a href="/login">Already have an account?</a>
-    </Card>
+    <React.Fragment>
+      <Title/>
+
+      <Card>
+        <UserForm
+          label="Sign-up"
+          onSubmit={handleSubmit}
+          validate={validate}
+        />
+        <a href="/login">Already have an account?</a>
+      </Card>
+    </React.Fragment>
   );
 };
 

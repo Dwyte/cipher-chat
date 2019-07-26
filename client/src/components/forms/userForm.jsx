@@ -2,6 +2,11 @@ import React from "react";
 import InputForm from "./inputForm";
 import Button from "./button";
 import useForm from "./useForm";
+import styled from "styled-components";
+
+const Form = styled.form`
+  min-width: 425px;
+`
 
 const UserForm = ({ label, onSubmit, validate }) => {
   const { values, errors, handleChange, handleSubmit } = useForm(
@@ -23,7 +28,7 @@ const UserForm = ({ label, onSubmit, validate }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       {checkCurrentUser() ? (window.location = "/chat") : ""}
 
       <InputForm
@@ -43,7 +48,7 @@ const UserForm = ({ label, onSubmit, validate }) => {
         maxLength="36"
       />
       <Button label={label} />
-    </form>
+    </Form>
   );
 };
 

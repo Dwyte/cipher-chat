@@ -9,6 +9,10 @@ const NavButton = styled.button`
       color: white;
       border-color: #3e3e3e;
     `}
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #2e2e2e;
+  }
 `;
 
 const NavBtn = ({ children, isActive, handleClick }) => {

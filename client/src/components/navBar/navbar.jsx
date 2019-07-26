@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Nav = styled.div`
   display: inline-block;
   background: #fff;
-  /* box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15); */
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
   padding: 5px;
   border-radius: 3px;
   margin-bottom: 5px;

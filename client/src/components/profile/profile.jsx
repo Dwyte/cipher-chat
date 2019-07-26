@@ -9,6 +9,7 @@ const Grid = styled.div`
   display: grid;
   grid-auto-rows: 1fr;
   grid-auto-columns: 1fr;
+  text-align: left!important;
 `;
 
 const Logout = styled.div`
@@ -27,6 +28,13 @@ const LogoutButton = styled.button`
   color: white;
   width: 42px;
   height: 42px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #2e2e2e;
+  }
 `;
 
 const Profile = ({ user, onUpdateBio }) => {

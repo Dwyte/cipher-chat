@@ -1,15 +1,3 @@
-*:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 2px #2e2e2e;
-}
-
-.app {
-  background: #303030;
-  padding: 30px;
-  height: 100vh;
-  padding-top: 7%;
-}
-
 @media (min-width: 550px) {
   .app {
     padding-left: 16%;
@@ -32,10 +20,6 @@
   .app {
     padding-left: 38%;
   }
-}
-
-.app * {
-  border-radius: 4px;
 }
 
 .container {

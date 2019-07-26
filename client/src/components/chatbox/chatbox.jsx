@@ -22,9 +22,15 @@ const ChatBoxDiv = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 5px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 
   scrollbar-color: #2e2e2e #aeaeae;
   scrollbar-width: thin;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #2e2e2e;
+  }
 `;
 
 const ChatNotif = styled.div`
@@ -160,7 +166,7 @@ const ChatBox = ({ socket, user, match, userKeys }) => {
 
   const updateScroll = () => {
     const chatbox = document.getElementById("chatbox");
-    chatbox.scrollTop = chatbox.scrollHeight;
+    if (chatbox) chatbox.scrollTop = chatbox.scrollHeight;
   };
 
   const populateChatBox = () => {

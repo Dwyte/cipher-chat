@@ -5,11 +5,12 @@ import ChatBox from "../chatbox/chatbox";
 import UserLists from "../chatlist/userLists";
 import Profile from "../profile/profile";
 import NavBar from "../navBar/navbar";
+import Card from "../card";
 import { getUserProfile, updateUser } from "../../services/userService";
 import Axios from "axios";
-import openSocket from 'socket.io-client';
+import openSocket from "socket.io-client";
 const socket = openSocket(
-  process.env.REACT_APP_SOCKET_ENDPOINT || 'http://localhost:4200'
+  process.env.REACT_APP_SOCKET_ENDPOINT || "http://localhost:4200"
 );
 
 const Chat = ({ history, location }) => {
@@ -69,7 +70,7 @@ const Chat = ({ history, location }) => {
         history={history}
         user={user}
       />
-      <div className="container">
+      <Card>
         <NavBar
           history={history}
           location={location}
@@ -104,7 +105,7 @@ const Chat = ({ history, location }) => {
           />
           <Redirect from="/chat" to="/chat/list" />
         </Switch>
-      </div>
+      </Card>
     </React.Fragment>
   );
 };
