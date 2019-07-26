@@ -4,9 +4,7 @@ import Button from "./button";
 import useForm from "./useForm";
 import styled from "styled-components";
 
-const Form = styled.form`
-  min-width: 425px;
-`
+const Form = styled.form``
 
 const UserForm = ({ label, onSubmit, validate }) => {
   const { values, errors, handleChange, handleSubmit } = useForm(
@@ -38,6 +36,7 @@ const UserForm = ({ label, onSubmit, validate }) => {
         value={username || ""}
         onChange={handleChange}
         maxLength="24"
+        autoFocus
       />
       <InputForm
         type="password"

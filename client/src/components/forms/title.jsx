@@ -13,15 +13,12 @@ const TitleDiv = styled.div`
   }
 `;
 
-const Title = () => {
+const Title = ({ title, body }) => {
   return (
     <TitleDiv>
       <img src={Logo} width="50px" />
-      <h1>CipherChat</h1>
-      <p>
-        An end-to-end encrypted Instant Messaging App <br />
-        Chat secretly and securely on the web.
-      </p>
+      <h1>{title || "~"}</h1>
+      <p>{body || "..."}</p>
     </TitleDiv>
   );
 };

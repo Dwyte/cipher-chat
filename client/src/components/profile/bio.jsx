@@ -2,24 +2,19 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Input from "../input";
 
-const BioDiv = styled.div`
-  grid-column-start: 2;
-  grid-column-end: 11;
-  padding: 0px 0px 0px 5px;
-`;
-
 const I = styled.i`
-  color: #3a3a3a;
-  font-size: 10px;
+  color: white;
+  font-size: 8px;
   margin-left: 3px;
   cursor: pointer;
 `;
 
 const BioInput = styled(Input)`
   display: inline-block;
-  width: 75%;
+  width: 150px;
   padding: 5px;
-  height: 18px;
+  height: 16px;
+  font-size: 12px;
 `;
 
 const Bio = ({ bio, onSave }) => {
@@ -38,7 +33,7 @@ const Bio = ({ bio, onSave }) => {
   }, [bio]);
 
   return (
-    <BioDiv>
+    <React.Fragment>
       {onEdit ? (
         <React.Fragment>
           <BioInput
@@ -49,12 +44,9 @@ const Bio = ({ bio, onSave }) => {
           <I onClick={handleSave} className="fas fa-save" />
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          <small>{bio || "bio"}</small>
-          <I onClick={flipEdit} className="fas fa-edit" />
-        </React.Fragment>
+        <span onClick={() => setOnEdit(true)}>{bio || "bio"}</span>
       )}
-    </BioDiv>
+    </React.Fragment>
   );
 };
 

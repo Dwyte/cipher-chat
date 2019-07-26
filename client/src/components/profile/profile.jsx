@@ -1,39 +1,47 @@
 import React from "react";
-import Avatar from "./avatar";
-import Username from "./username";
-import Bio from "./bio";
-import Card from "../card";
+import Title from "../forms/title";
 import styled from "styled-components";
+import Bio from "./bio";
+
+const Container = styled.div`
+  color: white;
+  margin-bottom: 3px;
+
+  a {
+    color: white !important;
+  }
+
+  span {
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+`;
 
 const Grid = styled.div`
   display: grid;
-  grid-auto-rows: 1fr;
-  grid-auto-columns: 1fr;
-  text-align: left!important;
-`;
+  grid-template-columns: auto auto auto;
 
-const Logout = styled.div`
-  grid-row-start: 1;
-  grid-row-end: 3;
-  grid-column-start: 11;
-  grid-column-end: 12;
-  margin: auto;
-  border: 0px;
-`;
+  div {
+    font-size: 12px;
+    cursor: pointer;
 
-const LogoutButton = styled.button`
-  background: #2e2e2e;
-  border: #3a3a3a;
-  font-size: 26px;
-  color: white;
-  width: 42px;
-  height: 42px;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+    &:hover {
+      text-decoration: underline;
+    }
 
+    @media only screen and (max-width: 600px) {
+      font-size: 16px;
+    }
+  }
 
-  &:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 2px #2e2e2e;
+  #status {
+    text-align: left !important;
+  }
+
+  #logout {
+    text-align: right !important;
   }
 `;
 
@@ -45,21 +53,29 @@ const Profile = ({ user, onUpdateBio }) => {
   };
 
   return (
-    <Card>
+    <Container>
+      <Title
+        title={user.username}
+        body={<Bio bio={user.bio} onSave={onUpdateBio} />}
+      />
+
       <Grid>
-        <Avatar />
+        <div id="status">
+          <i className="fas fa-circle" /> Online
+        </div>
 
-        <Username username={user.username} />
+        <div id="center">
+          <i className="fas fa-search" /> {" "}
+          <i className="fas fa-globe" /> {" "}
+          <i className="fas fa-user" /> {" "}
+          <i className="fas fa-envelope" />
+        </div>
 
-        <Bio onSave={onUpdateBio} bio={user.bio} />
-
-        <Logout onClick={handleLogout}>
-          <LogoutButton className="pointer">
-            <i className="fas fa-sign-out-alt" />
-          </LogoutButton>
-        </Logout>
+        <div onClick={handleLogout} id="logout">
+          Logout <i className="fas fa-times-circle" />
+        </div>
       </Grid>
-    </Card>
+    </Container>
   );
 };
 

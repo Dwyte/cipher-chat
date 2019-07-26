@@ -1,5 +1,5 @@
 import React from "react";
-import avatar from "./avatar.jpg";
+import avatar from "../../images/cc-icon.png";
 import styled from "styled-components";
 
 const AvatarDiv = styled.div`
@@ -19,7 +19,7 @@ const AvatarDiv = styled.div`
 const Avatar = () => {
   return (
     <AvatarDiv>
-      <img alt="anon" src={avatar} width="42" />
+      <img alt="anon" src={avatar} width="50" />
     </AvatarDiv>
   );
 };

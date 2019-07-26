@@ -68,6 +68,7 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
         value={search}
         onChange={handleSearchChange}
         placeholder="Search for someone to chat..."
+        autoFocus
       />
     </React.Fragment>
   );

@@ -7,8 +7,9 @@ import RegisterForm from "./components/forms/register/registerForm";
 import styled from "styled-components";
 
 const AppDiv = styled.div`
-  padding: 30px 15px;
   display: inline-block;
+  max-width: 400px;
+  width: 100%;
 
   * {
     border-radius: 5px;

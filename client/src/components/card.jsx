@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 const CardDiv = styled.div`
   background: #e8e8e8;
+  box-sizing: border-box;
   padding: 5px;
-  max-width: 425px;
-  margin-bottom: 5px;
+  width: 100%;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.75);
-  text-align: left!important;
+  text-align: left !important;
 `;
 
 const Card = ({ children }) => {

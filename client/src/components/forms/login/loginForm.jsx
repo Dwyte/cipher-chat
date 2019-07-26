@@ -32,7 +32,15 @@ const LoginForm = ({ history }) => {
 
   return (
     <React.Fragment>
-      <Title />
+      <Title
+        title={"CipherChat"}
+        body={
+          <React.Fragment>
+            An End-to-End Encrypted Instant Messaging App <br />
+            Chat secretly and securely on the web.
+          </React.Fragment>
+        }
+      />
 
       <Card>
         <UserForm label="Sign-in" onSubmit={handleSubmit} validate={validate} />
