@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import CryptoJS from "crypto-js";
+import React, { useEffect } from "react";
+import { MD5 } from "crypto-js";
 import ReactTooltip from "react-tooltip";
-import { getChats } from "../../services/chatService";
 import Axios from "axios";
 import styled from "styled-components";
-const MD5 = CryptoJS.MD5;
-const SHA256 = CryptoJS.SHA256;
 
 const Container = styled.div`
   background: #fff;
@@ -19,43 +16,34 @@ const Container = styled.div`
   margin-bottom: 5px;
 `;
 
-const Badge = styled.b`
-  color: white;
-  padding: 2px 3px;
-  font-size: 10px;
-  background: #2e2e2e;
-  font-weight: bold;
-`;
-
 const I = styled.i`
   cursor: pointer;
 `;
 
-const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
-  const [messages, setMessages] = useState(0);
+const OnlineUser = ({ user, currUser, history, setChannel, setPrivChannel }) => {
 
   useEffect(() => {
     const source = Axios.CancelToken.source();
 
-    const getMsgsLen = async () => {
-      try {
-        const filter = {
-          channel: getChannelId(),
-          pbkHash: SHA256(user.publicKey).toString()
-        };
+    // const getMsgsLen = async () => {
+    //   try {
+    //     const filter = {
+    //       channel: getChannelId(),
+    //       pbkHash: SHA256(user.publicKey).toString()
+    //     };
 
-        const { data: chats } = await getChats(filter, {
-          cancelToken: source.token
-        });
+    //     const { data: chats } = await getChats(filter, {
+    //       cancelToken: source.token
+    //     });
 
-        setMessages(chats.length);
-      } catch (error) {
-        if (Axios.isCancel(error)) console.log("Caught Cancel");
-        else throw error;
-      }
-    };
+    //     setMessages(chats.length);
+    //   } catch (error) {
+    //     if (Axios.isCancel(error)) console.log("Caught Cancel");
+    //     else throw error;
+    //   }
+    // };
 
-    getMsgsLen();
+    // getMsgsLen();
 
     return () => {
       source.cancel();
@@ -66,6 +54,7 @@ const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
   const getChannelId = () => {
     const { publicKey: userPbk } = user;
     const { publicKey: cUserPnk } = currUser;
+
     const sorted = [userPbk, cUserPnk].sort();
     const channelId = MD5(sorted.join()).toString();
 
@@ -86,7 +75,6 @@ const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
     <Container>
       <ReactTooltip place="left" effect="solid" />
       <div>
-        <Badge className="badge">{messages}</Badge>
         <b>{user.username} </b>
       </div>
 
@@ -94,12 +82,11 @@ const UserItem = ({ user, currUser, history, setChannel, setPrivChannel }) => {
         <I
           className="fas fa-info-circle"
           data-tip={user.username === currUser.username ? "You" : user.bio}
-        />
-        {" "}
+        />{" "}
         <I className="fas fa-comment" onClick={handleChannelOpen} />
       </div>
     </Container>
   );
 };
 
-export default UserItem;
+export default OnlineUser;

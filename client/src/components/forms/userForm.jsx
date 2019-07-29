@@ -4,7 +4,7 @@ import Button from "./button";
 import useForm from "./useForm";
 import styled from "styled-components";
 
-const Form = styled.form``
+const Form = styled.form``;
 
 const UserForm = ({ label, onSubmit, validate }) => {
   const { values, errors, handleChange, handleSubmit } = useForm(

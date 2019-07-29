@@ -16,7 +16,7 @@ const TitleDiv = styled.div`
 const Title = ({ title, body }) => {
   return (
     <TitleDiv>
-      <img src={Logo} width="50px" />
+      <img src={Logo} alt="CipherChat" width="50px" />
       <h1>{title || "~"}</h1>
       <p>{body || "..."}</p>
     </TitleDiv>

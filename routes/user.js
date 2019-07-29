@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const pbkdf2 = require("pbkdf2");
+const bcrypt = require("bcrypt");
 
 const auth = require("../middleware/auth");
 
@@ -45,7 +47,12 @@ router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error);
 
-  let user = new User(req.body);
+  let { username, auth } = req.body;
+
+  const salt = bcrypt.genSaltSync(10000);
+  auth = pbkdf2.pbkdf2Sync(auth, salt, 50000, 64, "sha512").toString("hex");
+
+  let user = new User({ username, auth, salt });
   user = await user.save();
 
   res.status(201).send(user);
@@ -53,19 +60,28 @@ router.post("/", async (req, res) => {
 
 // Login / Authentication
 router.post("/auth", async (req, res) => {
-  const { auth } = req.body;
+  let { username, auth } = req.body;
 
-  const user = await User.findOne({ auth });
+  const user = await User.findOne({ username });
   if (!user) return res.status(404).send("Wrong credentials");
+
+  const { salt, auth: _auth } = user;
+  auth = pbkdf2.pbkdf2Sync(auth, salt, 50000, 64, "sha512").toString("hex");
+
+  if (auth !== _auth) return res.status(404).send("Wrong credentials");
 
   const userToken = generateToken(auth);
 
-  res.send(userToken);
+  res.send({ userToken, user });
 });
 
 // Update Bio
 router.put("/:_id", async (req, res) => {
-  let user = await User.findByIdAndUpdate(req.params._id, req.body);
+  let user = await User.findByIdAndUpdate(
+    req.params._id,
+    { $set: req.body },
+    { new: true }
+  );
   if (!user) return res.status(404).send("User was not found.");
 
   user = await user.save();

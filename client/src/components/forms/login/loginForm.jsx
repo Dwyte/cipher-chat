@@ -5,21 +5,31 @@ import validate from "./validateLoginForm";
 import UserForm from "../userForm";
 import Card from "../../card";
 import Title from "../title";
-const { SHA256 } = CryptoJS;
+import pbkdf2 from "pbkdf2";
 
 const LoginForm = ({ history }) => {
   async function handleSubmit(username, password) {
     const isExisting = await checkUsername(username);
     if (!isExisting) return alert("User with the username not found.");
 
-    const auth = SHA256(username + password).toString();
+    const auth = pbkdf2
+      .pbkdf2Sync(password, username, 25000, 64, "sha512")
+      .toString("hex");
 
     try {
-      const { data: userToken } = await authUser({ auth });
+      const { userToken, user } = await authUser({ username, auth });
+      const { auth: _auth, privateKeyCipher, salt } = user;
+      const passphrase = pbkdf2
+        .pbkdf2Sync(_auth + password, salt, 25000, 64, "sha512")
+        .toString("hex");
 
-      const passPhrase = SHA256(auth + password).toString();
-      localStorage.setItem("pvk_phrase", passPhrase);
+      const privateKeyStr = CryptoJS.AES.decrypt(
+        privateKeyCipher,
+        passphrase
+      ).toString(CryptoJS.enc.Utf8);
+
       localStorage.setItem("userToken", userToken);
+      localStorage.setItem("pvk", privateKeyStr);
 
       alert("Account authenticated!");
 

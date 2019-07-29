@@ -45,8 +45,10 @@ const Grid = styled.div`
   }
 `;
 
-const Profile = ({ user, onUpdateBio }) => {
+const Profile = ({ user, onUpdateBio, socket }) => {
   const handleLogout = () => {
+    socket.emit("user-logout", user._id);
+
     localStorage.clear();
 
     window.location = "/";
@@ -65,10 +67,8 @@ const Profile = ({ user, onUpdateBio }) => {
         </div>
 
         <div id="center">
-          <i className="fas fa-search" /> {" "}
-          <i className="fas fa-globe" /> {" "}
-          <i className="fas fa-user" /> {" "}
-          <i className="fas fa-envelope" />
+          <i className="fas fa-search" /> <i className="fas fa-globe" />{" "}
+          <i className="fas fa-user" /> <i className="fas fa-envelope" />
         </div>
 
         <div onClick={handleLogout} id="logout">

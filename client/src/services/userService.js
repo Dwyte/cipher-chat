@@ -12,7 +12,7 @@ export const searchUsers = async (searchData, config) => {
 
 export const postUser = async data => {
   return await http.post(serviceEndpoint, data);
-};  
+};
 
 export const updateUser = async (_id, data) => {
   return await http.put(`${serviceEndpoint}/${_id}`, data);
@@ -25,7 +25,9 @@ export const checkUsername = async username => {
 };
 
 export const authUser = async auth => {
-  return http.post(`${serviceEndpoint}/auth/`, auth);
+  const { data } = await http.post(`${serviceEndpoint}/auth/`, auth);
+
+  return data;
 };
 
 export const getUserProfile = async config => {

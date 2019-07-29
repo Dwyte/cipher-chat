@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import cryptico from "cryptico";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ChatBox from "../chatbox/chatbox";
-import UserLists from "../chatlist/userLists";
+import OnlineUsers from "../onlineUsers/onlineUsers";
 import Profile from "../profile/profile";
 import NavBar from "../navBar/navbar";
 import Card from "../card";
+import crypto from "crypto";
 import { getUserProfile, updateUser } from "../../services/userService";
 import Axios from "axios";
 import openSocket from "socket.io-client";
@@ -16,8 +16,10 @@ const socket = openSocket(
 const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
   const [channel, setChannel] = useState("global");
-  const [userKeys, setUserKeys] = useState({});
   const [privChannel, setPrivChannel] = useState("");
+  const [isOnline, setIsOnline] = useState(false);
+
+  const userECDH = getECDH();
 
   useEffect(() => {
     socket.connect();
@@ -30,26 +32,45 @@ const Chat = ({ history, location }) => {
           cancelToken: source.token
         });
         setUser(user);
+
+        if (!isOnline) {
+          socket.emit("user-login", user);
+          setIsOnline(true);
+        }
       } catch (error) {
         if (Axios.isCancel(error)) console.log("Caught Cancel");
         else throw error;
       }
     };
 
-    setUserKeys(getKeys());
-
     getUser();
+
+    history.push("/chat/list");
   }, []);
 
-  const getKeys = () => {
-    const pvk_phrase = localStorage.getItem("pvk_phrase");
+  function getECDH() {
+    const pvkStr = localStorage.getItem("pvk");
 
-    const pvk = cryptico.generateRSAKey(pvk_phrase, 1024);
+    const pvkParse = JSON.parse(pvkStr);
 
-    const pbk = cryptico.publicKeyString(pvk);
+    const pvk = Buffer.from(pvkParse.data);
 
-    return { pvk, pbk };
-  };
+    const ecdh = crypto.createECDH("secp521r1");
+    ecdh.setPrivateKey(pvk);
+
+    return ecdh;
+  }
+
+  function getPassphrase() {
+    const chatMatePbkStr = localStorage.getItem("chatmate_pbk");
+    const chatMatePbkParsed = JSON.parse(chatMatePbkStr);
+    const chatMatePbk = Buffer.from(chatMatePbkParsed.data);
+
+    if (!userECDH) return console.log("ECDH is null");
+
+    const passphrase = userECDH.computeSecret(chatMatePbk).toString("hex");
+    return passphrase;
+  }
 
   const handleUpdateUserBio = async bio => {
     const _user = { ...user };
@@ -68,6 +89,7 @@ const Chat = ({ history, location }) => {
       <Profile
         onUpdateBio={handleUpdateUserBio}
         history={history}
+        socket={socket}
         user={user}
       />
       <Card>
@@ -88,16 +110,17 @@ const Chat = ({ history, location }) => {
                 socket={socket}
                 user={user}
                 channel={channel}
-                userKeys={userKeys}
+                getPassphrase={getPassphrase}
               />
             )}
           />
           <Route
             path="/chat/list"
             render={props => (
-              <UserLists
+              <OnlineUsers
                 {...props}
                 user={user}
+                socket={socket}
                 setChannel={setChannel}
                 setPrivChannel={setPrivChannel}
               />

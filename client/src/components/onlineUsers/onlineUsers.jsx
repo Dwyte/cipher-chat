@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import UserItem from "./userItem";
-import { searchUsers } from "../../services/userService";
+import OnlineUser from "./onlineUser";
 import Axios from "axios";
 import styled from "styled-components";
 import Input from "../input";
+import { getOnlineUsers } from "../../services/onlineUsersService";
 
 const List = styled.div`
   height: 362px;
   overflow-y: scroll;
 
   scrollbar-width: thin;
-  scrollbar-color: #2e2e2e #aeaeae;  
+  scrollbar-color: #2e2e2e #aeaeae;
   margin-bottom: 5px;
 `;
 
-const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
+const OnlineUsers = ({ user, history, socket, setChannel, setPrivChannel }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -23,14 +23,11 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
 
     const getUsers = async () => {
       try {
-        const { data: users } = await searchUsers(
-          { regex: `${search}.*` },
-          {
-            cancelToken: source.token
-          }
-        );
+        const onlineUsers = await getOnlineUsers({
+          cancelToken: source.token
+        });
 
-        setUsers(users);
+        setUsers(onlineUsers);
       } catch (error) {
         if (Axios.isCancel(error)) console.log("Caught Cancel");
         else throw error;
@@ -45,6 +42,12 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
     };
   }, [search]);
 
+  socket.on("new-user", newUsers => {
+    let onlineUsers = [...newUsers];
+
+    setUsers(onlineUsers);
+  });
+
   const handleSearchChange = ({ target }) => {
     setSearch(target.value);
   };
@@ -52,16 +55,19 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
   return (
     <React.Fragment>
       <List>
-        {users.map(u => (
-          <UserItem
-            key={users.indexOf(u)}
-            user={u}
-            currUser={user}
-            history={history}
-            setChannel={setChannel}
-            setPrivChannel={setPrivChannel}
-          />
-        ))}
+        {users.map(
+          ({ user: _user }) =>
+            _user.username !== user.username && (
+              <OnlineUser
+                key={users.indexOf(_user)}
+                user={_user}
+                currUser={user}
+                history={history}
+                setChannel={setChannel}
+                setPrivChannel={setPrivChannel}
+              />
+            )
+        )}
       </List>
 
       <Input
@@ -74,4 +80,4 @@ const UserLists = ({ user, history, setChannel, setPrivChannel }) => {
   );
 };
 
-export default UserLists;
+export default OnlineUsers;

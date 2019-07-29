@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import cryptico from "cryptico";
+import CryptoJS from "crypto-js";
 import styled from "styled-components";
 import ChatTimestamp from "./chatTimestamp";
 import ChatMsg from "./chatMsg";
+
+const { AES } = CryptoJS;
 
 const ParentContainer = styled.div`
   ${props =>
@@ -35,7 +37,7 @@ const ChatBubble = ({
   username,
   msgObj,
   isSecret,
-  userKeys,
+  passphrase,
   prevMsg,
   decryptMsg
 }) => {
@@ -45,7 +47,7 @@ const ChatBubble = ({
 
   if (isSecret)
     if (!decrypted) {
-      name = cryptico.decrypt(name, userKeys.pvk).plaintext;
+      name = AES.decrypt(name, passphrase).toString(CryptoJS.enc.Utf8);
       if (name === username) decryptMsg(msgObj);
     }
 
@@ -58,7 +60,7 @@ const ChatBubble = ({
     const prevNamePlain = isSecret
       ? prevDecrypted
         ? prevName
-        : cryptico.decrypt(prevName, userKeys.pvk).plaintext
+        : AES.decrypt(name, passphrase).toString(CryptoJS.enc.Utf8)
       : prevName;
     return prevNamePlain === name;
   }
