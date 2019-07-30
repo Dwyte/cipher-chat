@@ -6,7 +6,7 @@ import styled from "styled-components";
 const { AES } = CryptoJS;
 
 const Container = styled.div`
-  height: 400px;
+  height: 415px;
   display: grid;
   grid-auto-rows: 1fr;
   grid-auto-columns: 1fr;

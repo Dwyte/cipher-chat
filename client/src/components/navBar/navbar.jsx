@@ -3,18 +3,16 @@ import NavBtn from "./navBtn";
 import styled from "styled-components";
 
 const Nav = styled.div`
-  display: inline-block;
-  background: #fff;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-  padding: 5px;
-  border-radius: 3px;
-  margin-bottom: 5px;
-`;
+  position: relative;
+  left: -50%;
+  background: #e8e8e8;
+  padding: 0px 5px 2px 5px;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
 
-const NavGrid = styled.div`
-  display: grid;
-  grid-column-gap: 3px;
-  grid-template-columns: auto auto;
+  i {
+    cursor: pointer;
+  }
 `;
 
 const NavBar = ({
@@ -25,29 +23,26 @@ const NavBar = ({
   setPrivChannel
 }) => {
   return (
-    <Nav>
-      <NavGrid>
-        <NavBtn
-          isActive={location.pathname === "/chat/list"}
-          handleClick={() => {
-            setPrivChannel("");
-            history.push("/chat/list");
-          }}
-        >
-          <i className="fas fa-envelope" /> {privChannel}
-        </NavBtn>
-        <NavBtn
-          isActive={location.pathname === "/chat/ch/global"}
-          handleClick={() => {
+    <div style={{ position: "absolute", left: "50%" }}>
+      <Nav>
+        <i className="fas fa-envelope" />{" "}
+        <i
+          onClick={() => {
             setPrivChannel("");
             setChannel("global");
             history.push("/chat/ch/global");
           }}
-        >
-          <i className="fas fa-globe" /> Global
-        </NavBtn>
-      </NavGrid>
-    </Nav>
+          className="fas fa-globe"
+        />{" "}
+        <i
+          className="fas fa-search"
+          onClick={() => {
+            setPrivChannel("");
+            history.push("/chat/list");
+          }}
+        />
+      </Nav>
+    </div>
   );
 };
 

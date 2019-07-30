@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Title from "../forms/title";
 import styled from "styled-components";
 import Bio from "./bio";
@@ -45,9 +45,7 @@ const Grid = styled.div`
   }
 `;
 
-const Profile = ({ user, onUpdateBio, socket }) => {
-  const [isOnline, setIsOnline] = useState(true);
-
+const Profile = ({ user, onUpdateBio, socket, flipOpenNav, isOnline, setIsOnline }) => {
   const handleLogout = () => {
     localStorage.clear();
 
@@ -58,8 +56,15 @@ const Profile = ({ user, onUpdateBio, socket }) => {
 
   function handleStatusChange() {
     setIsOnline(!isOnline);
+
+    localStorage.setItem("isOnline", (!isOnline).toString());
+
     if (isOnline) socket.emit("user-offline");
     else socket.emit("new-user", user);
+  }
+
+  function handleNavClick() {
+    flipOpenNav();
   }
 
   return (
@@ -75,8 +80,15 @@ const Profile = ({ user, onUpdateBio, socket }) => {
         </div>
 
         <div id="center">
-          <i className="fas fa-search" /> <i className="fas fa-globe" />{" "}
-          <i className="fas fa-user" /> <i className="fas fa-envelope" />
+          <i
+            className="fas fa-ellipsis-h"
+            onClick={handleNavClick}
+            onPointerLeave={() => {
+              setTimeout(() => {
+                flipOpenNav(false);
+              }, 2500);
+            }}
+          />
         </div>
 
         <div onClick={handleLogout} id="logout">

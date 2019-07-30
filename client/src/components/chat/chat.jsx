@@ -18,6 +18,7 @@ const Chat = ({ history, location }) => {
   const [channel, setChannel] = useState("global");
   const [privChannel, setPrivChannel] = useState("");
   const [isOnline, setIsOnline] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
 
   const userECDH = getECDH();
 
@@ -33,9 +34,17 @@ const Chat = ({ history, location }) => {
         });
         setUser(user);
 
-        if (!isOnline) {
+        const localIsOnline = localStorage.getItem("isOnline");
+
+        if (!localIsOnline) {
           socket.emit("new-user", user);
           setIsOnline(true);
+          localStorage.setItem("isOnline", String(true));
+        } else {
+          const _localIsOnline = JSON.parse(localIsOnline);
+          setIsOnline(_localIsOnline);
+
+          if (_localIsOnline) socket.emit("new-user", user);
         }
       } catch (error) {
         if (Axios.isCancel(error)) console.log("Caught Cancel");
@@ -88,22 +97,31 @@ const Chat = ({ history, location }) => {
     }
   };
 
+  function flipOpenNav(boolean = !navOpen) {
+    setNavOpen(boolean);
+  }
+
   return (
     <React.Fragment>
       <Profile
         onUpdateBio={handleUpdateUserBio}
+        flipOpenNav={flipOpenNav}
         history={history}
         socket={socket}
         user={user}
+        isOnline={isOnline}
+        setIsOnline={setIsOnline}
       />
       <Card>
-        <NavBar
-          history={history}
-          location={location}
-          setChannel={setChannel}
-          privChannel={privChannel}
-          setPrivChannel={setPrivChannel}
-        />
+        {navOpen && (
+          <NavBar
+            history={history}
+            location={location}
+            setChannel={setChannel}
+            privChannel={privChannel}
+            setPrivChannel={setPrivChannel}
+          />
+        )}
 
         <Switch>
           <Route
