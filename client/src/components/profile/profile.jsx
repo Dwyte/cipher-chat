@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Title from "../forms/title";
 import styled from "styled-components";
 import Bio from "./bio";
@@ -46,13 +46,21 @@ const Grid = styled.div`
 `;
 
 const Profile = ({ user, onUpdateBio, socket }) => {
-  const handleLogout = () => {
-    socket.emit("user-logout", user._id);
+  const [isOnline, setIsOnline] = useState(true);
 
+  const handleLogout = () => {
     localStorage.clear();
 
     window.location = "/";
   };
+
+  const status = isOnline ? "Online" : "Offline";
+
+  function handleStatusChange() {
+    setIsOnline(!isOnline);
+    if (isOnline) socket.emit("user-offline");
+    else socket.emit("new-user", user);
+  }
 
   return (
     <Container>
@@ -62,8 +70,8 @@ const Profile = ({ user, onUpdateBio, socket }) => {
       />
 
       <Grid>
-        <div id="status">
-          <i className="fas fa-circle" /> Online
+        <div onClick={handleStatusChange} id="status">
+          <i className="fas fa-circle" /> {status}
         </div>
 
         <div id="center">

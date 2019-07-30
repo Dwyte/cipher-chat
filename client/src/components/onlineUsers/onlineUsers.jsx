@@ -42,7 +42,7 @@ const OnlineUsers = ({ user, history, socket, setChannel, setPrivChannel }) => {
     };
   }, [search]);
 
-  socket.on("new-user", newUsers => {
+  socket.on("user-connected", newUsers => {
     let onlineUsers = [...newUsers];
 
     setUsers(onlineUsers);

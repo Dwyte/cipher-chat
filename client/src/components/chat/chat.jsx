@@ -34,7 +34,7 @@ const Chat = ({ history, location }) => {
         setUser(user);
 
         if (!isOnline) {
-          socket.emit("user-login", user);
+          socket.emit("new-user", user);
           setIsOnline(true);
         }
       } catch (error) {
@@ -46,6 +46,10 @@ const Chat = ({ history, location }) => {
     getUser();
 
     history.push("/chat/list");
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   function getECDH() {
