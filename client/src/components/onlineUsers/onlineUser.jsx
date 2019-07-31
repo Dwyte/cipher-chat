@@ -20,7 +20,7 @@ const I = styled.i`
   cursor: pointer;
 `;
 
-const OnlineUser = ({ user, currUser, history, setChannel, setPrivChannel }) => {
+const OnlineUser = ({ user, currUser, history, setChannel, setPrivChannel, flipOpenNav }) => {
 
   useEffect(() => {
     const source = Axios.CancelToken.source();
@@ -67,6 +67,7 @@ const OnlineUser = ({ user, currUser, history, setChannel, setPrivChannel }) => 
     localStorage.setItem("chatmate_pbk", user.publicKey);
     setPrivChannel(user.username);
     setChannel(channelId);
+    flipOpenNav(false);
 
     history.push("/chat/ch/" + channelId);
   };

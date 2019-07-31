@@ -3,35 +3,8 @@ import ChatBubble from "./chatbubble/chatbubble";
 import ChatForm from "./chatForm";
 import CryptoJS from "crypto-js";
 import styled from "styled-components";
+import Container from "../container";
 const { AES } = CryptoJS;
-
-const Container = styled.div`
-  height: 415px;
-  display: grid;
-  grid-auto-rows: 1fr;
-  grid-auto-columns: 1fr;
-`;
-
-const ChatBoxDiv = styled.div`
-  grid-column-start: 1;
-  grid-column-end: 10;
-  grid-row-start: 1;
-  grid-row-end: 11;
-  background: white;
-  max-height: 400px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding: 5px;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-
-  scrollbar-color: #2e2e2e #aeaeae;
-  scrollbar-width: thin;
-
-  &:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 2px #2e2e2e;
-  }
-`;
 
 const ChatNotif = styled.div`
   text-align: center;
@@ -141,7 +114,7 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
 
   const updateScroll = () => {
     const chatbox = document.getElementById("chatbox");
-    if (chatbox) chatbox.scrollTop = chatbox.scrollHeight;
+      if (chatbox) chatbox.scrollTop = chatbox.scrollHeight;
   };
 
   const populateChatBox = () => {
@@ -171,11 +144,11 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
   };
 
   return (
-    <Container>
-      <ChatBoxDiv id="chatbox">{populateChatBox()}</ChatBoxDiv>
+    <React.Fragment>
+      <Container id="chatbox">{populateChatBox()}</Container>
 
       <ChatForm sendMessage={sendMessage} isSecret={isSecret} />
-    </Container>
+    </React.Fragment>
   );
 };
 

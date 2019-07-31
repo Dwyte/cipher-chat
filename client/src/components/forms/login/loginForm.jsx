@@ -8,15 +8,18 @@ import Title from "../title";
 import pbkdf2 from "pbkdf2";
 
 const LoginForm = ({ history }) => {
-  async function handleSubmit(username, password) {
-    const isExisting = await checkUsername(username);
-    if (!isExisting) return alert("User with the username not found.");
-
-    const auth = pbkdf2
-      .pbkdf2Sync(password, username, 25000, 64, "sha512")
-      .toString("hex");
-
+  async function handleSubmit(username, password, callback) {
     try {
+      const isExisting = await checkUsername(username);
+      if (!isExisting) {
+        callback();
+        return alert("User with the username not found.");
+      }
+
+      const auth = pbkdf2
+        .pbkdf2Sync(password, username, 25000, 64, "sha512")
+        .toString("hex");
+
       const { userToken, user } = await authUser({ username, auth });
       const { auth: _auth, privateKeyCipher, salt } = user;
       const passphrase = pbkdf2
@@ -35,6 +38,7 @@ const LoginForm = ({ history }) => {
 
       history.push("/chat");
     } catch (err) {
+      callback();
       alert("Authentication Failed: Wrong Credentials");
       localStorage.clear();
     }

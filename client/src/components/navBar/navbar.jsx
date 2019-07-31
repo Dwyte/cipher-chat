@@ -9,6 +9,7 @@ const Nav = styled.div`
   padding: 0px 5px 2px 5px;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
+  font-size: 12px;
 
   i {
     cursor: pointer;
@@ -17,7 +18,6 @@ const Nav = styled.div`
 
 const NavButton = styled.i`
   cursor: pointer;
-  font-size: 20px;
 
   &:hover {
     color: #1e1e1e;
@@ -45,6 +45,9 @@ const NavBar = ({
       break;
     case "/chat/search":
       preview = "Search";
+      break;
+    default:
+      preview = privChannel;
       break;
   }
 

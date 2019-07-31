@@ -13,15 +13,17 @@ import pbkdf2 from "pbkdf2";
 import crypto from "crypto";
 
 const RegisterForm = ({ history }) => {
-  async function handleSubmit(username, password) {
-    const isExisting = await checkUsername(username);
-    if (isExisting) return alert("User with the username already exists");
-
-    const auth = pbkdf2
-      .pbkdf2Sync(password, username, 25000, 64, "sha512")
-      .toString("hex");
-
+  async function handleSubmit(username, password, callback) {
     try {
+      const isExisting = await checkUsername(username);
+      if (isExisting) {
+        callback();
+        return alert("User with the username already exists");
+      }
+      const auth = pbkdf2
+        .pbkdf2Sync(password, username, 25000, 64, "sha512")
+        .toString("hex");
+
       const { data: user } = await postUser({ username, auth });
 
       const { _id, auth: _auth, salt } = user;
@@ -48,6 +50,7 @@ const RegisterForm = ({ history }) => {
       history.push("/login");
     } catch (err) {
       console.log(err);
+      callback();
       alert("Error: ", err.message);
     }
   }

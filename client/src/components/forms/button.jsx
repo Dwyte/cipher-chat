@@ -14,8 +14,12 @@ const Btn = styled.button`
   padding: 5px;
 `;
 
-const Button = ({ label }) => {
-  return <Btn id="button">{label}</Btn>;
+const Button = ({ children, ...rest }) => {
+  return (
+    <Btn id="button" {...rest}>
+      {children}
+    </Btn>
+  );
 };
 
 export default Button;

@@ -145,6 +145,7 @@ const Chat = ({ history, location }) => {
                 socket={socket}
                 setChannel={setChannel}
                 setPrivChannel={setPrivChannel}
+                flipOpenNav={flipOpenNav}
               />
             )}
           />

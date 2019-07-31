@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import OnlineUser from "./onlineUser";
 import Axios from "axios";
-import styled from "styled-components";
 import Input from "../input";
 import { getOnlineUsers } from "../../services/onlineUsersService";
+import Container from "../container";
 
-const List = styled.div`
-  background: white;
-  height: 377px;
-  overflow-y: scroll;
-
-  scrollbar-width: thin;
-  scrollbar-color: #2e2e2e #aeaeae;
-  margin-bottom: 5px;
-`;
-
-const OnlineUsers = ({ user, history, socket, setChannel, setPrivChannel }) => {
+const OnlineUsers = ({
+  user,
+  history,
+  socket,
+  setChannel,
+  setPrivChannel,
+  flipOpenNav
+}) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -55,7 +52,7 @@ const OnlineUsers = ({ user, history, socket, setChannel, setPrivChannel }) => {
 
   return (
     <React.Fragment>
-      <List>
+      <Container>
         {users.map(
           ({ user: _user }) =>
             _user.username !== user.username && (
@@ -66,10 +63,11 @@ const OnlineUsers = ({ user, history, socket, setChannel, setPrivChannel }) => {
                 history={history}
                 setChannel={setChannel}
                 setPrivChannel={setPrivChannel}
+                flipOpenNav={flipOpenNav}
               />
             )
         )}
-      </List>
+      </Container>
 
       <Input
         value={search}

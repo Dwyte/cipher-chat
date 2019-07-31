@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import InputForm from "./inputForm";
 import Button from "./button";
 import useForm from "./useForm";
@@ -7,6 +7,8 @@ import styled from "styled-components";
 const Form = styled.form``;
 
 const UserForm = ({ label, onSubmit, validate }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { values, errors, handleChange, handleSubmit } = useForm(
     doSubmit,
     validate
@@ -15,7 +17,11 @@ const UserForm = ({ label, onSubmit, validate }) => {
   const { username, password } = values;
 
   function doSubmit() {
-    onSubmit(username, password);
+    setIsLoading(true);
+
+    const onSubmitCallback = () => setIsLoading(false);
+
+    onSubmit(username, password, onSubmitCallback);
   }
 
   function checkCurrentUser() {
@@ -37,6 +43,7 @@ const UserForm = ({ label, onSubmit, validate }) => {
         onChange={handleChange}
         maxLength="24"
         autoFocus
+        disabled={isLoading}
       />
       <InputForm
         type="password"
@@ -45,8 +52,11 @@ const UserForm = ({ label, onSubmit, validate }) => {
         value={password || ""}
         onChange={handleChange}
         maxLength="36"
+        disabled={isLoading}
       />
-      <Button label={label} />
+      <Button disabled={isLoading}>
+        <b>{isLoading ? "..." : label}</b>
+      </Button>
     </Form>
   );
 };
