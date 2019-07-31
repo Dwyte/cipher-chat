@@ -83,11 +83,6 @@ const Profile = ({ user, onUpdateBio, socket, flipOpenNav, isOnline, setIsOnline
           <i
             className="fas fa-ellipsis-h"
             onClick={handleNavClick}
-            onPointerLeave={() => {
-              setTimeout(() => {
-                flipOpenNav(false);
-              }, 2500);
-            }}
           />
         </div>
 

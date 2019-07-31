@@ -15,32 +15,71 @@ const Nav = styled.div`
   }
 `;
 
+const NavButton = styled.i`
+  cursor: pointer;
+  font-size: 20px;
+
+  &:hover {
+    color: #1e1e1e;
+  }
+
+  color: ${({ active }) => {
+    if (!active) return `#7e7e7e;`;
+    else return `#1e1e1e`;
+  }};
+`;
+
 const NavBar = ({
   history,
   location,
   setChannel,
   privChannel,
-  setPrivChannel
+  setPrivChannel,
+  navOpen,
+  flipOpenNav
 }) => {
+  let preview = "~";
+  switch (location.pathname) {
+    case "/chat/ch/global":
+      preview = "Global";
+      break;
+    case "/chat/search":
+      preview = "Search";
+      break;
+  }
+
+  function handleNavButtonClick() {
+    flipOpenNav(false);
+    setPrivChannel("");
+  }
+
   return (
     <div style={{ position: "absolute", left: "50%" }}>
       <Nav>
-        <i className="fas fa-envelope" />{" "}
-        <i
-          onClick={() => {
-            setPrivChannel("");
-            setChannel("global");
-            history.push("/chat/ch/global");
-          }}
-          className="fas fa-globe"
-        />{" "}
-        <i
-          className="fas fa-search"
-          onClick={() => {
-            setPrivChannel("");
-            history.push("/chat/list");
-          }}
-        />
+        {!navOpen ? (
+          <b>{preview}</b>
+        ) : (
+          <React.Fragment>
+            <NavButton className="fas fa-envelope" />{" "}
+            <NavButton
+              active={location.pathname === "/chat/ch/global"}
+              onClick={() => {
+                handleNavButtonClick();
+                setChannel("global");
+                history.push("/chat/ch/global");
+              }}
+              className="fas fa-globe"
+            />{" "}
+            <NavButton
+              active={location.pathname === "/chat/search"}
+              className="fas fa-search"
+              onClick={() => {
+                handleNavButtonClick();
+                history.push("/chat/search");
+              }}
+            />
+          </React.Fragment>
+        )}
       </Nav>
     </div>
   );

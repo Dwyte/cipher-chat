@@ -40,7 +40,7 @@ const ChatNotif = styled.div`
   color: white;
   background: #4e4e4e;
   width: 125px;
-  margin: auto;
+  margin: 24px auto;
 `;
 
 const ChatBox = ({ socket, user, match, getPassphrase }) => {

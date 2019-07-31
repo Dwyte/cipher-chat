@@ -6,6 +6,7 @@ import Input from "../input";
 import { getOnlineUsers } from "../../services/onlineUsersService";
 
 const List = styled.div`
+  background: white;
   height: 377px;
   overflow-y: scroll;
 

@@ -54,7 +54,7 @@ const Chat = ({ history, location }) => {
 
     getUser();
 
-    history.push("/chat/list");
+    history.push("/chat/search");
 
     return () => {
       socket.disconnect();
@@ -113,15 +113,15 @@ const Chat = ({ history, location }) => {
         setIsOnline={setIsOnline}
       />
       <Card>
-        {navOpen && (
-          <NavBar
-            history={history}
-            location={location}
-            setChannel={setChannel}
-            privChannel={privChannel}
-            setPrivChannel={setPrivChannel}
-          />
-        )}
+        <NavBar
+          history={history}
+          location={location}
+          setChannel={setChannel}
+          privChannel={privChannel}
+          setPrivChannel={setPrivChannel}
+          navOpen={navOpen}
+          flipOpenNav={flipOpenNav}
+        />
 
         <Switch>
           <Route
@@ -137,7 +137,7 @@ const Chat = ({ history, location }) => {
             )}
           />
           <Route
-            path="/chat/list"
+            path="/chat/search"
             render={props => (
               <OnlineUsers
                 {...props}
@@ -148,7 +148,7 @@ const Chat = ({ history, location }) => {
               />
             )}
           />
-          <Redirect from="/chat" to="/chat/list" />
+          <Redirect from="/chat" to="/chat/search" />
         </Switch>
       </Card>
     </React.Fragment>
