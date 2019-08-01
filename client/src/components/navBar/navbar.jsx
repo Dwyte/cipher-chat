@@ -1,5 +1,4 @@
 import React from "react";
-import NavBtn from "./navBtn";
 import styled from "styled-components";
 
 const Nav = styled.div`
@@ -9,10 +8,14 @@ const Nav = styled.div`
   padding: 0px 5px 2px 5px;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
-  font-size: 12px;
+  font-size: 16px;
 
   i {
     cursor: pointer;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 20px;
   }
 `;
 
@@ -44,7 +47,7 @@ const NavBar = ({
       preview = "Global";
       break;
     case "/chat/search":
-      preview = "Search";
+      preview = "Online Users";
       break;
     default:
       preview = privChannel;

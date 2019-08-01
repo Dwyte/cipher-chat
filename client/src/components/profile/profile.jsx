@@ -45,7 +45,7 @@ const Grid = styled.div`
   }
 `;
 
-const Profile = ({ user, onUpdateBio, socket, flipOpenNav, isOnline, setIsOnline }) => {
+const Profile = ({ user, onUpdateBio, flipOpenNav, isOnline, changeStatus }) => {
   const handleLogout = () => {
     localStorage.clear();
 
@@ -53,15 +53,6 @@ const Profile = ({ user, onUpdateBio, socket, flipOpenNav, isOnline, setIsOnline
   };
 
   const status = isOnline ? "Online" : "Offline";
-
-  function handleStatusChange() {
-    setIsOnline(!isOnline);
-
-    localStorage.setItem("isOnline", (!isOnline).toString());
-
-    if (isOnline) socket.emit("user-offline");
-    else socket.emit("new-user", user);
-  }
 
   function handleNavClick() {
     flipOpenNav();
@@ -75,7 +66,7 @@ const Profile = ({ user, onUpdateBio, socket, flipOpenNav, isOnline, setIsOnline
       />
 
       <Grid>
-        <div onClick={handleStatusChange} id="status">
+        <div onClick={changeStatus} id="status">
           <i className="fas fa-circle" /> {status}
         </div>
 

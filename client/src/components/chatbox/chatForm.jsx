@@ -2,41 +2,46 @@ import React, { useState } from "react";
 import ReactTooltip from "react-tooltip";
 import Input from "../input";
 
-const ChatForm = ({ sendMessage, isSecret }) => {
+const ChatForm = ({ submitMessage, isSecret }) => {
   const [message, setMessage] = useState("");
+  const [disabled, setDisabled] = useState(false);
 
-  const handleMessageChange = ({ target }) => {
+  function handleMessageChange({ target }) {
     setMessage(target.value);
-  };
+  }
 
-  const handleSendEvent = e => {
+  function handleSendEvent(e) {
     e.preventDefault();
-
     if (message.trim() === "") return;
 
-    sendMessage(message);
+    setDisabled(true);
+    submitMessage(message);
 
-    setMessage("");
-  };
+    setTimeout(() => {
+      setDisabled(false);
+      setMessage("");
+    }, 7500);
+  }
 
   const inputPlaceholder = isSecret
     ? "Private Channel - Encrypted - 10msgs max"
     : "Global Channel - Plain Text - 100msgs max";
 
   return (
-    <form onSubmit={handleSendEvent}>
+    <form disabled onSubmit={handleSendEvent}>
       <ReactTooltip place="top" effect="solid" />
 
       <Input
-        value={message}
+        value={disabled ? "Cooldown for a moment, don't spam..." : message}
         onChange={handleMessageChange}
         minLength="1"
         maxLength="500"
         data-tip={inputPlaceholder}
-        placeholder="Type Something..."
+        placeholder="Start Chatting..."
         type="Text"
         autoFocus
         required
+        disabled={disabled}
       />
     </form>
   );

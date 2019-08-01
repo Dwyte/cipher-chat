@@ -33,11 +33,9 @@ mongoose
 // Routes
 const user = require("./routes/user");
 const chat = require("./routes/chat");
-const onlineUser = require("./routes/onlineUser");
 
 app.use("/api/users", user);
 app.use("/api/chats", chat);
-app.use("/api/onlineUsers", onlineUser);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

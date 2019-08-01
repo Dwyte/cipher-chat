@@ -27,6 +27,10 @@ const userSchema = mongoose.Schema({
   },
   publicKey: {
     type: String
+  },
+  status: {
+    type: String,
+    default: ""
   }
 });
 
@@ -48,7 +52,8 @@ const validate = user => {
     auth: Joi.string().required(),
     salt: Joi.string(),
     privateKeyCipher: Joi.string(),
-    publicKey: Joi.string()
+    publicKey: Joi.string(),
+    status: Joi.string().default("")
   };
 
   return Joi.validate(user, schema);

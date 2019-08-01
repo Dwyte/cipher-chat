@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MD5 } from "crypto-js";
 import ReactTooltip from "react-tooltip";
-import Axios from "axios";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -20,37 +19,19 @@ const I = styled.i`
   cursor: pointer;
 `;
 
-const OnlineUser = ({ user, currUser, history, setChannel, setPrivChannel, flipOpenNav }) => {
+const Status = styled.i`
+  font-size: 10px;
+  color: ${({ isOnline }) => (isOnline ? "#000" : "#7e7e7e")};
+`;
 
-  useEffect(() => {
-    const source = Axios.CancelToken.source();
-
-    // const getMsgsLen = async () => {
-    //   try {
-    //     const filter = {
-    //       channel: getChannelId(),
-    //       pbkHash: SHA256(user.publicKey).toString()
-    //     };
-
-    //     const { data: chats } = await getChats(filter, {
-    //       cancelToken: source.token
-    //     });
-
-    //     setMessages(chats.length);
-    //   } catch (error) {
-    //     if (Axios.isCancel(error)) console.log("Caught Cancel");
-    //     else throw error;
-    //   }
-    // };
-
-    // getMsgsLen();
-
-    return () => {
-      source.cancel();
-    };
-    // eslint-disable-next-line
-  }, []);
-
+const OnlineUser = ({
+  user,
+  currUser,
+  history,
+  setChannel,
+  setPrivChannel,
+  flipOpenNav
+}) => {
   const getChannelId = () => {
     const { publicKey: userPbk } = user;
     const { publicKey: cUserPnk } = currUser;
@@ -76,7 +57,8 @@ const OnlineUser = ({ user, currUser, history, setChannel, setPrivChannel, flipO
     <Container>
       <ReactTooltip place="left" effect="solid" />
       <div>
-        <b>{user.username} </b>
+        <Status className="fas fa-circle" isOnline={Boolean(user.status)} />{" "}
+        <b>{user.username}</b>
       </div>
 
       <div>

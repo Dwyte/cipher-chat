@@ -60,7 +60,7 @@ const ChatBubble = ({
     const prevNamePlain = isSecret
       ? prevDecrypted
         ? prevName
-        : AES.decrypt(name, passphrase).toString(CryptoJS.enc.Utf8)
+        : AES.decrypt(prevName, passphrase).toString(CryptoJS.enc.Utf8)
       : prevName;
     return prevNamePlain === name;
   }

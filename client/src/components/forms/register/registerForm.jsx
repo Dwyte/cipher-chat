@@ -46,6 +46,8 @@ const RegisterForm = ({ history }) => {
         publicKey
       });
 
+      console.log(_user);
+
       alert("Account has been created.");
       history.push("/login");
     } catch (err) {

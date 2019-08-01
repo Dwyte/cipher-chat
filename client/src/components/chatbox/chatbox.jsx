@@ -4,6 +4,8 @@ import ChatForm from "./chatForm";
 import CryptoJS from "crypto-js";
 import styled from "styled-components";
 import Container from "../container";
+import { getChats, sendChat } from "../../services/chatService";
+import Axios from "axios";
 const { AES } = CryptoJS;
 
 const ChatNotif = styled.div`
@@ -24,17 +26,35 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
   const limit = isSecret ? 10 : 100;
   const passphrase = isSecret && getPassphrase();
 
+  const source = Axios.CancelToken.source();
   useEffect(() => {
     setChats([]);
 
-    if (socket.connected) socket.emit("get-chats", channel, limit);
+    const getChannelChats = async () => {
+      try {
+        const { data: channelChats } = await getChats(channel, limit, {
+          cancelToken: source.token
+        });
+
+        updateChats(channelChats);
+
+      } catch (error) {
+        if (Axios.isCancel(error)) console.log("Caught Cancel");
+        else throw error;
+      }
+    };
+
+    getChannelChats();
+
+
+    return () => {
+      console.log("Cleaning...");
+      source.cancel();
+      socket.off("new-message");
+    };
 
     // eslint-disable-next-line
   }, [channel]);
-
-  socket.on("return-chats", returnChats => {
-    updateChats(returnChats);
-  });
 
   socket.on("new-message", chat => {
     if (chat.channel !== channel) return;
@@ -42,10 +62,6 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
     updateChats(chatLimit);
-  });
-
-  socket.on("message-invalid", error => {
-    alert(error);
   });
 
   function decryptMsg(msg) {
@@ -64,34 +80,41 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
     setChats(_chats);
   }
 
-  const updateChats = newChats => {
+  function updateChats(newChats) {
     if (socket.connected) setChats(newChats);
 
     updateScroll();
-  };
+  }
 
-  const sendMessage = message => {
-    if (isSecret) sendSecret(message);
-    else sendPlain(message);
-  };
-
-  const sendSecret = message => {
+  async function submitMessage(message) {
     const name = user.username;
     const timestamp = new Date().toString();
 
-    const userMsg = encryptMsg(
-      {
-        name,
-        message,
-        timestamp
-      },
-      passphrase
-    );
+    const userMsg = isSecret
+      ? encryptMsg(
+          {
+            name,
+            message,
+            timestamp
+          },
+          passphrase
+        )
+      : {
+          name,
+          channel,
+          message,
+          timestamp
+        };
 
-    socket.emit("send-message", userMsg);
-  };
+    const { data: chatMsg } = await sendChat(userMsg, {
+      cancelToken: source.token
+    });
 
-  const encryptMsg = (msgObj, passphrase) => {
+    updateChats([...chats, userMsg]);
+    socket.emit("broadcast-message", chatMsg);
+  }
+
+  function encryptMsg(msgObj, passphrase) {
     for (let k in msgObj) {
       msgObj[k] = AES.encrypt(msgObj[k], passphrase).toString();
     }
@@ -99,25 +122,14 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
     msgObj["channel"] = channel;
 
     return msgObj;
-  };
+  }
 
-  const sendPlain = message => {
-    const userMsg = {
-      name: user.username,
-      channel,
-      message,
-      timestamp: new Date()
-    };
-
-    socket.emit("send-message", userMsg);
-  };
-
-  const updateScroll = () => {
+  function updateScroll() {
     const chatbox = document.getElementById("chatbox");
-      if (chatbox) chatbox.scrollTop = chatbox.scrollHeight;
-  };
+    if (chatbox) chatbox.scrollTop = chatbox.scrollHeight;
+  }
 
-  const populateChatBox = () => {
+  function populateChatBox() {
     let prevMsg = null;
 
     return chats.length === 0 ? (
@@ -141,13 +153,13 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
         return chatBubble;
       })
     );
-  };
+  }
 
   return (
     <React.Fragment>
       <Container id="chatbox">{populateChatBox()}</Container>
 
-      <ChatForm sendMessage={sendMessage} isSecret={isSecret} />
+      <ChatForm submitMessage={submitMessage} isSecret={isSecret} />
     </React.Fragment>
   );
 };

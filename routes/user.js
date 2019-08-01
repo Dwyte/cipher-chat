@@ -26,9 +26,7 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/searchUser", async (req, res) => {
-  const users = await User.find({
-    username: { $regex: new RegExp(req.body.regex), $options: "i" }
-  })
+  const users = await User.find(req.body)
     .sort({ _id: 1 })
     .limit(12);
 
@@ -80,7 +78,7 @@ router.put("/:_id", async (req, res) => {
   let user = await User.findByIdAndUpdate(
     req.params._id,
     { $set: req.body },
-    { new: true }
+    { useFindAndModify: false, new: true }
   );
   if (!user) return res.status(404).send("User was not found.");
 

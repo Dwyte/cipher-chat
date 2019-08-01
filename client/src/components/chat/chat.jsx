@@ -17,49 +17,74 @@ const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
   const [channel, setChannel] = useState("global");
   const [privChannel, setPrivChannel] = useState("");
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
 
   const userECDH = getECDH();
 
+  const source = Axios.CancelToken.source();
   useEffect(() => {
     socket.connect();
 
-    const source = Axios.CancelToken.source();
-
-    const getUser = async () => {
+    async function getUser() {
       try {
-        const { data: user } = await getUserProfile({
+        const res = await getUserProfile({
           cancelToken: source.token
         });
+
+        const { data: user } = res;
         setUser(user);
-
-        const localIsOnline = localStorage.getItem("isOnline");
-
-        if (!localIsOnline) {
-          socket.emit("new-user", user);
-          setIsOnline(true);
-          localStorage.setItem("isOnline", String(true));
-        } else {
-          const _localIsOnline = JSON.parse(localIsOnline);
-          setIsOnline(_localIsOnline);
-
-          if (_localIsOnline) socket.emit("new-user", user);
-        }
       } catch (error) {
         if (Axios.isCancel(error)) console.log("Caught Cancel");
         else throw error;
       }
-    };
+    }
 
     getUser();
 
     history.push("/chat/search");
-
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    const localIsOnline = localStorage.getItem("isOnline");
+    if (!localIsOnline) {
+      beOnline();
+      localStorage.setItem("isOnline", String(true));
+    } else {
+      const _localIsOnline = JSON.parse(localIsOnline);
+
+      if (_localIsOnline) beOnline();
+      else setIsOnline(false);
+    }
+  }, [user]);
+
+  async function changeStatus() {
+    if (isOnline) beOffline();
+    else beOnline();
+  }
+
+  function beOnline() {
+    updateUser(
+      user._id,
+      { status: socket.id },
+      {
+        cancelToken: source.token
+      }
+    );
+
+    socket.emit("new-user");
+    setIsOnline(true);
+    localStorage.setItem("isOnline", true);
+  }
+
+  function beOffline() {
+    socket.emit("user-offline");
+    setIsOnline(false);
+    localStorage.setItem("isOnline", false);
+  }
 
   function getECDH() {
     const pvkStr = localStorage.getItem("pvk");
@@ -85,7 +110,7 @@ const Chat = ({ history, location }) => {
     return passphrase;
   }
 
-  const handleUpdateUserBio = async bio => {
+  async function handleUpdateUserBio(bio) {
     const _user = { ...user };
     _user.bio = bio;
 
@@ -95,7 +120,7 @@ const Chat = ({ history, location }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
 
   function flipOpenNav(boolean = !navOpen) {
     setNavOpen(boolean);
@@ -107,10 +132,9 @@ const Chat = ({ history, location }) => {
         onUpdateBio={handleUpdateUserBio}
         flipOpenNav={flipOpenNav}
         history={history}
-        socket={socket}
         user={user}
         isOnline={isOnline}
-        setIsOnline={setIsOnline}
+        changeStatus={changeStatus}
       />
       <Card>
         <NavBar

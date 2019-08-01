@@ -14,9 +14,9 @@ export const postUser = async data => {
   return await http.post(serviceEndpoint, data);
 };
 
-export const updateUser = async (_id, data) => {
-  return await http.put(`${serviceEndpoint}/${_id}`, data);
-};
+export async function updateUser(_id, data, config) {
+  return await http.put(`${serviceEndpoint}/${_id}`, data, config);
+}
 
 export const checkUsername = async username => {
   const { data: res } = await http.get(`${serviceEndpoint}/${username}`);
@@ -36,5 +36,5 @@ export const getUserProfile = async config => {
     "x-auth-token": token
   };
 
-  return http.get(`${serviceEndpoint}/auth`, config);
+  return await http.get(`${serviceEndpoint}/auth`, config);
 };

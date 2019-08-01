@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import OnlineUser from "./onlineUser";
 import Axios from "axios";
 import Input from "../input";
-import { getOnlineUsers } from "../../services/onlineUsersService";
+import { searchUsers } from "../../services/userService";
+
 import Container from "../container";
 
 const OnlineUsers = ({
@@ -16,32 +17,48 @@ const OnlineUsers = ({
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
+  const source = Axios.CancelToken.source();
   useEffect(() => {
-    const source = Axios.CancelToken.source();
-
-    const getUsers = async () => {
+    async function getUsers() {
       try {
-        const onlineUsers = await getOnlineUsers({
-          cancelToken: source.token
-        });
+        const { data: users } = search
+          ? await searchUsers(
+              {
+                username: { $regex: `${search}.*`, $options: "i" }
+              },
+              {
+                cancelToken: source.token
+              }
+            )
+          : await getOnlineUsers();
 
-        setUsers(onlineUsers);
+        setUsers(users);
       } catch (error) {
         if (Axios.isCancel(error)) console.log("Caught Cancel");
         else throw error;
       }
-    };
+    }
 
-    getUsers();
+    if (user) getUsers();
 
     return () => {
       console.log("Cleaning...");
       source.cancel();
+      socket.off("user-connected");
     };
-  }, [search]);
+  }, [user, search]);
 
-  socket.on("user-connected", newUsers => {
-    let onlineUsers = [...newUsers];
+  async function getOnlineUsers() {
+    return await searchUsers(
+      { status: { $ne: "" } },
+      {
+        cancelToken: source.token
+      }
+    );
+  }
+
+  socket.on("user-connected", async () => {
+    const { data: onlineUsers } = await getOnlineUsers();
 
     setUsers(onlineUsers);
   });
@@ -54,7 +71,7 @@ const OnlineUsers = ({
     <React.Fragment>
       <Container>
         {users.map(
-          ({ user: _user }) =>
+          _user =>
             _user.username !== user.username && (
               <OnlineUser
                 key={users.indexOf(_user)}
@@ -72,7 +89,7 @@ const OnlineUsers = ({
       <Input
         value={search}
         onChange={handleSearchChange}
-        placeholder="Search for someone to chat..."
+        placeholder="User not online? Search here..."
         autoFocus
       />
     </React.Fragment>
