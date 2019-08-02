@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import ReactTooltip from "react-tooltip";
 import Input from "../input";
+import styled from "styled-components";
+
+const SendButton = styled.i`
+  margin-left: -25px;
+  font-weight: 500;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const MessageInput = styled(Input)`
+  padding-right: 32px !important;
+`;
 
 const ChatForm = ({ submitMessage, isSecret }) => {
   const [message, setMessage] = useState("");
@@ -31,7 +45,7 @@ const ChatForm = ({ submitMessage, isSecret }) => {
     <form disabled onSubmit={handleSendEvent}>
       <ReactTooltip place="top" effect="solid" />
 
-      <Input
+      <MessageInput
         value={disabled ? "Cooldown for a moment, don't spam..." : message}
         onChange={handleMessageChange}
         minLength="1"
@@ -43,6 +57,8 @@ const ChatForm = ({ submitMessage, isSecret }) => {
         required
         disabled={disabled}
       />
+
+      <SendButton onClick={handleSendEvent} className="fab fa-telegram-plane" />
     </form>
   );
 };

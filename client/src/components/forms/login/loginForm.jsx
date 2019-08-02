@@ -21,7 +21,7 @@ const LoginForm = ({ history }) => {
         .toString("hex");
 
       const { userToken, user } = await authUser({ username, auth });
-      const { auth: _auth, privateKeyCipher, salt } = user;
+      const { auth: _auth, privateKeyCipher, salt, publicKey } = user;
       const passphrase = pbkdf2
         .pbkdf2Sync(_auth + password, salt, 25000, 64, "sha512")
         .toString("hex");
@@ -33,6 +33,8 @@ const LoginForm = ({ history }) => {
 
       localStorage.setItem("userToken", userToken);
       localStorage.setItem("pvk", privateKeyStr);
+      localStorage.setItem("pbk", publicKey);
+
 
       alert("Account authenticated!");
 

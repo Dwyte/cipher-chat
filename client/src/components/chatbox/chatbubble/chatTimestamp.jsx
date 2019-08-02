@@ -9,7 +9,7 @@ const Timestamp = styled.div`
   padding-bottom: 5px;
 `;
 
-const ChatTimestamp = ({isSecret, decrypted, timestamp}) => {
+const ChatTimestamp = ({ isSecret, decrypted, timestamp, seen, sentByUser }) => {
   const getTimestamp = () => {
     if (isSecret) if (!decrypted) return "Decrypt";
 
@@ -54,10 +54,15 @@ const ChatTimestamp = ({isSecret, decrypted, timestamp}) => {
     return `${monthStr} ${date}, ${dayStr} - ${hoursPadded}:${minutesPadded}`;
   };
 
+  function displaySeenStatus() {
+    return seen ? <i class="fas fa-eye" /> : <i class="fas fa-check" />;
+  }
+
   return (
     <Timestamp>
-      <i className="fas fa-caret-right" />
-      {getTimestamp()}
+      {sentByUser || displaySeenStatus()} {" "}
+      {getTimestamp()} {" "}
+      {sentByUser && displaySeenStatus()}
     </Timestamp>
   );
 };

@@ -10,6 +10,7 @@ import { MD5 } from "crypto-js";
 import { getUserProfile, updateUser } from "../../services/userService";
 import Axios from "axios";
 import openSocket from "socket.io-client";
+import InboxContainer from "../inbox/inbox";
 const socket = openSocket(
   process.env.REACT_APP_SOCKET_ENDPOINT || "http://localhost:4200"
 );
@@ -17,7 +18,6 @@ const socket = openSocket(
 const Chat = ({ history, location }) => {
   const [user, setUser] = useState({});
   const [channel, setChannel] = useState("global");
-  const [privChannel, setPrivChannel] = useState("");
   const [isOnline, setIsOnline] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
 
@@ -45,6 +45,7 @@ const Chat = ({ history, location }) => {
 
     history.push("/chat/search");
     return () => {
+      source.cancel();
       socket.disconnect();
     };
   }, []);
@@ -131,7 +132,8 @@ const Chat = ({ history, location }) => {
     const channelId = getChannelId(currUser, user);
 
     localStorage.setItem("chatmate_pbk", user.publicKey);
-    setPrivChannel(user.username);
+  localStorage.setItem("chatmate", user.username);
+
     setChannel(channelId);
     flipOpenNav(false);
 
@@ -163,8 +165,6 @@ const Chat = ({ history, location }) => {
           history={history}
           location={location}
           setChannel={setChannel}
-          privChannel={privChannel}
-          setPrivChannel={setPrivChannel}
           navOpen={navOpen}
           flipOpenNav={flipOpenNav}
         />
@@ -192,6 +192,13 @@ const Chat = ({ history, location }) => {
                 socket={socket}
                 handleChannelOpen={handleChannelOpen}
               />
+            )}
+          />
+
+          <Route
+            path="/chat/privateChannels"
+            render={props => (
+              <InboxContainer {...props} user={user} history={history} />
             )}
           />
 

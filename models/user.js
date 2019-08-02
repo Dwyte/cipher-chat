@@ -28,6 +28,9 @@ const userSchema = mongoose.Schema({
   publicKey: {
     type: String
   },
+  pbkHash: {
+    type: String
+  },
   status: {
     type: String,
     default: ""
@@ -53,6 +56,7 @@ const validate = user => {
     salt: Joi.string(),
     privateKeyCipher: Joi.string(),
     publicKey: Joi.string(),
+    pbkHash: Joi.string(),
     status: Joi.string().default("")
   };
 

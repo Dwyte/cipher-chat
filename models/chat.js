@@ -21,6 +21,15 @@ const chatSchema = mongoose.Schema({
   timestamp: {
     type: String,
     require: true
+  },
+  senderPbkHash: {
+    type: String
+  },
+  recieverPbkHash: {
+    type: String
+  },
+  seen: {
+    type: Boolean
   }
 });
 
@@ -36,7 +45,9 @@ const validate = chat => {
       .regex(/^(?!\s*$).+/),
     channel: Joi.string().required(),
     timestamp: Joi.string().required(),
-    pbkHash: Joi.string()
+    recieverPbkHash: Joi.string(),
+    senderPbkHash: Joi.string(),
+    seen: Joi.boolean()
   };
 
   return Joi.validate(chat, schema);

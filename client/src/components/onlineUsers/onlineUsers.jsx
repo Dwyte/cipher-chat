@@ -3,19 +3,8 @@ import OnlineUser from "./onlineUser";
 import Axios from "axios";
 import Input from "../input";
 import { searchUsers } from "../../services/userService";
-
 import Container from "../container";
-
-import styled from "styled-components";
-const Badge = styled.div`
-  text-align: center;
-  padding: 3px;
-  font-size: 10px;
-  color: white;
-  background: #4e4e4e;
-  width: 125px;
-  margin: 24px auto;
-`;
+import Badge from "../badge";
 
 const OnlineUsers = ({ user, socket, handleChannelOpen }) => {
   const [users, setUsers] = useState([]);

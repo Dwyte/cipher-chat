@@ -24,3 +24,24 @@ export async function sendChat(msgObj, config) {
 
   return await http.post(serviceEndpoint, msgObj, config);
 }
+
+export async function getPrivateChannels(pbkHash, config) {
+  const token = localStorage.getItem("userToken");
+  config["headers"] = {
+    "x-auth-token": token
+  };
+
+  return await http.get(
+    `${serviceEndpoint}/privateChannels/${pbkHash}`,
+    config
+  );
+}
+
+export async function seenChat(chatId, config) {
+  const token = localStorage.getItem("userToken");
+  config["headers"] = {
+    "x-auth-token": token
+  };
+
+  return await http.put(`${serviceEndpoint}/seen/${chatId}`, {},config);
+}

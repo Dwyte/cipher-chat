@@ -106,9 +106,11 @@ const ChatBubble = ({
         />
         {showTimestamp && (
           <ChatTimestamp
+          sentByUser={name === currUser.username}
             isSecret={isSecret}
             decrypted={decrypted}
             timestamp={timestamp}
+            seen={msgObj.seen}
           />
         )}
       </Container>

@@ -34,6 +34,7 @@ const RegisterForm = ({ history }) => {
         .toString("hex");
 
       const publicKey = JSON.stringify(ecdh.generateKeys());
+      const pbkHash = CryptoJS.SHA256(publicKey).toString();
       const privateKey = ecdh.getPrivateKey();
       const privateKeyCipher = CryptoJS.AES.encrypt(
         JSON.stringify(privateKey),
@@ -43,7 +44,8 @@ const RegisterForm = ({ history }) => {
       const { data: _user } = await updateUser(_id, {
         username,
         privateKeyCipher,
-        publicKey
+        publicKey,
+        pbkHash
       });
 
       console.log(_user);

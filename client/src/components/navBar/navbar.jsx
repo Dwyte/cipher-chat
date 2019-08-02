@@ -32,15 +32,7 @@ const NavButton = styled.i`
   }};
 `;
 
-const NavBar = ({
-  history,
-  location,
-  setChannel,
-  privChannel,
-  setPrivChannel,
-  navOpen,
-  flipOpenNav
-}) => {
+const NavBar = ({ history, location, setChannel, navOpen, flipOpenNav }) => {
   let preview = "~";
   switch (location.pathname) {
     case "/chat/ch/global":
@@ -49,14 +41,16 @@ const NavBar = ({
     case "/chat/search":
       preview = "Online Users";
       break;
+    case "/chat/privateChannels":
+      preview = "Private Channels";
+      break;
     default:
-      preview = privChannel;
+      preview = localStorage.getItem("chatmate");
       break;
   }
 
   function handleNavButtonClick() {
     flipOpenNav(false);
-    setPrivChannel("");
   }
 
   return (
@@ -66,6 +60,14 @@ const NavBar = ({
           <b>{preview}</b>
         ) : (
           <React.Fragment>
+            <NavButton
+              active={location.pathname === "/chat/privateChannels"}
+              className="fas fa-user-secret"
+              onClick={() => {
+                handleNavButtonClick();
+                history.push("/chat/privateChannels");
+              }}
+            />{" "}
             <NavButton
               active={location.pathname === "/chat/ch/global"}
               onClick={() => {

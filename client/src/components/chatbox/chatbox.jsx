@@ -2,21 +2,11 @@ import React, { useState, useEffect } from "react";
 import ChatBubble from "./chatbubble/chatbubble";
 import ChatForm from "./chatForm";
 import CryptoJS from "crypto-js";
-import styled from "styled-components";
 import Container from "../container";
-import { getChats, sendChat } from "../../services/chatService";
+import { getChats, sendChat, seenChat } from "../../services/chatService";
 import Axios from "axios";
-const { AES } = CryptoJS;
-
-const ChatNotif = styled.div`
-  text-align: center;
-  padding: 3px;
-  font-size: 10px;
-  color: white;
-  background: #4e4e4e;
-  width: 125px;
-  margin: 24px auto;
-`;
+import Badge from "../badge";
+const { AES, SHA256 } = CryptoJS;
 
 const ChatBox = ({ socket, user, match, getPassphrase, handleChannelOpen }) => {
   const [chats, setChats] = useState([]);
@@ -77,6 +67,8 @@ const ChatBox = ({ socket, user, match, getPassphrase, handleChannelOpen }) => {
     _msg.decrypted = true;
 
     setChats(_chats);
+
+    seenChat(_msg._id, { cancelToken: source.token });
   }
 
   function updateChats(newChats) {
@@ -120,6 +112,11 @@ const ChatBox = ({ socket, user, match, getPassphrase, handleChannelOpen }) => {
     }
 
     msgObj["channel"] = channel;
+    msgObj["recieverPbkHash"] = SHA256(
+      localStorage.getItem("chatmate_pbk")
+    ).toString();
+    msgObj["senderPbkHash"] = user.pbkHash;
+    msgObj["seen"] = false;
 
     return msgObj;
   }
@@ -133,7 +130,7 @@ const ChatBox = ({ socket, user, match, getPassphrase, handleChannelOpen }) => {
     let prevMsg = null;
 
     return chats.length === 0 ? (
-      <ChatNotif>No messages yet. Say hello!</ChatNotif>
+      <Badge>No messages yet. Say hello!</Badge>
     ) : (
       chats.map(msgObj => {
         const chatBubble = (
