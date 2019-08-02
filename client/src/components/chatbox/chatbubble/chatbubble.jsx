@@ -3,6 +3,7 @@ import CryptoJS from "crypto-js";
 import styled from "styled-components";
 import ChatTimestamp from "./chatTimestamp";
 import ChatMsg from "./chatMsg";
+import { getUser } from "../../../services/userService";
 
 const { AES } = CryptoJS;
 
@@ -31,15 +32,21 @@ const Container = styled.div`
 const SenderName = styled.div`
   font-weight: bold;
   font-size: 12px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 const ChatBubble = ({
-  username,
+  currUser,
   msgObj,
   isSecret,
   passphrase,
   prevMsg,
-  decryptMsg
+  decryptMsg,
+  handleChannelOpen
 }) => {
   const [showTimestamp, setShowTimestamp] = useState(false);
 
@@ -48,10 +55,10 @@ const ChatBubble = ({
   if (isSecret)
     if (!decrypted) {
       name = AES.decrypt(name, passphrase).toString(CryptoJS.enc.Utf8);
-      if (name === username) decryptMsg(msgObj);
+      if (name === currUser.username) decryptMsg(msgObj);
     }
 
-  const displayName = name === username ? "You" : name;
+  const displayName = name === currUser.username ? "You" : name;
 
   function prevSentByUser() {
     if (!prevMsg) return false;
@@ -78,10 +85,18 @@ const ChatBubble = ({
     } else setShowTimestamp(!showTimestamp);
   }
 
+  async function handleSenderClick() {
+    const { data: user } = await getUser({ username: name }, {});
+
+    handleChannelOpen(currUser, user);
+  }
+
   return (
-    <ParentContainer sentByUser={name === username}>
-      <Container sentByUser={name === username}>
-        <SenderName>{prevSentByUser() || displayName}</SenderName>
+    <ParentContainer sentByUser={name === currUser.username}>
+      <Container sentByUser={name === currUser.username}>
+        <SenderName onClick={handleSenderClick}>
+          {prevSentByUser() || displayName}
+        </SenderName>
         <ChatMsg
           onClick={handleMsgBubbleClick}
           onMouseLeave={() => setTimeout(() => setShowTimestamp(false), 1250)}

@@ -25,12 +25,19 @@ router.get("/", async (req, res) => {
   res.send(users);
 });
 
-router.put("/searchUser", async (req, res) => {
+router.put("/searchUser", [auth], async (req, res) => {
   const users = await User.find(req.body)
     .sort({ _id: 1 })
     .limit(12);
 
   res.send(users);
+});
+
+router.put("/getUser", [auth], async (req, res) => {
+  const user = await User.findOne(req.body);
+  if (!user) res.status(404).send("Error 404: User not found");
+
+  res.send(user);
 });
 
 router.get("/:username", async (req, res) => {

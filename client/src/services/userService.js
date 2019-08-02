@@ -7,7 +7,21 @@ const apiEndpoint =
 const serviceEndpoint = apiEndpoint + "/users";
 
 export const searchUsers = async (searchData, config) => {
+  const token = localStorage.getItem("userToken");
+  config["headers"] = {
+    "x-auth-token": token
+  };
+
   return await http.put(serviceEndpoint + "/searchUser", searchData, config);
+};
+
+export const getUser = async (searchData, config) => {
+  const token = localStorage.getItem("userToken");
+  config["headers"] = {
+    "x-auth-token": token
+  };
+
+  return await http.put(serviceEndpoint + "/getUser", searchData, config);
 };
 
 export const postUser = async data => {

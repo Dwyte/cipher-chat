@@ -17,6 +17,7 @@ const socket = socket => {
   });
 
   socket.on("broadcast-message", async msgObj => {
+    // console.log("broadcast-message: ", msgObj);
     socket.broadcast.emit("new-message", msgObj);
   });
 };

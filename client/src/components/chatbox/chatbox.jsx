@@ -18,7 +18,7 @@ const ChatNotif = styled.div`
   margin: 24px auto;
 `;
 
-const ChatBox = ({ socket, user, match, getPassphrase }) => {
+const ChatBox = ({ socket, user, match, getPassphrase, handleChannelOpen }) => {
   const [chats, setChats] = useState([]);
 
   const channel = match.params.channel;
@@ -37,7 +37,6 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
         });
 
         updateChats(channelChats);
-
       } catch (error) {
         if (Axios.isCancel(error)) console.log("Caught Cancel");
         else throw error;
@@ -45,7 +44,6 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
     };
 
     getChannelChats();
-
 
     return () => {
       console.log("Cleaning...");
@@ -61,6 +59,7 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
 
     const chatsToDelete = [...chats, chat];
     const chatLimit = chatsToDelete.splice(-limit);
+    // console.log("new-message: ", chat);
     updateChats(chatLimit);
   });
 
@@ -112,6 +111,7 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
 
     updateChats([...chats, userMsg]);
     socket.emit("broadcast-message", chatMsg);
+    // console.log("submtMessage: ", chatMsg);
   }
 
   function encryptMsg(msgObj, passphrase) {
@@ -139,12 +139,13 @@ const ChatBox = ({ socket, user, match, getPassphrase }) => {
         const chatBubble = (
           <ChatBubble
             key={chats.indexOf(msgObj)}
-            username={user.username}
+            currUser={user}
             passphrase={passphrase}
             isSecret={isSecret}
             msgObj={msgObj}
             prevMsg={prevMsg}
             decryptMsg={decryptMsg}
+            handleChannelOpen={handleChannelOpen}
           />
         );
 

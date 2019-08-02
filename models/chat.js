@@ -21,9 +21,6 @@ const chatSchema = mongoose.Schema({
   timestamp: {
     type: String,
     require: true
-  },
-  pbkHash: {
-    type: String
   }
 });
 

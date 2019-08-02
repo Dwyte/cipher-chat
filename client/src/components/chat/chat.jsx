@@ -6,6 +6,7 @@ import Profile from "../profile/profile";
 import NavBar from "../navBar/navbar";
 import Card from "../card";
 import crypto from "crypto";
+import { MD5 } from "crypto-js";
 import { getUserProfile, updateUser } from "../../services/userService";
 import Axios from "axios";
 import openSocket from "socket.io-client";
@@ -126,6 +127,27 @@ const Chat = ({ history, location }) => {
     setNavOpen(boolean);
   }
 
+  function handleChannelOpen(currUser, user) {
+    const channelId = getChannelId(currUser, user);
+
+    localStorage.setItem("chatmate_pbk", user.publicKey);
+    setPrivChannel(user.username);
+    setChannel(channelId);
+    flipOpenNav(false);
+
+    history.push("/chat/ch/" + channelId);
+  }
+
+  function getChannelId(currUser, user) {
+    const { publicKey: userPbk } = user;
+    const { publicKey: cUserPnk } = currUser;
+
+    const sorted = [userPbk, cUserPnk].sort();
+    const channelId = MD5(sorted.join()).toString();
+
+    return channelId;
+  }
+
   return (
     <React.Fragment>
       <Profile
@@ -157,6 +179,7 @@ const Chat = ({ history, location }) => {
                 user={user}
                 channel={channel}
                 getPassphrase={getPassphrase}
+                handleChannelOpen={handleChannelOpen}
               />
             )}
           />
@@ -167,9 +190,7 @@ const Chat = ({ history, location }) => {
                 {...props}
                 user={user}
                 socket={socket}
-                setChannel={setChannel}
-                setPrivChannel={setPrivChannel}
-                flipOpenNav={flipOpenNav}
+                handleChannelOpen={handleChannelOpen}
               />
             )}
           />

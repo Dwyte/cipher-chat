@@ -1,5 +1,4 @@
 import React from "react";
-import { MD5 } from "crypto-js";
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
 
@@ -24,35 +23,7 @@ const Status = styled.i`
   color: ${({ isOnline }) => (isOnline ? "#000" : "#7e7e7e")};
 `;
 
-const OnlineUser = ({
-  user,
-  currUser,
-  history,
-  setChannel,
-  setPrivChannel,
-  flipOpenNav
-}) => {
-  const getChannelId = () => {
-    const { publicKey: userPbk } = user;
-    const { publicKey: cUserPnk } = currUser;
-
-    const sorted = [userPbk, cUserPnk].sort();
-    const channelId = MD5(sorted.join()).toString();
-
-    return channelId;
-  };
-
-  const handleChannelOpen = () => {
-    const channelId = getChannelId();
-
-    localStorage.setItem("chatmate_pbk", user.publicKey);
-    setPrivChannel(user.username);
-    setChannel(channelId);
-    flipOpenNav(false);
-
-    history.push("/chat/ch/" + channelId);
-  };
-
+const OnlineUser = ({ user, currUser, handleChannelOpen }) => {
   return (
     <Container>
       <ReactTooltip place="left" effect="solid" />
@@ -66,7 +37,10 @@ const OnlineUser = ({
           className="fas fa-info-circle"
           data-tip={user.username === currUser.username ? "You" : user.bio}
         />{" "}
-        <I className="fas fa-comment" onClick={handleChannelOpen} />
+        <I
+          className="fas fa-comment"
+          onClick={() => handleChannelOpen(currUser, user)}
+        />
       </div>
     </Container>
   );

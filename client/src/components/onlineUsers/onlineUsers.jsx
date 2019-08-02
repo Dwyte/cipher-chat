@@ -8,11 +8,8 @@ import Container from "../container";
 
 const OnlineUsers = ({
   user,
-  history,
   socket,
-  setChannel,
-  setPrivChannel,
-  flipOpenNav
+  handleChannelOpen
 }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
@@ -77,10 +74,7 @@ const OnlineUsers = ({
                 key={users.indexOf(_user)}
                 user={_user}
                 currUser={user}
-                history={history}
-                setChannel={setChannel}
-                setPrivChannel={setPrivChannel}
-                flipOpenNav={flipOpenNav}
+                handleChannelOpen={handleChannelOpen}
               />
             )
         )}
