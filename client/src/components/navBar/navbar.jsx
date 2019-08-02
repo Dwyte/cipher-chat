@@ -66,7 +66,6 @@ const NavBar = ({
           <b>{preview}</b>
         ) : (
           <React.Fragment>
-            <NavButton className="fas fa-envelope" />{" "}
             <NavButton
               active={location.pathname === "/chat/ch/global"}
               onClick={() => {
@@ -78,7 +77,7 @@ const NavBar = ({
             />{" "}
             <NavButton
               active={location.pathname === "/chat/search"}
-              className="fas fa-search"
+              className="fas fa-users"
               onClick={() => {
                 handleNavButtonClick();
                 history.push("/chat/search");

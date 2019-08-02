@@ -13,7 +13,7 @@ const Error = styled.div`
 `;
 
 const InputForm = ({ placeholder, errors, ...rest }) => {
-  const name = placeholder.toLowerCase();
+  const name = placeholder.toLowerCase().replace(/\s+/g, '');
 
   return (
     <Container>

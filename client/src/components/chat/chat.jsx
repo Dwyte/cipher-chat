@@ -194,6 +194,7 @@ const Chat = ({ history, location }) => {
               />
             )}
           />
+
           <Redirect from="/chat" to="/chat/search" />
         </Switch>
       </Card>

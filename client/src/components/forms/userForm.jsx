@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import InputForm from "./inputForm";
 import Button from "./button";
 import useForm from "./useForm";
-import styled from "styled-components";
-
-const Form = styled.form``;
 
 const UserForm = ({ label, onSubmit, validate }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +29,7 @@ const UserForm = ({ label, onSubmit, validate }) => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       {checkCurrentUser() ? (window.location = "/chat") : ""}
 
       <InputForm
@@ -57,7 +54,7 @@ const UserForm = ({ label, onSubmit, validate }) => {
       <Button disabled={isLoading}>
         <b>{isLoading ? "..." : label}</b>
       </Button>
-    </Form>
+    </form>
   );
 };
 

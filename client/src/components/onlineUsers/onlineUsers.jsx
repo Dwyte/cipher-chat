@@ -6,11 +6,18 @@ import { searchUsers } from "../../services/userService";
 
 import Container from "../container";
 
-const OnlineUsers = ({
-  user,
-  socket,
-  handleChannelOpen
-}) => {
+import styled from "styled-components";
+const Badge = styled.div`
+  text-align: center;
+  padding: 3px;
+  font-size: 10px;
+  color: white;
+  background: #4e4e4e;
+  width: 125px;
+  margin: 24px auto;
+`;
+
+const OnlineUsers = ({ user, socket, handleChannelOpen }) => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -64,26 +71,30 @@ const OnlineUsers = ({
     setSearch(target.value);
   };
 
+  function populateUsers() {
+    return users.map(
+      _user =>
+        _user.username !== user.username && (
+          <OnlineUser
+            key={users.indexOf(_user)}
+            user={_user}
+            currUser={user}
+            handleChannelOpen={handleChannelOpen}
+          />
+        )
+    );
+  }
+
   return (
     <React.Fragment>
       <Container>
-        {users.map(
-          _user =>
-            _user.username !== user.username && (
-              <OnlineUser
-                key={users.indexOf(_user)}
-                user={_user}
-                currUser={user}
-                handleChannelOpen={handleChannelOpen}
-              />
-            )
-        )}
+        {users ? populateUsers() : <Badge>Noone's Online...</Badge>}
       </Container>
 
       <Input
         value={search}
         onChange={handleSearchChange}
-        placeholder="User not online? Search here..."
+        placeholder="Search user here..."
         autoFocus
       />
     </React.Fragment>

@@ -12,6 +12,11 @@ const Btn = styled.button`
   background-color: #2e2e2e;
   color: white;
   padding: 5px;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #2e2e2e;
+  }
 `;
 
 const Button = ({ children, ...rest }) => {
