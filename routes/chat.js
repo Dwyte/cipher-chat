@@ -64,29 +64,6 @@ router.get("/privateChannels/:pbkHash", [auth], async (req, res) => {
   }
 
   res.send(privateChannels);
-
-  // const privateChannels = {};
-  // const privateChannelsArr = [];
-  // for (chat of chats) {
-  //   if (privateChannels[chat.channel] === undefined) {
-  //     const channel = chat.channel;
-  //     const privChChats = await Chat.find({
-  //       channel
-  //     }).sort({
-  //       _id: -1
-  //     });
-
-  //     const mostRecentChat = privChChats[0];
-
-  //     privateChannels[channel] = privChChats[0].seen;
-  //   }
-  // }
-
-  // for (key in privateChannels) {
-  //   privateChannelsArr.push({ channel: key, seen: privateChannels[key] });
-  // }
-
-  // res.send(privateChannelsArr);
 });
 
 router.put("/seen/:id", [auth], async (req, res) => {

@@ -1,19 +1,32 @@
 const { User } = require("./models/user");
 
 const socket = socket => {
-  socket.on("new-user", async () => {
-    socket.broadcast.emit("user-connected");
+  socket.on("new-user", async user => {
+    console.log("new-user: ", user.username);
+
+    socket.broadcast.emit("user-connected", user);
   });
 
   socket.on("disconnect", async () => {
-    await User.findOneAndUpdate({ status: socket.id }, { status: "" });
+    const user = await User.findOneAndUpdate(
+      { status: socket.id },
+      { status: "" },
+      { useFindAndModify: false }
+    );
 
-    socket.broadcast.emit("user-connected");
+    console.log("user-disconnect: ", user.username);
+    socket.broadcast.emit("user-disconnected", user);
   });
 
   socket.on("user-offline", async () => {
-    await User.findOneAndUpdate({ status: socket.id }, { status: "" });
-    socket.broadcast.emit("user-connected");
+    const user = await User.findOneAndUpdate(
+      { status: socket.id },
+      { status: "" },
+      { useFindAndModify: false }
+    );
+
+    console.log("user-disconnect: ", user.username);
+    socket.broadcast.emit("user-disconnected", user);
   });
 
   socket.on("broadcast-message", async msgObj => {

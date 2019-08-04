@@ -68,8 +68,8 @@ const Chat = ({ history, location }) => {
     else beOnline();
   }
 
-  function beOnline() {
-    updateUser(
+  async function beOnline() {
+    const { data: _user } = await updateUser(
       user._id,
       { status: socket.id },
       {
@@ -77,7 +77,7 @@ const Chat = ({ history, location }) => {
       }
     );
 
-    socket.emit("new-user");
+    socket.emit("new-user", _user);
     setIsOnline(true);
     localStorage.setItem("isOnline", true);
   }
@@ -132,7 +132,7 @@ const Chat = ({ history, location }) => {
     const channelId = getChannelId(currUser, user);
 
     localStorage.setItem("chatmate_pbk", user.publicKey);
-  localStorage.setItem("chatmate", user.username);
+    localStorage.setItem("chatmate", user.username);
 
     setChannel(channelId);
     flipOpenNav(false);

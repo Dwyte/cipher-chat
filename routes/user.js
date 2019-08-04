@@ -82,8 +82,12 @@ router.post("/auth", async (req, res) => {
 
 // Update Bio
 router.put("/:_id", async (req, res) => {
+  const { _id } = req.params;
+
+  if (_id === "undefined") return res.status(400).send("Invalid Parameters");
+
   let user = await User.findByIdAndUpdate(
-    req.params._id,
+    _id,
     { $set: req.body },
     { useFindAndModify: false, new: true }
   );

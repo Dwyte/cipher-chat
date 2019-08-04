@@ -50,8 +50,18 @@ const OnlineUsers = ({ user, socket, handleChannelOpen }) => {
     );
   }
 
-  socket.on("user-connected", async () => {
-    const { data: onlineUsers } = await getOnlineUsers();
+  socket.on("user-connected", async _user => {
+    if (users.find(u => u.username === _user.username) !== undefined) return;
+
+    setUsers([...users, _user]);
+  });
+
+  socket.on("user-disconnected", async _user => {
+    if (users.find(u => u.username === _user.username) === undefined) return;
+
+    let onlineUsers = [...users];
+
+    onlineUsers = onlineUsers.filter(u => u.username !== _user.username);
 
     setUsers(onlineUsers);
   });
@@ -61,6 +71,8 @@ const OnlineUsers = ({ user, socket, handleChannelOpen }) => {
   };
 
   function populateUsers() {
+    if (!users) return <Badge>Noone's Online...</Badge>;
+
     return users.map(
       _user =>
         _user.username !== user.username && (
@@ -76,9 +88,7 @@ const OnlineUsers = ({ user, socket, handleChannelOpen }) => {
 
   return (
     <React.Fragment>
-      <Container>
-        {users ? populateUsers() : <Badge>Noone's Online...</Badge>}
-      </Container>
+      <Container>{populateUsers()}</Container>
 
       <Input
         value={search}
