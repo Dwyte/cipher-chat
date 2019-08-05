@@ -42,7 +42,7 @@ const NavBar = ({ history, location, setChannel, navOpen, flipOpenNav }) => {
       preview = "Online Users";
       break;
     case "/chat/privateChannels":
-      preview = "Private Channels";
+      preview = "Inbox";
       break;
     default:
       preview = localStorage.getItem("chatmate");
@@ -62,7 +62,7 @@ const NavBar = ({ history, location, setChannel, navOpen, flipOpenNav }) => {
           <React.Fragment>
             <NavButton
               active={location.pathname === "/chat/privateChannels"}
-              className="fas fa-user-secret"
+              className="fas fa-inbox"
               onClick={() => {
                 handleNavButtonClick();
                 history.push("/chat/privateChannels");
