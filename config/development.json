@@ -1,5 +1,5 @@
 {
-    "name": "CipherChat - Development",
-    "jwtKey": "yQueyqw3qaSehr21ksWQEWQS421s",
-    "MONGODB_URI": "mongodb+srv://Dwyte:rjw2N6pRXkFvbZsC@cs21-2evw6.mongodb.net/CipherChat?retryWrites=true&w=majority"
+  "name": "CipherChat - Development",
+  "jwtKey": "Pnz%%xZ8ppi8gPp8PZzxJenNwUEp#P9GA$RcqUe@^",
+  "MONGODB_URI": "mongodb://127.0.0.1:27017/cipher-chat-development"
 }

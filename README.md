@@ -2,21 +2,52 @@
 
 An end-to-end ecrypted instant messaging application built on MERN Stack.
 
-## What's new:
+## Setup
+
+Instructions on how to start the project on your local machine...
+
+### Requirements
+
+1. Node.js
+2. Mongodb
+
+### Installation of Dependencies
+
+1. Run `npm i` on the root directory.
+2. Just in case it asks you, run `npm audit fix --force`.
+3. Do step 1 and 2 now on the client directory.
+
+### Confirguration
+
+- Look at the /config director for the server configuration such as the mongodb uri.
+
+### Running the app
+
+A. Development
+
+- Run `npm start` both on the client directory and the root directory.
+
+B. Production
+
+- Run `npm run build-start` on the root directory, this will create a build of the client
+  and run the backend server in production mode serving the static files directly.
+
+## Implementation Details:
+
 1. Security
    #### Hashing
    - (Previously SHA256) **PBKDF2** (SHA512 digest, 64 length) for hashing the auth of each user account,  
-   incorporated with a salt unique for each user. PBKDF2 25,000 rounds on client, sent to  
-   server then another 50,000 rounds of PBKDF2, saved as auth on the database and sent back  
-   to the client for another 25,000 rounds of PBKDF2 forming the passphrase for encrypting  
-   the private key of the user.  
+     incorporated with a salt unique for each user. PBKDF2 25,000 rounds on client, sent to  
+     server then another 50,000 rounds of PBKDF2, saved as auth on the database and sent back  
+     to the client for another 25,000 rounds of PBKDF2 forming the passphrase for encrypting  
+     the private key of the user.
    #### Encryption
    - (Previously RSA) AES for encrypting the private key of the user stored on the database, passphrase  
-   is created as explained above. Also used for encrypting chat messages, only private channels, explained  
-   below.
+     is created as explained above. Also used for encrypting chat messages, only private channels, explained  
+     below.
    #### Key Exchange
    - (Previously RSA) ECDH for public key exchange for two participants obtaining the same one secret key  
-   to be used as the passphrase for encrypting/decrypting chat messages on their private channels.
+     to be used as the passphrase for encrypting/decrypting chat messages on their private channels.
 2. New Features
    - Online/Offline realtime status for each user using websockets
    - Improved User searching, and added Online Users tab
@@ -32,7 +63,6 @@ An end-to-end ecrypted instant messaging application built on MERN Stack.
    - Redesigned Footer
    - More Box Shadows
    - Styled Components from plain CSS styling
-
 
 ### OLD Implementation Process:
 
